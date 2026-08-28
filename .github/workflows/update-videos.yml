@@ -1,0 +1,31 @@
+name: Update YouTube videos
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 9 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Fetch latest uploads
+        run: python scripts/update_youtube.py
+      - name: Commit cache if changed
+        run: |
+          if git diff --quiet -- data/videos.json; then
+            echo "No video changes."
+            exit 0
+          fi
+          git config user.name "theantistateguys-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/videos.json
+          git commit -m "chore: update YouTube videos"
+          git push
