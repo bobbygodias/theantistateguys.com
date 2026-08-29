@@ -114,3 +114,13 @@ GitHub Pages remains a valid fallback. GitHub currently requires the publishing 
 5. Run live desktop/mobile visual QA.
 6. Confirm latest-video updater on a GitHub runner.
 7. Make copy/layout adjustments after Bobby reviews the actual live site.
+
+
+## Deployment checkpoint — 2026-08-29
+
+- GitHub Pages enabled from `main / (root)`.
+- Custom domain: `theantistateguys.com`.
+- Cloudflare DNS points apex and `www` to GitHub Pages.
+- DNS verification passed in GitHub.
+- Enforce HTTPS enabled.
+- This commit intentionally triggers the first Pages publication after Pages was enabled.
