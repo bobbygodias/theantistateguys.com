@@ -1,77 +1,293 @@
-const header = document.querySelector('.site-header');
-const menuToggle = document.querySelector('.menu-toggle');
-const mainNav = document.querySelector('.main-nav');
+const ROUTES = ['home', 'historia', 'contato', 'integrantes', 'shows'];
 
-const updateHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 40);
-updateHeader();
-window.addEventListener('scroll', updateHeader, { passive: true });
+const routeSections = new Map(
+  [...document.querySelectorAll('[data-route]')].map(section => [section.dataset.route, section])
+);
+const routeLinks = [...document.querySelectorAll('[data-route-link]')];
 
-menuToggle?.addEventListener('click', () => {
-  const open = menuToggle.getAttribute('aria-expanded') === 'true';
-  menuToggle.setAttribute('aria-expanded', String(!open));
-  mainNav?.classList.toggle('is-open', !open);
-});
+function normalizeRoute(value) {
+  return ROUTES.includes(value) ? value : 'home';
+}
 
-mainNav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-  menuToggle?.setAttribute('aria-expanded', 'false');
-  mainNav.classList.remove('is-open');
-}));
+function activateRoute(route, { focus = false } = {}) {
+  const next = normalizeRoute(route);
 
-const formatDate = (iso) => {
-  try {
-    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium' }).format(new Date(iso));
-  } catch {
-    return '';
+  for (const [name, section] of routeSections) {
+    const active = name === next;
+    section.hidden = !active;
+    section.classList.toggle('is-active', active);
   }
+
+  for (const link of routeLinks) {
+    const active = link.dataset.routeLink === next;
+    link.classList.toggle('is-active', active);
+    if (active) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  }
+
+  document.body.dataset.route = next;
+  if (focus) {
+    const section = routeSections.get(next);
+    const heading = section?.querySelector('h1, h2');
+    heading?.setAttribute('tabindex', '-1');
+    heading?.focus({ preventScroll: true });
+  }
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function routeFromHash() {
+  return normalizeRoute(location.hash.replace(/^#/, ''));
+}
+
+window.addEventListener('hashchange', () => activateRoute(routeFromHash(), { focus: true }));
+routeLinks.forEach(link => {
+  link.addEventListener('click', event => {
+    const route = link.dataset.routeLink;
+    if (routeFromHash() === route) {
+      event.preventDefault();
+      activateRoute(route);
+    }
+  });
+});
+activateRoute(routeFromHash());
+
+const audio = document.getElementById('audio-player');
+const boombox = document.getElementById('boombox');
+const trackTitle = document.getElementById('track-title');
+const chipTitle = document.getElementById('chip-title');
+const timeCurrent = document.getElementById('time-current');
+const timeTotal = document.getElementById('time-total');
+const playPause = document.getElementById('play-pause');
+const stopButton = document.getElementById('stop-track');
+const prevButton = document.getElementById('prev-track');
+const nextButton = document.getElementById('next-track');
+const musicDialog = document.getElementById('music-dialog');
+const openLibrary = document.getElementById('open-library');
+const chipButton = document.getElementById('now-playing-chip');
+const closeLibrary = document.getElementById('close-library');
+const releaseList = document.getElementById('release-list');
+const introPlaceholder = document.getElementById('intro-placeholder');
+
+let releases = [];
+let tracks = [];
+let currentIndex = 0;
+let playerReady = false;
+
+const formatTime = seconds => {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${mins}:${secs}`;
 };
 
-async function loadVideos() {
-  const grid = document.getElementById('video-grid');
-  if (!grid) return;
+function currentTrack() {
+  return tracks[currentIndex] ?? null;
+}
 
+function setPlaybackVisual(isPlaying) {
+  boombox?.classList.toggle('is-playing', isPlaying);
+  playPause?.classList.toggle('is-playing', isPlaying);
+  playPause?.setAttribute('aria-label', isPlaying ? 'Pausar' : 'Reproduzir');
+}
+
+function updateTrackDisplay() {
+  const track = currentTrack();
+  const label = track?.title ?? 'Nenhuma faixa';
+  trackTitle.textContent = label;
+  chipTitle.textContent = label;
+  document.querySelectorAll('.track-row').forEach((row, index) => {
+    row.classList.toggle('is-current', index === currentIndex);
+    const state = row.querySelector('.track-state');
+    if (state) state.textContent = index === currentIndex ? (audio.paused ? 'SELECIONADA' : 'TOCANDO') : 'OUVIR';
+  });
+}
+
+function setMediaSession(track) {
+  if (!('mediaSession' in navigator) || !track) return;
   try {
-    const response = await fetch('data/videos.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('feed unavailable');
-    const videos = await response.json();
-    if (!Array.isArray(videos) || videos.length === 0) throw new Error('empty feed');
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title,
+      artist: 'Bobby Dias & The Anti-State Guys',
+      album: track.releaseTitle || 'Faixas online'
+    });
+  } catch {}
+}
 
-    grid.replaceChildren(...videos.slice(0, 3).map(video => {
-      const article = document.createElement('article');
-      article.className = 'video-card';
+function loadTrack(index, { autoplay = false } = {}) {
+  if (!tracks.length) return;
+  currentIndex = (index + tracks.length) % tracks.length;
+  const track = currentTrack();
+  audio.src = track.url;
+  audio.load();
+  timeCurrent.textContent = '0:00';
+  timeTotal.textContent = '0:00';
+  updateTrackDisplay();
+  setMediaSession(track);
 
-      const frame = document.createElement('div');
-      frame.className = 'video-frame';
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(video.id)}`;
-      iframe.title = video.title || 'Vídeo de Bobby Dias & The Anti-State Guys';
-      iframe.loading = 'lazy';
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      iframe.allowFullscreen = true;
-      frame.appendChild(iframe);
-
-      const info = document.createElement('div');
-      info.className = 'video-info';
-      const title = document.createElement('h3');
-      title.textContent = video.title || 'Vídeo oficial';
-      info.appendChild(title);
-      if (video.published) {
-        const time = document.createElement('time');
-        time.dateTime = video.published;
-        time.textContent = formatDate(video.published);
-        info.appendChild(time);
-      }
-
-      article.append(frame, info);
-      return article;
-    }));
-  } catch {
-    grid.innerHTML = `
-      <div class="video-fallback">
-        <p>Os vídeos estão no canal oficial.</p>
-        <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer">Abrir The Anti-State Guys no YouTube ↗</a>
-      </div>`;
+  if (autoplay) {
+    audio.play().catch(() => setPlaybackVisual(false));
   }
 }
 
-loadVideos();
+function nextTrack({ autoplay = !audio.paused } = {}) {
+  loadTrack(currentIndex + 1, { autoplay });
+}
+
+function previousTrack({ autoplay = !audio.paused } = {}) {
+  if (audio.currentTime > 4) {
+    audio.currentTime = 0;
+    return;
+  }
+  loadTrack(currentIndex - 1, { autoplay });
+}
+
+function stopPlayback() {
+  audio.pause();
+  audio.currentTime = 0;
+  setPlaybackVisual(false);
+  updateTrackDisplay();
+}
+
+function togglePlayback() {
+  if (!playerReady || !currentTrack()) return;
+  if (audio.paused) {
+    audio.play().catch(error => {
+      console.warn('Playback blocked or unavailable:', error);
+      setPlaybackVisual(false);
+    });
+  } else {
+    audio.pause();
+  }
+}
+
+function buildLibrary() {
+  releaseList.replaceChildren();
+  let flatIndex = 0;
+
+  releases.forEach(release => {
+    const title = document.createElement('div');
+    title.className = 'release-title';
+    title.textContent = release.title || 'Faixas';
+    releaseList.appendChild(title);
+
+    release.tracks.forEach(track => {
+      const index = flatIndex++;
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'track-row';
+      row.dataset.trackIndex = String(index);
+
+      const no = document.createElement('span');
+      no.className = 'track-index';
+      no.textContent = String(index + 1).padStart(2, '0');
+
+      const name = document.createElement('strong');
+      name.textContent = track.title;
+
+      const state = document.createElement('span');
+      state.className = 'track-state';
+      state.textContent = 'OUVIR';
+
+      row.append(no, name, state);
+      row.addEventListener('click', () => {
+        loadTrack(index, { autoplay: true });
+        musicDialog.close();
+      });
+
+      releaseList.appendChild(row);
+    });
+  });
+
+  updateTrackDisplay();
+}
+
+async function loadMusicCatalog() {
+  try {
+    const response = await fetch('data/music.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+
+    releases = Array.isArray(data.releases) ? data.releases : [];
+    tracks = releases.flatMap(release =>
+      (Array.isArray(release.tracks) ? release.tracks : []).map(track => ({
+        ...track,
+        releaseTitle: release.title || ''
+      }))
+    );
+
+    if (!tracks.length) throw new Error('Catálogo vazio');
+
+    playerReady = true;
+    buildLibrary();
+    loadTrack(0);
+  } catch (error) {
+    console.error('Não foi possível carregar o catálogo musical:', error);
+    playerReady = false;
+    trackTitle.textContent = 'Faixas temporariamente indisponíveis';
+    chipTitle.textContent = 'Player indisponível';
+    [playPause, stopButton, prevButton, nextButton, openLibrary, chipButton].forEach(button => {
+      if (button) button.disabled = true;
+    });
+  }
+}
+
+playPause?.addEventListener('click', togglePlayback);
+stopButton?.addEventListener('click', stopPlayback);
+prevButton?.addEventListener('click', () => previousTrack());
+nextButton?.addEventListener('click', () => nextTrack());
+
+audio?.addEventListener('play', () => {
+  setPlaybackVisual(true);
+  updateTrackDisplay();
+});
+audio?.addEventListener('pause', () => {
+  setPlaybackVisual(false);
+  updateTrackDisplay();
+});
+audio?.addEventListener('ended', () => nextTrack({ autoplay: true }));
+audio?.addEventListener('timeupdate', () => {
+  timeCurrent.textContent = formatTime(audio.currentTime);
+  timeTotal.textContent = formatTime(audio.duration);
+});
+audio?.addEventListener('loadedmetadata', () => {
+  timeTotal.textContent = formatTime(audio.duration);
+});
+audio?.addEventListener('error', () => {
+  setPlaybackVisual(false);
+  const track = currentTrack();
+  if (track) trackTitle.textContent = `${track.title} — erro ao carregar`;
+});
+
+openLibrary?.addEventListener('click', () => musicDialog.showModal());
+chipButton?.addEventListener('click', () => musicDialog.showModal());
+closeLibrary?.addEventListener('click', () => musicDialog.close());
+musicDialog?.addEventListener('click', event => {
+  if (event.target === musicDialog) musicDialog.close();
+});
+
+introPlaceholder?.addEventListener('click', () => {
+  const note = document.getElementById('intro-note');
+  note.textContent = 'O vídeo de apresentação da banda ainda está em produção.';
+  introPlaceholder.animate(
+    [{ opacity: 1 }, { opacity: .72 }, { opacity: 1 }],
+    { duration: 420, easing: 'ease-out' }
+  );
+});
+
+if ('mediaSession' in navigator) {
+  try {
+    navigator.mediaSession.setActionHandler('play', () => audio.play());
+    navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+    navigator.mediaSession.setActionHandler('previoustrack', () => previousTrack());
+    navigator.mediaSession.setActionHandler('nexttrack', () => nextTrack());
+    navigator.mediaSession.setActionHandler('stop', stopPlayback);
+    navigator.mediaSession.setActionHandler('seekto', details => {
+      if (typeof details.seekTime === 'number' && Number.isFinite(audio.duration)) {
+        audio.currentTime = Math.min(audio.duration, Math.max(0, details.seekTime));
+      }
+    });
+  } catch {}
+}
+
+loadMusicCatalog();
