@@ -1,0 +1,19 @@
+{
+  "releases": [
+    {
+      "id": "online",
+      "title": "Faixas disponíveis",
+      "type": "Faixas online",
+      "tracks": [
+        {
+          "title": "Renascer",
+          "url": "https://s3.g.megas4.com/dgaikecjufjf2us5xrys5sbrhvjqt3wpllijq/theantistateguys-media/Renascer.mp3"
+        },
+        {
+          "title": "Não Há Cor (Don't Tread On Me)",
+          "url": "https://s3.g.megas4.com/dgaikecjufjf2us5xrys5sbrhvjqt3wpllijq/theantistateguys-media/Nao-Ha-Cor.mp3"
+        }
+      ]
+    }
+  ]
+}
