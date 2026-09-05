@@ -1,0 +1,29 @@
+name: Assemble scenic site assets
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - '.asset-chunks/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+      - name: Assemble and verify WebP assets
+        run: python3 scripts/assemble_site_assets.py
+      - name: Commit binary assets and remove transfer chunks
+        run: |
+          git config user.name 'theantistateguys-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add assets/home-scene.webp assets/wordmark-custom.webp assets/photos-pose-6.webp assets/studio.webp assets/members/thomaz.webp
+          git rm -r .asset-chunks
+          git commit -m 'assets: install scenic redesign media'
+          git push origin HEAD:scenic-v2
