@@ -1,0 +1,31 @@
+name: Apply History v5
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - 'HISTORY-V5-GO'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+      - name: Apply History v5 link
+        run: python scripts/apply_history_v5.py
+      - name: Commit History v5
+        run: |
+          git config user.name 'Bobby Dias - O Capitão'
+          git config user.email 'renatogodias@gmail.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes'
+          else
+            git commit -m 'design: apply History v5 scenic layout'
+            git push origin HEAD:scenic-v2
+          fi
