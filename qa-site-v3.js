@@ -12,12 +12,16 @@
   function activeRoute(){
     return activeRouteEl()?.dataset.route || 'home';
   }
+  function isVisible(node){
+    if(!node) return false;
+    const s=getComputedStyle(node);
+    if(s.display==='none' || s.visibility==='hidden' || Number(s.opacity)===0) return false;
+    const r=node.getBoundingClientRect();
+    return r.width>1 && r.height>1;
+  }
   function gridShape(el){
     if(!el) return {cols:0,rows:0};
-    const children=[...el.children].filter(node=>{
-      const s=getComputedStyle(node);
-      return s.display!=='none' && s.visibility!=='hidden';
-    });
+    const children=[...el.children].filter(isVisible);
     if(!children.length) return {cols:0,rows:0};
     const tops=[];
     children.forEach(node=>{
@@ -33,15 +37,24 @@
     const targets=[
       ...document.querySelectorAll('.site-nav a'),
       ...(activeRouteEl()?.querySelectorAll('a,button') || [])
-    ].filter(el=>{
-      const s=getComputedStyle(el);
-      return s.display!=='none' && s.visibility!=='hidden';
-    });
+    ].filter(isVisible);
     if(!targets.length) return 0;
     return Math.round(Math.min(...targets.map(el=>{
       const r=el.getBoundingClientRect();
       return Math.min(r.width,r.height);
     })));
+  }
+  function horizontalClipCount(){
+    const route=activeRouteEl();
+    const bounds=main?.getBoundingClientRect();
+    if(!route || !bounds) return 0;
+    const candidates=[...route.querySelectorAll(
+      'a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure'
+    )].filter(isVisible);
+    return candidates.filter(el=>{
+      const r=el.getBoundingClientRect();
+      return r.left < bounds.left-2 || r.right > bounds.right+2;
+    }).length;
   }
 
   function updateMeter(){
@@ -60,7 +73,14 @@
     const overflowX=!!main && main.scrollWidth>main.clientWidth+2;
     const routeH=Math.round(route?.scrollHeight || 0);
     const tap=minTapSize();
-    meter.textContent=`QA V3 · visual ${vw}×${vh} · conteúdo ${cw}×${ch} · AR ${ratio} · DPR ${devicePixelRatio.toFixed(2)} · nav ${nav.cols}c/${nav.rows}r · mídia ${media.cols}c/${media.rows}r · rotaH ${routeH} · scrollY ${needsY?'sim':'não'} · ovX ${overflowX?'SIM':'não'} · tap≥${tap}px · ${activeRoute()}`;
+    const clipX=horizontalClipCount();
+    const hardIssues=[];
+    if(overflowX) hardIssues.push('overflow-x');
+    if(tap>0 && tap<44) hardIssues.push(`tap-${tap}`);
+    if(clipX>0) hardIssues.push(`clip-x-${clipX}`);
+    const hardOK=hardIssues.length===0;
+    meter.dataset.qaHard=hardOK?'ok':'fail';
+    meter.textContent=`${hardOK?'HARD-OK':'HARD-FAIL '+hardIssues.join(',')} · visual ${vw}×${vh} · conteúdo ${cw}×${ch} · AR ${ratio} · DPR ${devicePixelRatio.toFixed(2)} · nav ${nav.cols}c/${nav.rows}r · mídia ${media.cols}c/${media.rows}r · rotaH ${routeH} · scrollY ${needsY?'sim':'não'} · ovX ${overflowX?'SIM':'não'} · clipX ${clipX} · tap≥${tap}px · ${activeRoute()}`;
   }
 
   let raf=0;
@@ -87,6 +107,10 @@
   }
   if('MutationObserver' in window){
     const mo=new MutationObserver(schedule);
-    document.querySelectorAll('[data-route]').forEach(el=>mo.observe(el,{attributes:true,attributeFilter:['hidden','class']}));
+    document.querySelectorAll('[data-route]').forEach(el=>roObserveSafe(el,mo));
+  }
+
+  function roObserveSafe(el,observer){
+    observer.observe(el,{attributes:true,attributeFilter:['hidden','class']});
   }
 })();
