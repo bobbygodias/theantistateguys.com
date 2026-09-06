@@ -1,4 +1,10 @@
 (()=>{
+  const compat=document.createElement('link');
+  compat.rel='stylesheet';
+  compat.href='qa-site-v3-compat.css';
+  compat.dataset.qaCompat='true';
+  document.head.appendChild(compat);
+
   const meter=document.getElementById('qa-meter');
   const close=document.getElementById('qa-dialog-close');
   const dialog=document.getElementById('music-dialog');
@@ -81,6 +87,13 @@
     const bg=getComputedStyle(radio).backgroundImage || '';
     return bg.includes('jvc-player.svg') && !bg.includes('home-scene.webp');
   }
+  function supportFlags(){
+    return {
+      cq:CSS.supports?.('container-type','size') ?? false,
+      cu:CSS.supports?.('width','1cqi') ?? false,
+      dvh:CSS.supports?.('height','100dvh') ?? false
+    };
+  }
 
   function updateMeter(){
     if(!meter) return;
@@ -101,6 +114,7 @@
     const clipX=horizontalClipCount();
     const semantics=semanticIssueCount();
     const radioOK=radioIndependent();
+    const support=supportFlags();
     const hardIssues=[];
     if(overflowX) hardIssues.push('overflow-x');
     if(tap>0 && tap<44) hardIssues.push(`tap-${tap}`);
@@ -109,7 +123,7 @@
     if(!radioOK) hardIssues.push('radio-raster');
     const hardOK=hardIssues.length===0;
     meter.dataset.qaHard=hardOK?'ok':'fail';
-    meter.textContent=`${hardOK?'HARD-OK':'HARD-FAIL '+hardIssues.join(',')} · visual ${vw}×${vh} · conteúdo ${cw}×${ch} · AR ${ratio} · DPR ${devicePixelRatio.toFixed(2)} · nav ${nav.cols}c/${nav.rows}r · mídia ${media.cols}c/${media.rows}r · rotaH ${routeH} · scrollY ${needsY?'sim':'não'} · ovX ${overflowX?'SIM':'não'} · clipX ${clipX} · tap≥${tap}px · sem ${semantics} · rádio ${radioOK?'indep':'RASTER'} · ${activeRoute()}`;
+    meter.textContent=`${hardOK?'HARD-OK':'HARD-FAIL '+hardIssues.join(',')} · visual ${vw}×${vh} · conteúdo ${cw}×${ch} · AR ${ratio} · DPR ${devicePixelRatio.toFixed(2)} · nav ${nav.cols}c/${nav.rows}r · mídia ${media.cols}c/${media.rows}r · rotaH ${routeH} · scrollY ${needsY?'sim':'não'} · ovX ${overflowX?'SIM':'não'} · clipX ${clipX} · tap≥${tap}px · sem ${semantics} · rádio ${radioOK?'indep':'RASTER'} · CQ ${support.cq?'sim':'fallback'} · CU ${support.cu?'sim':'fallback'} · DVH ${support.dvh?'sim':'fallback'} · ${activeRoute()}`;
   }
 
   let raf=0;
@@ -118,6 +132,7 @@
     raf=requestAnimationFrame(updateMeter);
   }
 
+  compat.addEventListener('load',schedule,{once:true});
   updateMeter();
   addEventListener('resize',schedule,{passive:true});
   visualViewport?.addEventListener('resize',schedule,{passive:true});
