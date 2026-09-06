@@ -1,0 +1,54 @@
+name: responsive-qa-v3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'qa-site-v3.html'
+      - 'qa-site-v3*.css'
+      - 'qa-site-v3*.js'
+      - 'script.js'
+      - 'assets/jvc-player.svg'
+      - 'tests/responsive-qa.mjs'
+      - '.github/workflows/responsive-qa-v3.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  geometry-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/tasg-http.log 2>&1 &
+          echo $! > /tmp/tasg-http.pid
+          sleep 2
+          curl --fail http://127.0.0.1:4173/qa-site-v3.html > /dev/null
+
+      - name: Run responsive matrix
+        run: node tests/responsive-qa.mjs
+
+      - name: Upload QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-qa-v3
+          path: test-artifacts/
+          if-no-files-found: ignore
