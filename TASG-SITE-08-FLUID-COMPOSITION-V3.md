@@ -26,7 +26,7 @@ O visitante não deve adaptar navegador, zoom, orientação ou comportamento ao 
 5. O plano de fundo também recebe direção responsiva; não é uma fotografia de interface congelada.
 6. Elementos funcionais não ficam presos a coordenadas de uma imagem raster.
 7. Grid/Flex e `auto-fit/minmax()` fazem o reflow natural sempre que possível.
-8. Medidas usam `clamp()`, porcentagens, viewport e unidades relativas; pixels fixos só aparecem onde existe um limite físico real (por exemplo alvo mínimo de toque).
+8. Medidas usam `clamp()`, porcentagens, viewport/container e unidades relativas; pixels fixos só aparecem onde existe um limite físico real, por exemplo alvo mínimo de toque.
 9. Breakpoints só podem existir quando uma mudança de geometria exige direção artística/composicional, nunca como tradução de “celular/tablet/desktop”.
 10. Se uma composição razoável puder manter tudo utilizável numa viewport, remontar antes de recorrer à rolagem.
 11. Se fisicamente não houver espaço seguro, rolagem é preferível a miniaturização, corte destrutivo ou zoom obrigatório.
@@ -34,7 +34,7 @@ O visitante não deve adaptar navegador, zoom, orientação ou comportamento ao 
 
 ## V3 criada para QA
 
-Arquivos novos, isolados da Home pública:
+Arquivos isolados da produção:
 
 - `qa-site-v3.html`
 - `qa-site-v3.css`
@@ -44,7 +44,22 @@ URL após deploy:
 
 `https://theantistateguys.com/qa-site-v3.html`
 
-### Mudanças estruturais
+## Núcleo de composição atual
+
+A partir do commit `b7e485b...`, o V3 passou a usar o próprio espaço útil como container de layout:
+
+- `body` ocupa a viewport e é dividido em navegação + área útil;
+- `main` ocupa exatamente a área restante e usa `container-type: size` / `container-name: site`;
+- a altura da navegação, inclusive quando ela quebra em mais linhas, é automaticamente descontada;
+- Home e rotas internas consultam esse container real, não uma suposição sobre aparelho;
+- container queries podem responder simultaneamente à largura, altura e proporção da área útil;
+- `cqw` e `cqh` são usados em elementos que precisam escalar conforme o recipiente;
+- `auto-fit/minmax()` continua sendo a primeira escolha para reflow natural;
+- o scroll fica no recipiente de conteúdo quando o espaço físico realmente não comporta a composição inteira.
+
+Isso elimina a lógica anterior em que um breakpoint de largura podia tomar uma decisão errada sem considerar a altura disponível.
+
+### Mudanças estruturais já aplicadas
 
 - uma única navegação sem duplicação mobile/desktop;
 - uma única Home funcional;
@@ -53,16 +68,35 @@ URL após deploy:
 - mídia usa Grid com `auto-fit` e escolhe uma ou múltiplas colunas pelo espaço real;
 - wordmark preserva a peça inteira e cede altura antes de controles essenciais;
 - cenário da Home virou camada atmosférica responsiva, não mapa de hotspots;
-- Santiago recebeu camada cenográfica independente no V3 para poder mudar de posição/escala com a composição;
-- páginas História, Integrantes, Fotos, Shows e Contato usam o mesmo motor fluido, com grids auto-ajustáveis e fundos próprios responsivos;
-- removidas do V3 as dependências de `styles.css`, `scenic-fixes.css`, `history-v5.css`, `internal-v2.css` e `responsive-home.css`; o QA V3 carrega apenas seu núcleo novo;
-- adicionado diagnóstico discreto de QA com viewport CSS/VisualViewport, aspect ratio, DPR e número real de colunas. Um print passa a conter os dados geométricos necessários.
+- Santiago possui camada cenográfica independente para poder mudar de posição/escala com a composição;
+- o beco agora recebe também camadas de parede/luz/vinheta separadas da fotografia base;
+- História, Integrantes, Fotos, Shows e Contato usam o mesmo motor fluido;
+- História/Shows usam grids auto-fit em vez de estados rígidos de 2/1 colunas;
+- Integrantes cria quantos pôsteres couberem, sem definir “3/2/1 por dispositivo”;
+- Fotos limita a própria fotografia também pela altura útil do container e usa `object-fit: contain` quando necessário;
+- fundos internos mudam foco pela forma do recipiente;
+- removidas do V3 as dependências de `styles.css`, `scenic-fixes.css`, `history-v5.css`, `internal-v2.css` e `responsive-home.css`;
+- diagnóstico de QA foi corrigido: em vez de inferir colunas pela string CSS, mede as posições reais dos elementos e informa colunas/linhas.
+
+## QA real recebido em 2026-09-06
+
+Capturas reais forneceram uma geometria particularmente útil:
+
+- VisualViewport reportado na página: aproximadamente `1280 × 664 CSS`;
+- aspect ratio aproximado: `1.93`;
+- DPR: `2.00`;
+- navegador embutido com tecnologia Firefox;
+- “Site de computador” não é requisito funcional e não deve alterar a necessidade de recomposição.
+
+As capturas mostraram Home, Fotos, navegação, player, troca de música e toast funcionando. Elas também deixaram claro que QA visual deve observar não só controles, mas **a recomposição de cenário, imagem e página inteira**.
 
 ## Observação sobre o beco
 
-`home-scene.webp` ainda é usado como **matéria atmosférica**, com `object-fit: cover`, direção por proporção e forte tratamento visual. Ele deixou de ser a interface em si.
+`home-scene.webp` ainda é usado como **matéria atmosférica**, com `object-fit: cover`, foco variável e tratamento visual. Ele deixou de ser a interface em si.
 
 Esta é uma transição importante, mas ainda existe trabalho artístico a fazer: elementos reconhecíveis que estavam “assados” na imagem original devem, quando necessário, virar camadas independentes ou ser substituídos por uma base cenográfica limpa. O objetivo final é que nenhum objeto importante dependa de permanecer em coordenadas raster fixas.
+
+O rádio ainda usa um recorte da imagem original como arte provisória do player. Isso é permitido apenas durante o QA estrutural. A etapa cenográfica final deve substituir esse recorte por um objeto independente/limpo para evitar duplicação perceptível de cenário.
 
 ## Critério de aprovação do V3
 
