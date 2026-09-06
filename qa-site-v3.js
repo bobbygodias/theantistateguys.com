@@ -20,6 +20,9 @@
     const r=node.getBoundingClientRect();
     return r.width>1 && r.height>1;
   }
+  function isFunctional(node){
+    return !node?.closest('[aria-hidden="true"]');
+  }
   function gridShape(el){
     if(!el) return {cols:0,rows:0};
     const children=[...el.children].filter(isVisible);
@@ -38,7 +41,7 @@
     return [
       ...document.querySelectorAll('.site-nav a'),
       ...(activeRouteEl()?.querySelectorAll('a,button') || [])
-    ].filter(isVisible);
+    ].filter(isVisible).filter(isFunctional);
   }
   function minTapSize(){
     const targets=visibleTargets();
@@ -54,7 +57,7 @@
     if(!route || !bounds) return 0;
     const candidates=[...route.querySelectorAll(
       'a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure'
-    )].filter(isVisible);
+    )].filter(isVisible).filter(isFunctional);
     return candidates.filter(el=>{
       const r=el.getBoundingClientRect();
       return r.left < bounds.left-2 || r.right > bounds.right+2;
