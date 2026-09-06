@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#0b0907">
+  <meta name="theme-color" content="#0a0806">
   <meta name="description" content="Site oficial de Bobby Dias & The Anti-State Guys — nu-metal, grunge e underground de Goiânia, Goiás.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Bobby Dias & The Anti-State Guys">
@@ -15,116 +15,118 @@
   <link rel="canonical" href="https://theantistateguys.com/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="scenic-fixes.css">
+  <link rel="stylesheet" href="history-v5.css">
+  <link rel="stylesheet" href="internal-v2.css">
   <title>Bobby Dias & The Anti-State Guys</title>
 </head>
 <body>
   <a class="skip-link" href="#main">Ir para o conteúdo</a>
 
-  <header class="site-nav" aria-label="Navegação principal">
-    <nav class="sign-row">
-      <a class="metal-sign is-active" href="#home" data-route-link="home"><span>HOME</span></a>
-      <a class="metal-sign" href="#historia" data-route-link="historia"><span>HISTÓRIA</span></a>
-      <a class="metal-sign" href="#contato" data-route-link="contato"><span>CONTATO</span></a>
-      <a class="metal-sign" href="#integrantes" data-route-link="integrantes"><span>INTEGRANTES</span></a>
-      <a class="metal-sign" href="#shows" data-route-link="shows"><span>SHOWS</span></a>
-    </nav>
-  </header>
+  <nav class="a11y-nav" aria-label="Navegação principal">
+    <a href="#home" data-route-link="home">Home</a>
+    <a href="#historia" data-route-link="historia">História</a>
+    <a href="#contato" data-route-link="contato">Contato</a>
+    <a href="#integrantes" data-route-link="integrantes">Integrantes</a>
+    <a href="#fotos" data-route-link="fotos">Fotos</a>
+    <a href="#shows" data-route-link="shows">Shows</a>
+  </nav>
 
   <main id="main">
     <section class="route route-home is-active" id="home" data-route="home" aria-labelledby="home-title">
-      <div class="alley-scene" aria-label="Beco urbano estilizado com uma boombox tocando músicas da banda">
-        <div class="brick brick-left" aria-hidden="true"></div>
-        <div class="brick brick-right" aria-hidden="true"></div>
-        <div class="floor" aria-hidden="true"></div>
-        <div class="vanishing-point" aria-hidden="true"></div>
-        <div class="lamp-glow lamp-left" aria-hidden="true"></div>
-        <div class="lamp-glow lamp-deep" aria-hidden="true"></div>
+      <h1 id="home-title" class="visually-hidden">Bobby Dias &amp; The Anti-State Guys</h1>
 
-        <div class="shadow-figure" aria-hidden="true">
-          <img src="assets/members/santiago.webp" alt="">
+      <div class="desktop-stage" id="desktop-stage" aria-label="Beco urbano noturno com uma boombox tocando músicas da banda">
+        <img class="scene-base" src="assets/home-scene.webp" alt="" width="1672" height="941" fetchpriority="high">
+
+        <div class="brand-patch" aria-hidden="true"></div>
+        <img class="brand-mark" src="assets/wordmark.svg" alt="Bobby Dias & The Anti-State Guys">
+
+        <nav class="stage-hotspots" aria-label="Navegação no cenário">
+          <a class="hotspot hs-home" href="#home" data-route-link="home" aria-label="Home"></a>
+          <a class="hotspot hs-history" href="#historia" data-route-link="historia" aria-label="História"></a>
+          <a class="hotspot hs-contact" href="#contato" data-route-link="contato" aria-label="Contato"></a>
+          <a class="hotspot hs-members" href="#integrantes" data-route-link="integrantes" aria-label="Integrantes"></a>
+          <a class="hotspot hs-shows" href="#shows" data-route-link="shows" aria-label="Shows"></a>
+        </nav>
+
+        <a class="hotspot hs-instagram" href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer" aria-label="Instagram oficial"></a>
+        <a class="hotspot hs-youtube" href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer" aria-label="YouTube oficial"></a>
+        <a class="photo-sign" href="#fotos" data-route-link="fotos">FOTOS</a>
+
+        <button class="hotspot hs-video" id="intro-placeholder" type="button" aria-label="Vídeo de apresentação da banda, em produção"></button>
+
+        <div class="boombox-ui" aria-label="Player de músicas">
+          <div class="speaker-pulse speaker-pulse-left" aria-hidden="true"></div>
+          <div class="speaker-pulse speaker-pulse-right" aria-hidden="true"></div>
+
+          <div class="player-display" aria-live="polite">
+            <span id="track-title">Carregando faixas...</span>
+            <span class="time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
+          </div>
+
+          <button class="player-hit library-hit" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog" aria-label="Abrir faixas"></button>
+          <button class="player-hit prev-hit" id="prev-track" type="button" aria-label="Faixa anterior"></button>
+          <button class="player-hit play-hit" id="play-pause" type="button" aria-label="Reproduzir"></button>
+          <button class="player-hit stop-hit" id="stop-track" type="button" aria-label="Parar"></button>
+          <button class="player-hit next-hit" id="next-track" type="button" aria-label="Próxima faixa"></button>
         </div>
+      </div>
 
-        <h1 id="home-title" class="brand-lockup">
-          <img src="assets/wordmark.svg" alt="Bobby Dias & The Anti-State Guys">
-        </h1>
+      <div class="mobile-home" aria-label="Beco urbano noturno com player da banda">
+        <div class="mobile-alley" aria-hidden="true"></div>
+        <nav class="mobile-signs" aria-label="Navegação principal">
+          <a href="#home" data-route-link="home">HOME</a>
+          <a href="#historia" data-route-link="historia">HISTÓRIA</a>
+          <a href="#contato" data-route-link="contato">CONTATO</a>
+          <a href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+          <a href="#fotos" data-route-link="fotos">FOTOS</a>
+          <a href="#shows" data-route-link="shows">SHOWS</a>
+        </nav>
 
-        <section class="intro-frame" aria-labelledby="intro-title">
-          <div class="video-poster">
-            <img src="assets/band-hero.jpg" alt="" loading="eager">
-            <div class="video-shade" aria-hidden="true"></div>
-            <button class="video-coming" type="button" id="intro-placeholder" aria-describedby="intro-note">
-              <span class="play-ring" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </span>
-              <span id="intro-title">VÍDEO DE APRESENTAÇÃO</span>
-            </button>
+        <img class="mobile-wordmark" src="assets/wordmark.svg" alt="Bobby Dias & The Anti-State Guys">
+
+        <button class="mobile-video-card" type="button" id="mobile-intro-placeholder" aria-label="Vídeo de apresentação, em produção">
+          <img src="assets/band-hero.jpg" alt="" loading="eager">
+          <span class="mobile-play">▶</span>
+          <strong>VÍDEO DE APRESENTAÇÃO</strong>
+          <small>EM PRODUÇÃO</small>
+        </button>
+
+        <section class="mobile-boombox" aria-label="Player de músicas">
+          <div class="mobile-boombox-photo" aria-hidden="true"></div>
+          <div class="mobile-display" aria-live="polite">
+            <span id="mobile-track-title">Faixas</span>
+            <span><span id="mobile-time-current">0:00</span> / <span id="mobile-time-total">0:00</span></span>
           </div>
-          <p id="intro-note">Em produção. O vídeo oficial entra aqui assim que estiver pronto.</p>
+          <div class="mobile-controls">
+            <button id="mobile-prev" type="button" aria-label="Faixa anterior">⏮</button>
+            <button id="mobile-play" type="button" aria-label="Reproduzir">▶</button>
+            <button id="mobile-stop" type="button" aria-label="Parar">■</button>
+            <button id="mobile-next" type="button" aria-label="Próxima faixa">⏭</button>
+          </div>
+          <button class="mobile-library" id="mobile-library" type="button" aria-controls="music-dialog">FAIXAS</button>
         </section>
 
-        <aside class="social-rail" aria-label="Canais oficiais">
-          <a class="wall-link" href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer" aria-label="Instagram oficial">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-            <span>INSTAGRAM</span>
-          </a>
-          <a class="wall-link" href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer" aria-label="YouTube oficial">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12s0-4-1-6c-.5-1.5-1.6-2-3-2.2C16 3.5 12 3.5 12 3.5s-4 0-6 .3C4.5 4 3.5 4.5 3 6c-1 2-1 6-1 6s0 4 1 6c.5 1.5 1.5 2 3 2.2 2 .3 6 .3 6 .3s4 0 6-.3c1.4-.2 2.5-.7 3-2.2 1-2 1-6 1-6z"/><path class="play-cut" d="M10 8l6 4-6 4z"/></svg>
-            <span>YOUTUBE</span>
-          </a>
-        </aside>
-
-        <section class="boombox-wrap" aria-label="Player de músicas">
-          <div class="boombox" id="boombox">
-            <div class="boombox-handle" aria-hidden="true"></div>
-            <div class="boombox-top" aria-hidden="true">
-              <span></span><span></span><span></span><span></span><span></span><span></span>
-            </div>
-            <div class="radio-strip" aria-hidden="true">
-              <span class="dial-line"></span>
-              <span class="dial-markers"></span>
-            </div>
-
-            <div class="speaker speaker-left" aria-hidden="true"><span class="speaker-cone"></span></div>
-            <div class="speaker speaker-right" aria-hidden="true"><span class="speaker-cone"></span></div>
-
-            <div class="deck">
-              <button type="button" class="deck-button" id="open-library" aria-haspopup="dialog" aria-controls="music-dialog">
-                <span>FAIXAS</span>
-              </button>
-            </div>
-
-            <div class="player-display" aria-live="polite">
-              <span class="track-title" id="track-title">Carregando faixas...</span>
-              <span class="track-time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
-            </div>
-
-            <div class="player-controls" aria-label="Controles de reprodução">
-              <button type="button" class="control-btn" id="prev-track" aria-label="Faixa anterior">
-                <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM19 6v12l-9-6z"/></svg>
-              </button>
-              <button type="button" class="control-btn" id="play-pause" aria-label="Reproduzir">
-                <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="icon-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
-              </button>
-              <button type="button" class="control-btn" id="stop-track" aria-label="Parar">
-                <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
-              </button>
-              <button type="button" class="control-btn" id="next-track" aria-label="Próxima faixa">
-                <svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM5 6l9 6-9 6z"/></svg>
-              </button>
-            </div>
-          </div>
-          <button class="now-playing-chip" id="now-playing-chip" type="button" aria-controls="music-dialog">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span id="chip-title">Faixas disponíveis</span>
-          </button>
-        </section>
+        <div class="mobile-socials">
+          <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a>
+          <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a>
+        </div>
       </div>
     </section>
 
     <section class="route route-panel" id="historia" data-route="historia" aria-labelledby="historia-title" hidden>
-      <div class="panel-shell history-shell">
-        <div class="paper-kicker">ARQUIVO / GOIÂNIA / 2025</div>
+      <div class="internal-bg" aria-hidden="true"></div>
+      <nav class="internal-nav" aria-label="Navegação principal">
+        <a href="#home" data-route-link="home">HOME</a>
+        <a class="active" href="#historia" data-route-link="historia">HISTÓRIA</a>
+        <a href="#contato" data-route-link="contato">CONTATO</a>
+        <a href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+        <a href="#fotos" data-route-link="fotos">FOTOS</a>
+        <a href="#shows" data-route-link="shows">SHOWS</a>
+      </nav>
+      <div class="wall-sheet history-sheet">
+        <p class="sheet-label">ARQUIVO DA BANDA · GOIÂNIA · 2025</p>
         <h2 id="historia-title">A HISTÓRIA</h2>
         <div class="history-layout">
           <div class="history-copy">
@@ -134,7 +136,7 @@
             <p>Durante o ensaio, a condução de Bobby foi bem recebida por todos e veio o convite para liderar o projeto. A mudança trouxe um novo nome, escolhido pela banda em homenagem a ele, e uma nova identidade sonora: <strong>Bobby Dias &amp; The Anti-State Guys</strong>, com repertório majoritariamente autoral e uma mistura de <strong>nu-metal</strong> e <strong>grunge</strong>.</p>
             <p class="history-close">A história segue sendo escrita.</p>
           </div>
-          <figure class="history-photo">
+          <figure class="pinned-photo">
             <img src="assets/band-city.webp" alt="Bobby Dias & The Anti-State Guys reunidos" loading="lazy">
             <figcaption>BOBBY DIAS &amp; THE ANTI-STATE GUYS</figcaption>
           </figure>
@@ -143,32 +145,40 @@
     </section>
 
     <section class="route route-panel" id="integrantes" data-route="integrantes" aria-labelledby="integrantes-title" hidden>
-      <div class="panel-shell members-shell">
-        <div class="paper-kicker">SEIS HISTÓRIAS / UMA BANDA</div>
+      <div class="internal-bg" aria-hidden="true"></div>
+      <nav class="internal-nav" aria-label="Navegação principal">
+        <a href="#home" data-route-link="home">HOME</a>
+        <a href="#historia" data-route-link="historia">HISTÓRIA</a>
+        <a href="#contato" data-route-link="contato">CONTATO</a>
+        <a class="active" href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+        <a href="#fotos" data-route-link="fotos">FOTOS</a>
+        <a href="#shows" data-route-link="shows">SHOWS</a>
+      </nav>
+      <div class="wall-sheet members-sheet">
+        <p class="sheet-label">SEIS HISTÓRIAS · UMA BANDA</p>
         <h2 id="integrantes-title">INTEGRANTES</h2>
-
-        <div class="poster-grid">
-          <article class="member-poster">
+        <div class="member-wall">
+          <article class="member-card tilt-a">
             <img src="assets/members/bobby.webp" alt="Bobby Dias" loading="lazy">
             <div><h3>Bobby Dias</h3><p class="role">Vocal · compositor · multiinstrumentista</p><p>Escreve desde a infância e passou por piano, cordas, bateria e diferentes bandas. A entrada no projeto redefiniu repertório, direção musical e o próprio nome da banda.</p></div>
           </article>
-          <article class="member-poster">
+          <article class="member-card tilt-b">
             <img src="assets/members/break.webp" alt="Break" loading="lazy">
             <div><h3>Break</h3><p class="role">Bateria · percussão</p><p>Luiz Paulino Santana cresceu entre oficina, ferramentas, motores e rodeio. Autodidata, levou para a bateria a disciplina e o impacto mecânico que sustentam o peso da banda.</p></div>
           </article>
-          <article class="member-poster">
+          <article class="member-card tilt-c">
             <img src="assets/members/mcfly.webp" alt="Lukas McFly" loading="lazy">
             <div><h3>Lukas McFly</h3><p class="role">Baixo · backing vocal</p><p>Bacharel em matemática e baixista, voltou à música depois de quase uma década. É uma das bases de sustentação sonora e humana do grupo.</p></div>
           </article>
-          <article class="member-poster">
+          <article class="member-card tilt-a">
             <img src="assets/members/young.webp" alt="Marcus Young" loading="lazy">
             <div><h3>Marcus Young</h3><p class="role">Guitarra solo · backing vocal</p><p>Vindo da cena underground de Goiânia e Inhumas, é responsável pelos arpejos, solos e timbres mais viscerais do grupo.</p></div>
           </article>
-          <article class="member-poster">
+          <article class="member-card tilt-b">
             <img src="assets/members/thomaz.webp" alt="Thomaz" loading="lazy">
             <div><h3>Thomaz</h3><p class="role">Guitarra base · backing vocal</p><p>O mais jovem da formação traz skate, cultura DIY e uma guitarra rítmica urbana, distorcida e pouco interessada em virtuosismo gratuito.</p></div>
           </article>
-          <article class="member-poster">
+          <article class="member-card tilt-c">
             <img src="assets/members/santiago.webp" alt="Santiago" loading="lazy">
             <div><h3>Santiago</h3><p class="role">Vocal · DJ · sonoplastia</p><p>Nascido em Kinshasa e criado no Brasil, mistura rap, nu-metal, scratches e sonoplastia. É a ponte entre a banda e sua camada eletrônica.</p></div>
           </article>
@@ -176,57 +186,92 @@
       </div>
     </section>
 
+    <section class="route route-panel" id="fotos" data-route="fotos" aria-labelledby="fotos-title" hidden>
+      <div class="internal-bg" aria-hidden="true"></div>
+      <nav class="internal-nav" aria-label="Navegação principal">
+        <a href="#home" data-route-link="home">HOME</a>
+        <a href="#historia" data-route-link="historia">HISTÓRIA</a>
+        <a href="#contato" data-route-link="contato">CONTATO</a>
+        <a href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+        <a class="active" href="#fotos" data-route-link="fotos">FOTOS</a>
+        <a href="#shows" data-route-link="shows">SHOWS</a>
+      </nav>
+      <div class="wall-sheet photos-sheet">
+        <p class="sheet-label">ENSAIO FOTOGRÁFICO · GABRIELLE</p>
+        <h2 id="fotos-title">FOTOS</h2>
+        <div class="photo-gallery">
+          <figure class="gallery-photo">
+            <img src="assets/photos-pose-6.webp" alt="Bobby Dias & The Anti-State Guys em ensaio fotográfico" loading="lazy">
+            <figcaption>Bobby Dias &amp; The Anti-State Guys</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
     <section class="route route-panel" id="shows" data-route="shows" aria-labelledby="shows-title" hidden>
-      <div class="panel-shell shows-shell">
-        <div class="show-poster">
-          <p class="stamp">SHOWS</p>
-          <h2 id="shows-title">AGORA, O PALCO É O ESTÚDIO.</h2>
-          <p>A banda está neste momento em estúdio, preparando material e se organizando para futuras apresentações.</p>
-          <p>Quando houver datas confirmadas, elas aparecem aqui.</p>
+      <div class="internal-bg" aria-hidden="true"></div>
+      <nav class="internal-nav" aria-label="Navegação principal">
+        <a href="#home" data-route-link="home">HOME</a>
+        <a href="#historia" data-route-link="historia">HISTÓRIA</a>
+        <a href="#contato" data-route-link="contato">CONTATO</a>
+        <a href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+        <a href="#fotos" data-route-link="fotos">FOTOS</a>
+        <a class="active" href="#shows" data-route-link="shows">SHOWS</a>
+      </nav>
+      <div class="show-board">
+        <span class="show-stamp">SHOWS</span>
+        <div class="show-layout">
+          <div class="show-copy">
+            <h2 id="shows-title">NO MOMENTO, O PALCO É O ESTÚDIO.</h2>
+            <p>A banda está em estúdio, trabalhando no repertório e preparando as próximas apresentações.</p>
+            <p>Quando houver datas confirmadas, elas serão publicadas aqui.</p>
+          </div>
+          <figure class="studio-art">
+            <img src="assets/studio.webp" alt="Bobby Dias & The Anti-State Guys no estúdio" loading="lazy">
+            <figcaption>STUDIO</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
     <section class="route route-panel" id="contato" data-route="contato" aria-labelledby="contato-title" hidden>
-      <div class="panel-shell contact-shell">
-        <div class="paper-kicker">CONTATO / CANAIS OFICIAIS</div>
+      <div class="internal-bg" aria-hidden="true"></div>
+      <nav class="internal-nav" aria-label="Navegação principal">
+        <a href="#home" data-route-link="home">HOME</a>
+        <a href="#historia" data-route-link="historia">HISTÓRIA</a>
+        <a class="active" href="#contato" data-route-link="contato">CONTATO</a>
+        <a href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+        <a href="#fotos" data-route-link="fotos">FOTOS</a>
+        <a href="#shows" data-route-link="shows">SHOWS</a>
+      </nav>
+      <div class="contact-wall">
+        <p class="sheet-label">CANAIS OFICIAIS</p>
         <h2 id="contato-title">CONTATO</h2>
-        <div class="contact-board">
-          <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer" class="contact-plaque">
-            <span>INSTAGRAM</span>
-            <strong>@theantistateguys</strong>
-          </a>
-          <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer" class="contact-plaque">
-            <span>YOUTUBE</span>
-            <strong>@TheAntiStateGuys</strong>
-          </a>
-          <div class="contact-note">
-            <p>Outros canais e formas de contato serão publicados aqui conforme forem definidos pela banda.</p>
-          </div>
+        <div class="contact-signs">
+          <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM</span><strong>@theantistateguys</strong></a>
+          <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer"><span>YOUTUBE</span><strong>@TheAntiStateGuys</strong></a>
+          <a href="mailto:theantistateguys@gmail.com"><span>E-MAIL DA BANDA</span><strong>theantistateguys@gmail.com</strong></a>
+          <a href="mailto:bobbygodias@gmail.com"><span>CONTATO DIRETO · BOBBY</span><strong>bobbygodias@gmail.com</strong></a>
         </div>
       </div>
     </section>
   </main>
 
   <dialog class="music-dialog" id="music-dialog">
-    <div class="dialog-head">
-      <div>
-        <span class="dialog-label">BOOMBOX / BIBLIOTECA</span>
-        <h2>FAIXAS DISPONÍVEIS</h2>
-      </div>
-      <button type="button" class="dialog-close" id="close-library" aria-label="Fechar biblioteca">×</button>
-    </div>
-    <div class="release-list" id="release-list"></div>
+    <form method="dialog" class="dialog-shell">
+      <header>
+        <div>
+          <span>BOOMBOX / BIBLIOTECA</span>
+          <h2>FAIXAS</h2>
+        </div>
+        <button value="close" aria-label="Fechar">×</button>
+      </header>
+      <div id="music-list" class="music-list"></div>
+    </form>
   </dialog>
 
-  <audio id="audio-player" preload="metadata"></audio>
-
-  <footer class="site-footer">
-    <span>theantistateguys.com</span>
-    <span>Bobby Dias &amp; The Anti-State Guys</span>
-    <span>Goiânia · Goiás · Brasil</span>
-  </footer>
-
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <audio id="audio" preload="metadata"></audio>
   <script src="script.js" defer></script>
 </body>
 </html>
