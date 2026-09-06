@@ -1,0 +1,106 @@
+/*
+  QA SITE V3 — COMPATIBILITY / PROGRESSIVE FALLBACK
+  Não cria versões por aparelho. Só garante degradação funcional quando
+  container units, container queries ou dynamic viewport units não existirem.
+*/
+
+@supports not (height: 100dvh){
+  body{height:100vh}
+}
+
+/*
+  Alguns WebViews, TVs e navegadores antigos podem não conhecer cqi/cqb.
+  Nestes casos, usamos viewport/rem como aproximação progressiva.
+*/
+@supports not (width: 1cqi){
+  .route{--edge:clamp(8px,2vw,28px);--gap:clamp(7px,1.5vmin,20px)}
+  .santiago-ghost{left:clamp(10px,5vw,78px);bottom:clamp(18px,9vh,120px)}
+  .home-layout{padding-top:clamp(2px,.8vh,9px);padding-bottom:clamp(7px,1.4vh,16px)}
+  .home-brand img{max-height:clamp(44px,12vh,122px)}
+  .home-media{grid-auto-rows:minmax(clamp(184px,31vh,410px),1fr)}
+
+  .video-play{width:clamp(44px,12vmin,72px);border-width:clamp(3px,.5vmin,4px);font-size:clamp(18px,4vmin,28px)}
+  .video-board strong{font-size:clamp(16px,3vmin,30px)}
+  .video-board small{font-size:clamp(9px,1.4vmin,13px)}
+
+  .player-display{font-size:clamp(10px,1.4vmin,14px)}
+  .library-button{font-size:clamp(10px,1.6vmin,14px)}
+  .player-controls{gap:clamp(5px,.9vmin,10px)}
+  .player-controls button{font-size:clamp(15px,2.3vmin,21px)}
+
+  .route-panel{padding-bottom:clamp(24px,5vh,64px)}
+  .route-shell{padding:clamp(12px,2.7vw,42px)}
+  .history-copy{padding:clamp(18px,3vw,46px)}
+  .pinned-photo img{max-height:min(62vh,42rem)}
+  .gallery-photo img{max-height:min(68vh,52rem)}
+  .studio-art img{max-height:min(62vh,40rem)}
+
+  .route-shell>h2,.show-copy h2{font-size:clamp(30px,7vmin,78px)}
+  .sheet-label,.show-stamp{font-size:clamp(9px,1.2vmin,13px)}
+  .contact-signs strong{font-size:clamp(17px,2.2vmin,30px)}
+}
+
+/*
+  Sem container queries, os grids intrínsecos continuam funcionando.
+  Esta camada apenas devolve proporções conservadoras e evita depender de
+  refinamentos que o motor antigo não entende.
+*/
+@supports not (container-type: size){
+  main{container-type:normal}
+
+  .home-layout{grid-template-rows:auto auto auto;align-content:start}
+  .home-media{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));
+    grid-auto-rows:minmax(210px,auto)
+  }
+  .home-brand img{width:min(88%,38rem)}
+  .boombox-art{
+    inset:8px 10px 4px!important;
+    background-position:center bottom!important;
+    background-size:contain!important
+  }
+
+  .history-layout{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,27rem),1fr))
+  }
+  .show-layout{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,23rem),1fr))
+  }
+  .member-wall{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr))
+  }
+  .contact-signs{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))
+  }
+
+  .pinned-photo{position:static}
+  .photos-shell,.shows-shell,.contact-shell{min-height:0}
+}
+
+/* Recursos de ponteiro são enhancement, nunca requisito funcional. */
+@media (hover:hover) and (pointer:fine){
+  .site-nav a,.home-socials a,.contact-signs a,.music-machine button,.video-board{
+    transition:filter .16s ease,transform .16s ease,box-shadow .16s ease
+  }
+  .site-nav a:hover,.home-socials a:hover,.contact-signs a:hover,.music-machine button:hover,.video-board:hover{
+    filter:brightness(1.10)
+  }
+}
+
+@media (pointer:coarse){
+  .site-nav a,.home-socials a,.contact-signs a,.music-machine button,.video-board{touch-action:manipulation}
+}
+
+@media (forced-colors:active){
+  .site-nav a,.home-socials a,.contact-signs a,.music-machine button,.video-board,.player-display{
+    forced-color-adjust:auto;
+    border:1px solid CanvasText
+  }
+}
+
+@media (prefers-contrast:more){
+  .player-display,.history-copy,.member-card,.contact-signs a{box-shadow:none}
+  .player-display{background:#000;color:#f0d2a4}
+}
+
+h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
