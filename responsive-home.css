@@ -1,0 +1,239 @@
+/* Responsive art direction — SPACE-DRIVEN, not device-driven.
+   Canon: preserve one physical alley across all reasonable viewports.
+   The composition may recompose; the universe may not. */
+
+/* WIDE / LANDSCAPE-SUSTAINABLE SPACE
+   Any viewport wide enough in proportion keeps the canonical 1672:941 stage. */
+@media (min-aspect-ratio: 11/10){
+  .desktop-stage{display:block!important}
+  .mobile-home{display:none!important}
+  .route-home{
+    min-height:100svh;
+    place-items:center;
+  }
+}
+
+/* Wide scenes that are still compact need larger invisible player targets. */
+@media (min-aspect-ratio: 11/10) and (max-width:1200px){
+  .prev-hit,.play-hit,.stop-hit,.next-hit{height:5.2%;width:3%}
+  .prev-hit{left:15.7%}.play-hit{left:18.3%}.stop-hit{left:20.9%}.next-hit{left:23.5%}
+}
+
+/* Extra touch room when a wide viewport is physically short.
+   Invisible hit areas grow; the artwork itself does not change. */
+@media (min-aspect-ratio: 11/10) and (max-height:540px){
+  .prev-hit,.play-hit,.stop-hit,.next-hit{top:79%;height:7%;width:3.4%}
+  .prev-hit{left:15.5%}.play-hit{left:18.3%}.stop-hit{left:21.1%}.next-hit{left:23.9%}
+  .library-hit{left:14.2%;top:72.8%;width:12%;height:7.2%}
+}
+
+/* VERTICAL / SQUARE-ISH SPACE
+   One continuous alley. Existing functional elements are recomposed physically
+   over a single scenic environment instead of becoming stacked UI cards. */
+@media (max-aspect-ratio: 11/10){
+  .desktop-stage{display:none!important}
+  .mobile-home{
+    --scene-h:clamp(1050px,250vw,1700px);
+    display:block!important;
+    position:relative;
+    width:100%;
+    min-height:100svh;
+    height:var(--scene-h);
+    padding:0;
+    overflow:hidden;
+    background:#050403;
+    isolation:isolate;
+  }
+
+  .mobile-alley{
+    position:absolute!important;
+    inset:0!important;
+    z-index:0!important;
+    background:
+      linear-gradient(180deg,rgba(4,3,2,.94) 0%,rgba(4,3,2,.72) 6%,rgba(4,3,2,.24) 14%,rgba(4,3,2,.08) 28%,rgba(3,2,1,.16) 66%,rgba(2,1,1,.64) 100%),
+      url('assets/home-scene.webp') 42% 50%/auto 112% no-repeat!important;
+    filter:saturate(.88) contrast(1.07) brightness(.79)!important;
+    transform:none!important;
+  }
+
+  .mobile-home::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(0,0,0,.42),transparent 14% 86%,rgba(0,0,0,.46)),
+      radial-gradient(ellipse at 50% 47%,transparent 0 56%,rgba(0,0,0,.34) 84%,rgba(0,0,0,.58) 100%);
+  }
+
+  .mobile-home>*:not(.mobile-alley){position:absolute!important;z-index:3}
+
+  .mobile-signs{
+    top:clamp(12px,2.2vw,24px);
+    left:4%;
+    width:92%;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:clamp(4px,1.15vw,8px);
+  }
+  .mobile-signs a{
+    min-height:clamp(36px,10vw,48px)!important;
+    padding:0 clamp(3px,1vw,8px)!important;
+    display:grid!important;
+    place-items:center;
+    background:
+      radial-gradient(circle at 8px 8px,#2d1a0d 0 2px,#9d6f3c 3px 4px,transparent 5px),
+      radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),#2d1a0d 0 2px,#9d6f3c 3px 4px,transparent 5px),
+      repeating-linear-gradient(0deg,rgba(79,45,22,.08) 0 1px,transparent 1px 5px),
+      linear-gradient(#a77946,#744725)!important;
+    border:2px solid #2b190c!important;
+    box-shadow:0 5px 12px rgba(0,0,0,.68),inset 0 0 0 1px rgba(232,185,124,.14)!important;
+    color:#160f09!important;
+    text-decoration:none;
+    font:900 clamp(8px,2.45vw,11px)/1 var(--display)!important;
+    transform:rotate(-.45deg);
+  }
+  .mobile-signs a:nth-child(even){transform:rotate(.4deg)}
+
+  .mobile-wordmark{
+    top:12.5%;
+    right:5%;
+    left:auto!important;
+    width:clamp(255px,84vw,650px)!important;
+    max-width:90%;
+    padding:clamp(6px,1.5vw,14px);
+    background:
+      repeating-linear-gradient(0deg,rgba(128,79,42,.035) 0 1px,transparent 1px 7px),
+      linear-gradient(108deg,rgba(21,14,9,.96),rgba(25,16,10,.92) 55%,rgba(12,8,6,.97));
+    border:1px solid rgba(78,48,27,.22);
+    box-shadow:inset 0 0 42px rgba(0,0,0,.84),0 8px 22px rgba(0,0,0,.48);
+    clip-path:polygon(1% 4%,98% 0,100% 93%,96% 100%,2% 97%,0 10%);
+    filter:sepia(.10) brightness(.91) contrast(1.07) drop-shadow(0 4px 4px rgba(0,0,0,.90))!important;
+  }
+
+  .mobile-video-card{
+    top:29%;
+    right:5%;
+    left:auto!important;
+    width:clamp(275px,88vw,690px)!important;
+    aspect-ratio:16/9;
+    padding:0!important;
+    overflow:hidden;
+    border:clamp(6px,1.5vw,10px) solid #21150d!important;
+    outline:1px solid #68462a!important;
+    background:#090705!important;
+    box-shadow:0 18px 42px rgba(0,0,0,.72)!important;
+    transform:rotate(.2deg);
+  }
+  .mobile-video-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.40) contrast(1.10)!important}
+  .mobile-play{top:35%!important;width:clamp(46px,12vw,68px)!important;height:clamp(46px,12vw,68px)!important;font-size:clamp(18px,5vw,26px)!important}
+  .mobile-video-card strong{
+    top:62%!important;
+    width:92%;
+    text-align:center;
+    white-space:normal!important;
+    font:900 clamp(15px,4.7vw,27px)/.95 var(--display)!important;
+  }
+  .mobile-video-card small{top:77%!important;font:900 clamp(8px,2.2vw,11px)/1 var(--display)!important;letter-spacing:.15em}
+
+  .mobile-boombox{
+    top:55%;
+    left:2%;
+    width:clamp(310px,96vw,820px)!important;
+    height:32%;
+    min-height:330px;
+    max-height:570px;
+    padding:0!important;
+    filter:drop-shadow(0 22px 26px rgba(0,0,0,.70))!important;
+  }
+  .mobile-boombox-photo{
+    position:absolute!important;
+    inset:0!important;
+    background:url('assets/home-scene.webp') 1.2% 99.4%/325% auto no-repeat!important;
+  }
+  .mobile-display{
+    left:29.5%!important;
+    top:35%!important;
+    width:41%!important;
+    min-height:clamp(24px,4vw,30px)!important;
+    padding:4px clamp(5px,1.3vw,9px)!important;
+    font:700 clamp(8px,2.05vw,12px)/1 ui-monospace,monospace!important;
+  }
+  .mobile-library{
+    left:39%!important;
+    width:22%!important;
+    bottom:24%!important;
+    min-height:clamp(31px,7vw,38px)!important;
+    border:1px solid #2a1a0e!important;
+    background:rgba(164,124,73,.92)!important;
+    font:900 clamp(9px,2.3vw,12px)/1 var(--display)!important;
+  }
+  .mobile-controls{
+    left:29.5%!important;
+    right:29.5%!important;
+    bottom:11%!important;
+    display:grid!important;
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:clamp(3px,.9vw,6px)!important;
+  }
+  .mobile-controls button{
+    min-height:clamp(30px,7vw,38px)!important;
+    padding:0!important;
+    background:rgba(164,124,73,.92)!important;
+    border:1px solid #29190d!important;
+    color:#1a120c!important;
+    font-size:clamp(10px,2.5vw,14px)!important;
+  }
+
+  .mobile-socials{
+    left:auto!important;
+    right:5%;
+    bottom:4%;
+    width:clamp(220px,56vw,430px)!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:clamp(7px,1.8vw,12px)!important;
+  }
+  .mobile-socials a{
+    padding:clamp(10px,2.5vw,14px) clamp(7px,1.8vw,12px)!important;
+    text-align:center;
+    background:linear-gradient(145deg,#281910,#150d08)!important;
+    border:1px solid #724a2a!important;
+    color:#d5b585!important;
+    box-shadow:0 8px 18px rgba(0,0,0,.55)!important;
+    font:900 clamp(9px,2.25vw,12px)/1 var(--display)!important;
+    text-decoration:none;
+    transform:rotate(-.35deg);
+  }
+  .mobile-socials a:nth-child(2){transform:rotate(.45deg)}
+}
+
+@media (max-aspect-ratio: 3/5){
+  .mobile-home{--scene-h:clamp(1100px,265vw,1780px)}
+  .mobile-wordmark{top:12%}
+  .mobile-video-card{top:28%}
+  .mobile-boombox{top:54.5%}
+}
+
+/* Broader portrait/square-ish space: keep the six physical signs on one row and
+   size video typography from available frame width so title/subtitle never collide. */
+@media (min-width:560px) and (max-aspect-ratio: 11/10){
+  .mobile-signs{grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(5px,.9vw,8px)}
+  .mobile-signs a{font-size:clamp(8px,1.45vw,11px)!important;min-height:clamp(40px,6.2vw,49px)!important}
+  .mobile-wordmark{top:9.5%;width:clamp(420px,62vw,650px)!important}
+  .mobile-video-card{top:26%;width:clamp(390px,58vw,690px)!important}
+  .mobile-video-card strong{
+    top:59%!important;
+    width:94%!important;
+    white-space:nowrap!important;
+    font:900 clamp(15px,2.8vw,22px)/1 var(--display)!important;
+  }
+  .mobile-video-card small{top:77%!important}
+  .mobile-boombox{top:52%;width:clamp(520px,72vw,820px)!important;height:34%}
+  .mobile-socials{width:clamp(300px,40vw,430px)!important}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mobile-boombox{animation:none!important}
+}
