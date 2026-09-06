@@ -1,0 +1,42 @@
+name: Finalize scenic v2
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - SCENIC-FINALIZE
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scenic-v2
+        uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+
+      - name: Finalize HTML and verify assets
+        run: python scripts/finalize_scenic_v2.py
+
+      - name: Remove temporary staging files
+        run: |
+          rm -rf .asset-chunks
+          rm -f scripts/assemble_site_assets.py
+          rm -f .github/workflows/assemble-site-assets.yml
+          rm -f assets/wordmark-custom.webp
+
+      - name: Commit finalized scenic v2
+        run: |
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "feat: finalize scenic v2 visual assets and sections"
+            git push origin HEAD:scenic-v2
+          fi
