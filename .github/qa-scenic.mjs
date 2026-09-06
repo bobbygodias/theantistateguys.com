@@ -14,10 +14,23 @@ async function readyPage(viewport) {
   return page;
 }
 
+async function assertDecodableImage(page, path) {
+  const result = await page.evaluate(async src => {
+    return await new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve({ ok: img.naturalWidth > 0 && img.naturalHeight > 0, width: img.naturalWidth, height: img.naturalHeight });
+      img.onerror = () => resolve({ ok: false, width: 0, height: 0 });
+      img.src = `${src}?qa=${Date.now()}`;
+    });
+  }, path);
+  if (!result.ok) throw new Error(`Browser could not decode image: ${path}`);
+  console.log(`decoded ${path}: ${result.width}x${result.height}`);
+}
+
 async function capture(name, viewport, hash = '#home', fullPage = false) {
   const page = await readyPage(viewport);
   await page.goto(`http://127.0.0.1:4173/${hash}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(700);
 
   const route = hash.replace('#', '') || 'home';
   const visible = await page.locator(`[data-route="${route}"]`).isVisible();
@@ -30,18 +43,16 @@ async function capture(name, viewport, hash = '#home', fullPage = false) {
   await page.close();
 }
 
-const assetPaths = [
+const probe = await readyPage({ width: 900, height: 700 });
+await probe.goto('http://127.0.0.1:4173/#home', { waitUntil: 'domcontentloaded', timeout: 15000 });
+for (const path of [
   '/assets/home-scene.webp',
   '/assets/wordmark.svg',
   '/assets/photos-pose-6.webp',
   '/assets/studio.webp',
   '/assets/members/thomaz.webp',
-];
-
-const probe = await browser.newPage();
-for (const path of assetPaths) {
-  const response = await probe.goto(`http://127.0.0.1:4173${path}`, { waitUntil: 'commit', timeout: 10000 });
-  if (!response || !response.ok()) throw new Error(`Asset failed: ${path}`);
+]) {
+  await assertDecodableImage(probe, path);
 }
 await probe.close();
 
@@ -55,7 +66,7 @@ await capture('fotos-1440', { width: 1440, height: 900 }, '#fotos', true);
 await capture('shows-1440', { width: 1440, height: 900 }, '#shows', true);
 await capture('contato-1440', { width: 1440, height: 900 }, '#contato', true);
 
-// Player smoke test. Do not wait for the external MEGA media request to become idle.
+// Player smoke test. The external MEGA media request is allowed to stay active.
 const page = await readyPage({ width: 1440, height: 900 });
 await page.goto('http://127.0.0.1:4173/#home', { waitUntil: 'domcontentloaded', timeout: 15000 });
 await page.waitForFunction(() => {
@@ -64,15 +75,15 @@ await page.waitForFunction(() => {
 }, null, { timeout: 10000 });
 const title = await page.locator('#track-title').textContent();
 if (!title || title.includes('indispon')) throw new Error(`Music catalog failed: ${title}`);
-await page.locator('[data-route-link="historia"]').first().click();
-await page.waitForTimeout(150);
+await page.locator('[data-route-link="historia"]:visible').first().click();
+await page.waitForTimeout(200);
+if (!(await page.locator('[data-route="historia"]').isVisible())) throw new Error('Historia route did not become visible');
 if (!(await page.locator('#audio').count())) throw new Error('Audio element did not persist through route navigation');
 await page.close();
 
 fs.writeFileSync('qa-screenshots/console-errors.txt', errors.join('\n') || 'none\n');
 await browser.close();
 
-// Browser console network noise must not block screenshot review; page errors still do.
 const fatal = errors.filter(line => line.includes('pageerror:'));
 if (fatal.length) {
   console.error(fatal.join('\n'));
