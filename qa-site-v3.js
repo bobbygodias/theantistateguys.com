@@ -1,10 +1,4 @@
 (()=>{
-  const compat=document.createElement('link');
-  compat.rel='stylesheet';
-  compat.href='qa-site-v3-compat.css';
-  compat.dataset.qaCompat='true';
-  document.head.appendChild(compat);
-
   const meter=document.getElementById('qa-meter');
   const close=document.getElementById('qa-dialog-close');
   const dialog=document.getElementById('music-dialog');
@@ -132,7 +126,6 @@
     raf=requestAnimationFrame(updateMeter);
   }
 
-  compat.addEventListener('load',schedule,{once:true});
   updateMeter();
   addEventListener('resize',schedule,{passive:true});
   visualViewport?.addEventListener('resize',schedule,{passive:true});
@@ -151,10 +144,10 @@
   }
   if('MutationObserver' in window){
     const mo=new MutationObserver(schedule);
-    document.querySelectorAll('[data-route]').forEach(el=>roObserveSafe(el,mo));
+    document.querySelectorAll('[data-route]').forEach(el=>observerRoute(el,mo));
   }
 
-  function roObserveSafe(el,observer){
+  function observerRoute(el,observer){
     observer.observe(el,{attributes:true,attributeFilter:['hidden','class']});
   }
 })();
