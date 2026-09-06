@@ -1,0 +1,38 @@
+name: Rebuild scenic assets
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - ASSET-FIX-READY
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scenic-v2
+        uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+
+      - name: Install Pillow
+        run: python3 -m pip install --quiet pillow
+
+      - name: Rebuild and decode-check WebP assets
+        run: python3 scripts/rebuild_scenic_assets.py
+
+      - name: Commit corrected binary assets
+        run: |
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add assets/home-scene.webp assets/photos-pose-6.webp assets/studio.webp assets/members/thomaz.webp
+          if git diff --cached --quiet; then
+            echo "No binary asset changes to commit"
+          else
+            git commit -m "fix: rebuild scenic WebP assets from verified chunks"
+            git push origin HEAD:scenic-v2
+          fi
