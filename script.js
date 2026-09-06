@@ -114,6 +114,11 @@ audio.addEventListener('timeupdate',syncDisplay);
 audio.addEventListener('ended',()=>loadTrack(currentIndex+1,{autoplay:true}));
 audio.addEventListener('error',()=>showToast('Não foi possível reproduzir esta faixa.'));
 
+function resetScroll(){
+  const main=document.querySelector('main');
+  if(main && typeof main.scrollTo==='function') main.scrollTo({top:0,left:0,behavior:'instant'});
+  else window.scrollTo({top:0,left:0,behavior:'instant'});
+}
 function setRoute(name,{replace=false}={}){
   const route = document.querySelector(`[data-route="${name}"]`) || document.querySelector('[data-route="home"]');
   document.querySelectorAll('[data-route]').forEach(section=>{
@@ -128,7 +133,7 @@ function setRoute(name,{replace=false}={}){
   });
   const hash=`#${route.dataset.route}`;
   if(location.hash!==hash) history[replace?'replaceState':'pushState'](null,'',hash);
-  window.scrollTo({top:0,left:0,behavior:'instant'});
+  resetScroll();
 }
 document.addEventListener('click',event=>{
   const link=event.target.closest('[data-route-link]');
