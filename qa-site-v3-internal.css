@@ -11,19 +11,20 @@
 /* Cada shell vira contexto próprio para que componentes respondam ao espaço realmente recebido. */
 .route-shell{
   container-type:inline-size;
-  container-name:route-shell;
+  container-name:route-shell
 }
 
 /* ---------- HISTÓRIA ----------
-   Conteúdo longo: rolagem é inevitável em muitos recipientes, mas a direção
-   da composição ainda nasce do espaço. Empilhado é o estado base. */
-.history-layout{grid-template-columns:1fr}
+   O número de colunas nasce da largura que os blocos realmente precisam.
+   Não existe mais estado arbitrário "1 coluna até X / 2 colunas depois de X". */
+.history-layout{
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,28rem),1fr));
+  align-items:start
+}
 
-@container site (min-width:52rem) and (min-aspect-ratio:1/1){
-  .history-layout{
-    grid-template-columns:minmax(0,1.12fr) minmax(17rem,.88fr);
-    align-items:start
-  }
+/* Sticky é só um refinamento quando o espaço é alto/largo o bastante.
+   Ele não decide quantas colunas existem. */
+@container site (min-width:52rem) and (min-height:34rem) and (min-aspect-ratio:1/1){
   .pinned-photo{position:sticky;top:var(--gap)}
 }
 
@@ -103,7 +104,8 @@
 }
 
 /* ---------- SHOWS ----------
-   Empilha por padrão; lado a lado só quando largura + proporção tornam isso melhor. */
+   Texto e foto negociam espaço pelo próprio mínimo confortável.
+   O auto-fit decide se ficam lado a lado ou empilhados. */
 #shows.route-panel{display:grid}
 .shows-shell{
   min-height:100%;
@@ -114,13 +116,14 @@
 .show-layout{
   min-height:0;
   height:100%;
-  grid-template-columns:1fr;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,23rem),1fr));
   align-items:center
 }
 .studio-art img{max-height:none}
 
-@container site (min-width:48rem) and (min-aspect-ratio:4/3){
-  .show-layout{grid-template-columns:minmax(0,.88fr) minmax(18rem,1.12fr)}
+/* A foto só tenta ocupar toda a altura da sua célula quando a geometria favorece isso.
+   Esta regra não cria colunas; o auto-fit acima já decidiu a composição. */
+@container site (min-height:30rem) and (min-aspect-ratio:4/3){
   .studio-art{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto}
   .studio-art img{height:100%;min-height:0;object-fit:contain}
 }
@@ -160,9 +163,7 @@
 
 /* ---------- TÍTULOS / RÓTULOS ----------
    cqi do route-shell evita que um título enorme domine uma faixa estreita. */
-.route-shell>h2,.show-copy h2{
-  font-size:clamp(28px,7cqi,78px)
-}
+.route-shell>h2,.show-copy h2{font-size:clamp(28px,7cqi,78px)}
 .sheet-label,.show-stamp{font-size:clamp(9px,1.45cqi,13px)}
 
 /* ---------- GEOMETRIAS EXTREMAS ---------- */
