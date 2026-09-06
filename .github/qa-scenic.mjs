@@ -83,13 +83,18 @@ await probe.close();
 
 const homeMatrix = [
   ['home-320x568', { width: 320, height: 568 }, true],
+  ['home-360x640', { width: 360, height: 640 }, true],
+  ['home-375x667', { width: 375, height: 667 }, true],
   ['home-390x844', { width: 390, height: 844 }, true],
   ['home-430x932', { width: 430, height: 932 }, true],
   ['home-600x1024', { width: 600, height: 1024 }, true],
   ['home-800x1280', { width: 800, height: 1280 }, true],
+  ['home-768x1024', { width: 768, height: 1024 }, true],
+  ['home-900x600', { width: 900, height: 600 }, false],
   ['home-1024x768', { width: 1024, height: 768 }, false],
   ['home-1280x800', { width: 1280, height: 800 }, false],
   ['home-1672x941', { width: 1672, height: 941 }, false],
+  ['home-1920x1080', { width: 1920, height: 1080 }, false],
   ['home-2560x1080', { width: 2560, height: 1080 }, false]
 ];
 for (const [name, viewport, fullPage] of homeMatrix) {

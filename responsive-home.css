@@ -2,6 +2,13 @@
    Canon: preserve one physical alley across all reasonable viewports.
    The composition may recompose; the universe may not. */
 
+/* GOLDEN-RULES-BASE
+   Constrained space is the baseline. Wide/sustainable proportions progressively
+   enhance into the canonical 1672:941 stage. Breakpoints describe composition
+   failure points, never device categories. */
+.desktop-stage{display:none!important}
+.mobile-home{display:block!important}
+
 /* WIDE / LANDSCAPE-SUSTAINABLE SPACE
    Any viewport wide enough in proportion keeps the canonical 1672:941 stage. */
 @media (min-aspect-ratio: 11/10){
