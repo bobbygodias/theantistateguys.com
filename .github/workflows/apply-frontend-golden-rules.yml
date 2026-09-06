@@ -1,0 +1,30 @@
+name: Apply frontend golden rules
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - APPLY-FRONTEND-GOLDEN-RULES
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+      - run: python scripts/apply_frontend_golden_rules.py
+      - run: |
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add index.html history-v5.css responsive-home.css .github/qa-scenic.mjs
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "refactor: enforce space-driven mobile-first frontend"
+            git push origin HEAD:scenic-v2
+          fi
