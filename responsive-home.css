@@ -13,6 +13,12 @@
   }
 }
 
+/* Wide scenes that are still compact need larger invisible player targets. */
+@media (min-aspect-ratio: 11/10) and (max-width:1200px){
+  .prev-hit,.play-hit,.stop-hit,.next-hit{height:5.2%;width:3%}
+  .prev-hit{left:15.7%}.play-hit{left:18.3%}.stop-hit{left:20.9%}.next-hit{left:23.5%}
+}
+
 /* Extra touch room when a wide viewport is physically short.
    Invisible hit areas grow; the artwork itself does not change. */
 @media (min-aspect-ratio: 11/10) and (max-height:540px){
