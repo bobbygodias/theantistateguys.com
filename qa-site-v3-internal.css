@@ -1,0 +1,188 @@
+/*
+  QA SITE V3 — INTERNAL ROUTES / FLUID COMPOSITION
+  Esta camada refina as páginas internas sem classificar aparelhos.
+  Só largura, altura, proporção e espaço útil dos próprios recipientes importam.
+*/
+
+/* Escala funcional cresce em recipientes muito grandes (ex.: TV), sem encolher abaixo do toque seguro. */
+:root{--tap:clamp(44px,3.2vmin,72px)}
+.site-nav a{font-size:clamp(9px,1.2vmin,20px)}
+
+/* Cada shell vira contexto próprio para que componentes respondam ao espaço realmente recebido. */
+.route-shell{
+  container-type:inline-size;
+  container-name:route-shell;
+}
+
+/* ---------- HISTÓRIA ----------
+   Conteúdo longo: rolagem é inevitável em muitos recipientes, mas a direção
+   da composição ainda nasce do espaço. Empilhado é o estado base. */
+.history-layout{grid-template-columns:1fr}
+
+@container site (min-width:52rem) and (min-aspect-ratio:1/1){
+  .history-layout{
+    grid-template-columns:minmax(0,1.12fr) minmax(17rem,.88fr);
+    align-items:start
+  }
+  .pinned-photo{position:sticky;top:var(--gap)}
+}
+
+@container site (max-height:31rem) and (min-aspect-ratio:3/2){
+  .history-copy{padding:clamp(15px,2.2cqi,30px);line-height:1.48}
+  .pinned-photo img{max-height:74cqb}
+}
+
+/* ---------- INTEGRANTES ----------
+   Auto-fit decide quantidade de pôsteres; cada cartão também é um recipiente. */
+.member-card{
+  container-type:inline-size;
+  container-name:member-card
+}
+.member-card img{aspect-ratio:4/3}
+
+@container member-card (max-width:15rem){
+  .member-card img{aspect-ratio:1/1;object-position:center 22%}
+  .member-card>div{padding:12px}
+  .member-card h3{font-size:clamp(20px,12cqi,27px)}
+}
+
+@container member-card (min-width:24rem){
+  .member-card{
+    display:grid;
+    grid-template-columns:minmax(9rem,.86fr) minmax(0,1.14fr);
+    align-items:stretch
+  }
+  .member-card img{height:100%;aspect-ratio:auto;object-position:center top}
+  .member-card>div{align-self:center}
+}
+
+/* Num espaço muito largo, evita cartões gigantes: mais colunas surgem naturalmente. */
+@container site (min-aspect-ratio:2/1){
+  .member-wall{grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr))}
+}
+
+/* ---------- FOTOS ----------
+   Quando a rota cabe, foto, título e legenda ocupam a mesma viewport útil.
+   Se fisicamente não couber, o main continua sendo o único scroll natural. */
+#fotos.route-panel{display:grid}
+.photos-shell{
+  min-height:100%;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr);
+  align-content:stretch
+}
+.photos-shell>.sheet-label{align-self:start}
+.photos-shell>h2{align-self:start}
+.photo-gallery{min-height:0;height:100%;align-content:center}
+.gallery-photo{
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto;
+  min-height:0;
+  height:100%
+}
+.gallery-photo img{
+  min-height:0;
+  height:100%;
+  max-height:none;
+  object-fit:contain
+}
+
+@container site (max-height:32rem){
+  .photos-shell{padding-block:clamp(7px,1.5cqb,12px)}
+  .photos-shell>.sheet-label{margin-bottom:5px;padding-block:5px}
+  .photos-shell>h2{margin-bottom:7px;font-size:clamp(25px,8cqb,42px);padding-block:5px}
+  .gallery-photo{padding-bottom:22px}
+  .gallery-photo figcaption{padding-top:5px;font-size:10px}
+}
+
+/* Em recipientes estreitos, a imagem não força largura; em recipientes muito altos,
+   ela não cresce sem limite: usa a área disponível e preserva proporção. */
+@container site (max-aspect-ratio:3/4){
+  .gallery-photo{width:100%}
+  .gallery-photo img{object-position:center center}
+}
+
+/* ---------- SHOWS ----------
+   Empilha por padrão; lado a lado só quando largura + proporção tornam isso melhor. */
+#shows.route-panel{display:grid}
+.shows-shell{
+  min-height:100%;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr);
+  align-content:stretch
+}
+.show-layout{
+  min-height:0;
+  height:100%;
+  grid-template-columns:1fr;
+  align-items:center
+}
+.studio-art img{max-height:none}
+
+@container site (min-width:48rem) and (min-aspect-ratio:4/3){
+  .show-layout{grid-template-columns:minmax(0,.88fr) minmax(18rem,1.12fr)}
+  .studio-art{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto}
+  .studio-art img{height:100%;min-height:0;object-fit:contain}
+}
+
+@container site (max-height:31rem) and (min-aspect-ratio:3/2){
+  .shows-shell{padding-block:clamp(7px,1.5cqb,13px)}
+  .show-stamp{margin-bottom:6px;padding-block:5px}
+  .show-copy h2{font-size:clamp(25px,8cqb,44px);margin-bottom:8px;padding-block:5px}
+  .show-copy p{font-size:clamp(13px,3.2cqb,17px);line-height:1.35;margin-block:.5em}
+  .studio-art{padding-bottom:22px}
+}
+
+/* ---------- CONTATO ----------
+   Canais usam o restante da viewport quando cabe; cards se reorganizam por auto-fit. */
+#contato.route-panel{display:grid}
+.contact-shell{
+  min-height:100%;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr);
+  align-content:stretch
+}
+.contact-signs{
+  min-height:0;
+  align-content:center;
+  grid-auto-rows:minmax(var(--tap),auto)
+}
+
+@container site (max-height:30rem){
+  .contact-shell{padding-block:clamp(7px,1.3cqb,11px)}
+  .contact-shell>.sheet-label{margin-bottom:5px;padding-block:5px}
+  .contact-shell>h2{margin-bottom:7px;font-size:clamp(25px,8cqb,42px);padding-block:5px}
+  .contact-signs{gap:clamp(6px,1.2cqb,10px)}
+  .contact-signs a{padding:clamp(9px,2cqb,14px)}
+  .contact-signs span{margin-bottom:4px;font-size:10px}
+  .contact-signs strong{font-size:clamp(14px,3.8cqb,20px)}
+}
+
+/* ---------- TÍTULOS / RÓTULOS ----------
+   cqi do route-shell evita que um título enorme domine uma faixa estreita. */
+.route-shell>h2,.show-copy h2{
+  font-size:clamp(28px,7cqi,78px)
+}
+.sheet-label,.show-stamp{font-size:clamp(9px,1.45cqi,13px)}
+
+/* ---------- GEOMETRIAS EXTREMAS ---------- */
+/* Exemplo explicitamente discutido: algo como 300×960 deve continuar utilizável. */
+@container site (max-width:20rem){
+  .route-shell{width:calc(100% - 12px);padding:9px}
+  .route-shell>h2,.show-copy h2{font-size:clamp(26px,13cqi,38px);padding-inline:10px}
+  .sheet-label,.show-stamp{max-width:100%;letter-spacing:.055em}
+  .history-copy{padding:14px;font-size:14px;line-height:1.5}
+  .member-wall{grid-template-columns:1fr}
+  .contact-signs{grid-template-columns:1fr}
+  .contact-signs strong{overflow-wrap:anywhere}
+}
+
+/* Espaço enorme: conteúdo cresce com moderação em vez de virar uma ilha minúscula. */
+@container site (min-width:110rem){
+  .route-shell{width:min(calc(100% - (2 * var(--edge))),108rem)}
+  .history-copy{font-size:clamp(18px,1.15cqi,22px)}
+  .show-copy p{font-size:clamp(19px,1.25cqi,25px)}
+}
+
+/* Segurança final: nenhum filho de grid pode impor overflow horizontal por conteúdo. */
+.history-layout>*,.member-wall>*,.photo-gallery>*,.show-layout>*,.contact-signs>*{min-width:0;max-width:100%}
