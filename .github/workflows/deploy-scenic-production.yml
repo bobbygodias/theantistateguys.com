@@ -1,0 +1,80 @@
+name: Deploy scenic production
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - DEPLOY-SCENIC-PROD
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scenic-v2
+        uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+
+      - name: Build clean production tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$PWD"
+          git fetch origin main
+          git worktree add -B main ../production origin/main
+          PROD="$(cd ../production && pwd)"
+
+          find "$PROD" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+
+          cp "$ROOT/index.html" "$PROD/index.html"
+          cp "$ROOT/styles.css" "$PROD/styles.css"
+          cp "$ROOT/scenic-fixes.css" "$PROD/scenic-fixes.css"
+          cp "$ROOT/history-v5.css" "$PROD/history-v5.css"
+          cp "$ROOT/internal-v2.css" "$PROD/internal-v2.css"
+          cp "$ROOT/script.js" "$PROD/script.js"
+
+          cp "$ROOT/CNAME" "$PROD/CNAME"
+          cp "$ROOT/.nojekyll" "$PROD/.nojekyll"
+          cp "$ROOT/404.html" "$PROD/404.html"
+          cp "$ROOT/robots.txt" "$PROD/robots.txt"
+          cp "$ROOT/sitemap.xml" "$PROD/sitemap.xml"
+          cp "$ROOT/README.md" "$PROD/README.md"
+          cp "$ROOT/SITE-PROJECT.md" "$PROD/SITE-PROJECT.md"
+
+          cp -R "$ROOT/assets" "$PROD/assets"
+          cp "$ROOT/assets/home-scene-1.webp" "$PROD/assets/home-scene.webp"
+          rm -f "$PROD/assets/home-scene-1.webp"
+
+          cp -R "$ROOT/data" "$PROD/data"
+
+          mkdir -p "$PROD/.github/workflows" "$PROD/scripts"
+          cp "$ROOT/.github/workflows/update-videos.yml" "$PROD/.github/workflows/update-videos.yml"
+          cp "$ROOT/scripts/update_youtube.py" "$PROD/scripts/update_youtube.py"
+
+          cd "$PROD"
+          test "$(git hash-object assets/home-scene.webp)" = "18a1d6d7d218c5761ce190c538cd7e4aa85b49d2"
+          test -s index.html
+          test -s scenic-fixes.css
+          test -s data/music.json
+          test -s assets/photos-pose-6.webp
+          test -s assets/studio.webp
+          test -s assets/members/thomaz.webp
+
+      - name: Publish main
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ../production
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Production already current"
+          else
+            git commit -m "feat: publish scenic site production"
+            git push origin main
+          fi
