@@ -1,6 +1,8 @@
 from pathlib import Path
 
-src = Path('history-v4.css').read_text(encoding='utf-8').strip()
+base = Path('history-v4.css').read_text(encoding='utf-8').strip()
+hotfix = Path('history-v4-hotfix.css').read_text(encoding='utf-8').strip()
+src = base + '\n\n' + hotfix
 p = Path('scenic-fixes.css')
 text = p.read_text(encoding='utf-8')
 start = '/* HISTORY-V4-START */'
