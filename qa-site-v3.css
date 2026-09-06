@@ -24,13 +24,13 @@
 }
 
 *{box-sizing:border-box}
-html{width:100%;height:100%;background:var(--ink);scroll-behavior:smooth}
+html{width:100%;min-height:100%;background:var(--ink);scroll-behavior:smooth}
 body{
   margin:0;
   width:100%;
-  height:100%;
   min-width:0;
-  min-height:100dvh;
+  min-height:100vh;
+  height:100dvh;
   display:grid;
   grid-template-rows:auto minmax(0,1fr);
   color:#e7dccd;
@@ -63,9 +63,12 @@ img{display:block;max-width:100%}
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,5.65rem),1fr));
   gap:var(--nav-gap);
-  width:min(calc(100% - (2 * var(--nav-edge))),96rem);
+  width:min(100%,96rem);
   margin-inline:auto;
-  padding:clamp(5px,.9vmin,11px) 0;
+  padding-top:clamp(5px,.9vmin,11px);
+  padding-bottom:clamp(5px,.9vmin,11px);
+  padding-left:max(var(--nav-edge),env(safe-area-inset-left));
+  padding-right:max(var(--nav-edge),env(safe-area-inset-right));
   background:#070504;
 }
 .site-nav a{
@@ -115,13 +118,9 @@ main{
   min-width:0;
   width:100%;
   min-height:100%;
-  overflow-x:clip
-}
-
-/* Tokens calculados dentro do recipiente útil. */
-.route{
+  overflow-x:clip;
   --edge:clamp(8px,2.1cqi,28px);
-  --gap:clamp(7px,1.55vmin,20px);
+  --gap:clamp(7px,1.55vmin,20px)
 }
 
 /* ========================= HOME / MUNDO ========================= */
@@ -177,7 +176,8 @@ main{
   width:min(calc(100% - (2 * var(--edge))),96rem);
   min-height:100%;
   margin-inline:auto;
-  padding:clamp(2px,.8cqb,9px) 0 clamp(7px,1.4cqb,16px);
+  padding-top:clamp(2px,.8cqb,9px);
+  padding-bottom:max(clamp(7px,1.4cqb,16px),env(safe-area-inset-bottom));
   display:grid;
   grid-template-rows:auto minmax(0,1fr) auto;
   gap:clamp(6px,1.35vmin,18px);
@@ -212,8 +212,10 @@ main{
   box-shadow:0 16px 38px rgba(0,0,0,.66)
 }
 
-/* Vídeo: conteúdo em grid; nada depende de coordenadas fixas. */
+/* Vídeo: o próprio quadro é um recipiente responsivo. */
 .video-board{
+  container-type:size;
+  container-name:intro;
   padding:clamp(12px,2.2vmin,24px);
   color:#efcf9c;
   cursor:pointer;
@@ -237,24 +239,26 @@ main{
   grid-row:1;
   align-self:center;
   display:grid;place-items:center;
-  width:clamp(44px,7.2vmin,72px);aspect-ratio:1;
-  border:clamp(3px,.5vmin,4px) solid currentColor;border-radius:50%;
-  font-size:clamp(18px,3.4vmin,28px);padding-left:.13em
+  width:clamp(44px,18cqb,72px);aspect-ratio:1;
+  border:clamp(3px,1cqi,4px) solid currentColor;border-radius:50%;
+  font-size:clamp(18px,7cqi,28px);padding-left:.13em
 }
 .video-board strong{
   grid-row:2;
   width:min(100%,34rem);
   text-align:center;
-  font:900 clamp(16px,3vmin,30px)/.98 var(--display)
+  font:900 clamp(16px,5.6cqi,30px)/.98 var(--display)
 }
 .video-board small{
   grid-row:3;
-  font:900 clamp(9px,1.4vmin,13px)/1 var(--display);
+  font:900 clamp(9px,3cqi,13px)/1 var(--display);
   letter-spacing:.16em;white-space:nowrap
 }
 
-/* Player: display, biblioteca e controles participam do fluxo interno. */
+/* Player: também é um recipiente; controles respondem ao quadro real. */
 .music-machine{
+  container-type:size;
+  container-name:player;
   isolation:isolate;
   display:grid;
   grid-template-rows:auto minmax(0,1fr) auto auto;
@@ -280,7 +284,7 @@ main{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
   padding:7px 10px;
   color:#d6ac68;background:rgba(7,6,5,.92);border:1px solid rgba(181,139,81,.54);
-  font:700 clamp(10px,1.4vmin,14px)/1.15 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace
+  font:700 clamp(10px,3cqi,14px)/1.15 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace
 }
 .player-display>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .player-display .time{flex:0 0 auto;white-space:nowrap;color:#c7a675}
@@ -297,16 +301,33 @@ main{
   grid-row:3;
   justify-self:center;
   width:min(42%,190px);
-  font:900 clamp(10px,1.65vmin,14px)/1 var(--display)
+  font:900 clamp(10px,3.2cqi,14px)/1 var(--display)
 }
 .player-controls{
   position:relative;z-index:4;
   grid-row:4;
   width:100%;
   display:grid;grid-template-columns:repeat(4,minmax(var(--tap),1fr));
-  gap:clamp(5px,.9vmin,10px)
+  gap:clamp(5px,2cqi,10px)
 }
-.player-controls button{font-size:clamp(15px,2.3vmin,21px)}
+.player-controls button{font-size:clamp(15px,5cqi,21px)}
+
+@container player (min-aspect-ratio:3/2){
+  .boombox-art{background-size:245% auto;background-position:0 100%}
+}
+@container player (max-aspect-ratio:4/3){
+  .boombox-art{background-size:350% auto;background-position:1% 100%}
+  .library-button{width:min(52%,190px)}
+}
+@container player (max-height:13rem){
+  .music-machine{padding:8px;gap:5px}
+  .player-display{min-height:36px;padding-block:5px}
+}
+@container intro (max-height:13rem){
+  .video-board{padding:9px;gap:5px}
+  .video-play{width:44px}
+  .video-board strong{font-size:clamp(15px,5.2cqi,22px)}
+}
 
 .home-socials{
   min-width:0;
@@ -335,7 +356,6 @@ main{
   }
   .santiago-ghost{left:auto;right:-1rem;bottom:23%;width:clamp(70px,30cqi,124px);opacity:.16}
   .alley-photo{object-position:35% 50%;transform:scale(1.07)}
-  .video-board strong{font-size:clamp(16px,6cqi,24px)}
 }
 
 /* Larga e baixa: usa a largura para economizar altura, mesmo sem “largura de desktop”. */
@@ -349,9 +369,6 @@ main{
   .home-layout{grid-template-rows:auto auto auto;align-content:start;gap:clamp(4px,.8cqb,7px);padding-bottom:5px}
   .home-brand img{max-height:clamp(34px,8cqb,52px);width:min(58cqi,34rem)}
   .home-media{grid-auto-rows:minmax(184px,auto)}
-  .video-board{padding:10px}
-  .video-play{width:44px}
-  .video-board strong{font-size:clamp(15px,4cqb,21px)}
   .santiago-ghost{bottom:4%;opacity:.15}
 }
 
@@ -359,17 +376,16 @@ main{
 @container site (min-aspect-ratio:2/1){
   .alley-photo{object-position:51% 56%;transform:scale(1.04)}
   .santiago-ghost{left:7%;right:auto;bottom:5%;width:clamp(62px,10vmin,138px)}
-  .boombox-art{background-size:245% auto;background-position:0 100%}
 }
 @container site (max-aspect-ratio:2/3){
   .alley-photo{object-position:33% 48%;transform:scale(1.09)}
-  .boombox-art{background-size:360% auto;background-position:1% 100%}
 }
 
 /* ========================= ROTAS INTERNAS ========================= */
 .route-panel{
   min-height:100%;
-  padding:var(--edge) 0 clamp(24px,5cqb,64px)
+  padding-top:var(--edge);
+  padding-bottom:max(clamp(24px,5cqb,64px),env(safe-area-inset-bottom))
 }
 .route-world{position:absolute;z-index:-3;inset:0;background:#050403;overflow:hidden}
 .route-world::before{
@@ -589,7 +605,7 @@ main{
 .track-index{color:#8e6039;font-family:ui-monospace,monospace}
 .track-state{color:#b27c46;font-size:11px;font-weight:900}
 .toast{
-  position:fixed;z-index:500;left:50%;bottom:clamp(12px,3vmin,32px);transform:translate(-50%,18px);
+  position:fixed;z-index:500;left:50%;bottom:max(clamp(12px,3vmin,32px),env(safe-area-inset-bottom));transform:translate(-50%,18px);
   width:min(calc(100% - 24px),36rem);padding:12px 16px;
   color:#efd2a5;background:#17100b;border:1px solid #6d4628;
   box-shadow:0 14px 34px rgba(0,0,0,.68);text-align:center;font-weight:800;
@@ -597,7 +613,7 @@ main{
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .qa-meter{
-  position:fixed;z-index:450;right:8px;bottom:8px;
+  position:fixed;z-index:450;right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));
   max-width:min(94vw,52rem);padding:5px 7px;
   color:#b99061;background:rgba(20,13,9,.88);border:1px solid rgba(113,72,42,.55);
   font:10px/1.25 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
