@@ -1,0 +1,34 @@
+name: Sync clean Home asset in scenic v2
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - SYNC-CLEAN-HOME
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+      - run: |
+          set -euo pipefail
+          test -s assets/home-scene-1.webp
+          cp assets/home-scene-1.webp assets/home-scene.webp
+          test "$(git hash-object assets/home-scene.webp)" = "18a1d6d7d218c5761ce190c538cd7e4aa85b49d2"
+      - run: |
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add assets/home-scene.webp
+          if git diff --cached --quiet; then
+            echo "Clean Home already synced"
+          else
+            git commit -m "fix: sync clean Home asset in scenic v2"
+            git push origin HEAD:scenic-v2
+          fi
