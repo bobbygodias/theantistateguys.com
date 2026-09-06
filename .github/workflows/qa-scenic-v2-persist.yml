@@ -46,7 +46,9 @@ jobs:
             echo
             echo '- Result: PASS'
             echo '- Browser: Chromium / Playwright 1.55.0'
-            echo '- Tested: desktop 1672x941, desktop 1440x900, mobile 390x844, all internal routes, image decoding, music catalog and persistent audio element.'
+            echo '- Responsive rule: space/aspect-ratio driven; no single device size is treated as canonical.'
+            echo '- Home matrix: 320x568, 390x844, 430x932, 600x1024, 800x1280, 1024x768, 1280x800, 1672x941, 2560x1080.'
+            echo '- Additional checks: horizontal overflow, minimum interactive target size, image decoding, internal routes, music catalog and persistent audio element.'
             echo "- Source commit: $GITHUB_SHA"
             echo
             echo 'Temporary screenshots are stored in `.qa-preview/` for design review and must be removed before production merge.'
