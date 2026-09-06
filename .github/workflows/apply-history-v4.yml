@@ -1,0 +1,28 @@
+name: Apply history v4 wall pass
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - HISTORY-V4-GO
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+      - name: Apply History v4 CSS
+        run: python3 scripts/apply_history_v4.py
+      - name: Commit History v4
+        run: |
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add scenic-fixes.css
+          git commit -m "design: rebuild History as wall fanzine"
+          git push origin HEAD:scenic-v2
