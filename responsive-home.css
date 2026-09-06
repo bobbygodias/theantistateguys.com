@@ -28,7 +28,7 @@
     z-index:0;
     background:
       linear-gradient(180deg,rgba(4,3,2,.18) 0%,rgba(4,3,2,.08) 28%,rgba(4,3,2,.22) 62%,rgba(3,2,1,.68) 100%),
-      url('assets/home-scene.webp') 41% center/auto 100% no-repeat;
+      url('assets/home-scene.webp') 41% 56%/auto 125% no-repeat;
     filter:saturate(.90) contrast(1.06) brightness(.82);
     transform:none;
   }
@@ -129,7 +129,7 @@
     z-index:0;
     background:
       linear-gradient(180deg,rgba(3,2,1,.08) 0%,rgba(3,2,1,.12) 34%,rgba(3,2,1,.26) 68%,rgba(2,1,1,.72) 100%),
-      url('assets/home-scene.webp') 39% center/auto 100% no-repeat;
+      url('assets/home-scene.webp') 39% 56%/auto 128% no-repeat;
     filter:saturate(.90) contrast(1.07) brightness(.78);
     transform:none;
   }
