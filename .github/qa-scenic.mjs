@@ -49,7 +49,9 @@ await probe.close();
 
 await capture('home-1672x941', { width: 1672, height: 941 }, '#home', false);
 await capture('home-1440x900', { width: 1440, height: 900 }, '#home', false);
-await capture('home-mobile-390x844', { width: 390, height: 844 }, '#home', true);
+await capture('home-tablet-landscape-1280x800', { width: 1280, height: 800 }, '#home', false);
+await capture('home-tablet-portrait-800x1280', { width: 800, height: 1280 }, '#home', true);
+await capture('home-phone-390x844', { width: 390, height: 844 }, '#home', true);
 await capture('historia-1440', { width: 1440, height: 900 }, '#historia', true);
 await capture('historia-mobile-390x844', { width: 390, height: 844 }, '#historia', true);
 await capture('integrantes-1440', { width: 1440, height: 900 }, '#integrantes', true);
