@@ -160,6 +160,10 @@
     position:absolute!important;
     inset:0!important;
     background:url('assets/home-scene.webp') 1.2% 99.4%/325% auto no-repeat!important;
+    /* Extract the physical boombox from the scene instead of showing a rectangular crop.
+       The surrounding alley remains the single continuous background. */
+    clip-path:polygon(21% 18%,79% 18%,79% 27%,92% 30%,94% 82%,8% 82%,8% 31%,21% 28%);
+    filter:drop-shadow(0 14px 12px rgba(0,0,0,.78));
   }
   .mobile-display{
     left:29.5%!important;
