@@ -6,7 +6,7 @@ const browser = await chromium.launch({ headless: true });
 const errors = [];
 
 async function readyPage(viewport) {
-  const page = await browser.newPage({ viewportSize: viewport });
+  const page = await browser.newPage({ viewport });
   page.on('console', msg => { if (msg.type() === 'error') errors.push(`console: ${msg.text()}`); });
   page.on('pageerror', err => errors.push(`pageerror: ${err.message}`));
   return page;
