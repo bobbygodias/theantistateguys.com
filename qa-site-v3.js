@@ -4,6 +4,7 @@
   const dialog=document.getElementById('music-dialog');
   const main=document.querySelector('main');
   const navEl=document.querySelector('.site-nav');
+  let radioVectorState=null;
   close?.addEventListener('click',()=>dialog?.close());
 
   function activeRouteEl(){
@@ -81,6 +82,17 @@
     const bg=getComputedStyle(radio).backgroundImage || '';
     return bg.includes('jvc-player.svg') && !bg.includes('home-scene.webp');
   }
+  async function verifyRadioVector(){
+    try{
+      const res=await fetch('assets/jvc-player.svg',{cache:'no-store'});
+      if(!res.ok) throw new Error('asset unavailable');
+      const text=await res.text();
+      radioVectorState=!/<image\b/i.test(text) && !/data:image\//i.test(text);
+    }catch{
+      radioVectorState=false;
+    }
+    schedule();
+  }
   function supportFlags(){
     return {
       cq:CSS.supports?.('container-type','size') ?? false,
@@ -114,10 +126,12 @@
     if(tap>0 && tap<44) hardIssues.push(`tap-${tap}`);
     if(clipX>0) hardIssues.push(`clip-x-${clipX}`);
     if(semantics>0) hardIssues.push(`sem-${semantics}`);
-    if(!radioOK) hardIssues.push('radio-raster');
+    if(!radioOK) hardIssues.push('radio-scene');
+    if(radioVectorState===false) hardIssues.push('radio-raster');
     const hardOK=hardIssues.length===0;
+    const radioState=!radioOK?'SCENE':radioVectorState===null?'checando':radioVectorState?'vetorial':'RASTER';
     meter.dataset.qaHard=hardOK?'ok':'fail';
-    meter.textContent=`${hardOK?'HARD-OK':'HARD-FAIL '+hardIssues.join(',')} · visual ${vw}×${vh} · conteúdo ${cw}×${ch} · AR ${ratio} · DPR ${devicePixelRatio.toFixed(2)} · nav ${nav.cols}c/${nav.rows}r · mídia ${media.cols}c/${media.rows}r · rotaH ${routeH} · scrollY ${needsY?'sim':'não'} · ovX ${overflowX?'SIM':'não'} · clipX ${clipX} · tap≥${tap}px · sem ${semantics} · rádio ${radioOK?'indep':'RASTER'} · CQ ${support.cq?'sim':'fallback'} · CU ${support.cu?'sim':'fallback'} · DVH ${support.dvh?'sim':'fallback'} · ${activeRoute()}`;
+    meter.textContent=`${hardOK?'HARD-OK':'HARD-FAIL '+hardIssues.join(',')} · visual ${vw}×${vh} · conteúdo ${cw}×${ch} · AR ${ratio} · DPR ${devicePixelRatio.toFixed(2)} · nav ${nav.cols}c/${nav.rows}r · mídia ${media.cols}c/${media.rows}r · rotaH ${routeH} · scrollY ${needsY?'sim':'não'} · ovX ${overflowX?'SIM':'não'} · clipX ${clipX} · tap≥${tap}px · sem ${semantics} · rádio ${radioState} · CQ ${support.cq?'sim':'fallback'} · CU ${support.cu?'sim':'fallback'} · DVH ${support.dvh?'sim':'fallback'} · ${activeRoute()}`;
   }
 
   let raf=0;
@@ -127,6 +141,7 @@
   }
 
   updateMeter();
+  verifyRadioVector();
   addEventListener('resize',schedule,{passive:true});
   visualViewport?.addEventListener('resize',schedule,{passive:true});
   visualViewport?.addEventListener('scroll',schedule,{passive:true});
