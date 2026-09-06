@@ -3,6 +3,6 @@
 - Result: PASS
 - Browser: Chromium / Playwright 1.55.0
 - Tested: desktop 1672x941, desktop 1440x900, mobile 390x844, all internal routes, image decoding, music catalog and persistent audio element.
-- Source commit: 565758f750b74f05f8b9402179a91a6b7cd30bc4
+- Source commit: 5d2920f226b79e7a3c860966044108fa872edaa2
 
 Temporary screenshots are stored in `.qa-preview/` for design review and must be removed before production merge.
