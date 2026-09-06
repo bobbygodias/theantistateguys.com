@@ -1,0 +1,61 @@
+name: Hotfix tablet home and photo credit
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - HOTFIX-TABLET-CREDIT
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+
+      - name: Patch scenic-v2 and main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+
+          patch_branch () {
+            branch="$1"
+            git checkout "$branch"
+            git pull --ff-only origin "$branch"
+            python - <<'PY'
+from pathlib import Path
+
+index = Path('index.html')
+html = index.read_text(encoding='utf-8')
+html = html.replace('ENSAIO FOTOGRÁFICO · GABRIELLE', 'ENSAIO FOTOGRÁFICO · GABRYELLE ARACKELLY')
+index.write_text(html, encoding='utf-8')
+
+css = Path('scenic-fixes.css')
+text = css.read_text(encoding='utf-8')
+marker = '/* TABLET-SCENIC-HOTFIX */'
+block = '''\n\n/* TABLET-SCENIC-HOTFIX */\n/* Tablets preserve the approved cinematic Home instead of the stacked phone composition. */\n@media (min-width:621px) and (max-width:980px){\n  .desktop-stage{display:block!important}\n  .mobile-home{display:none!important}\n}\n/* TABLET-SCENIC-HOTFIX-END */\n'''
+if marker not in text:
+    text += block
+css.write_text(text, encoding='utf-8')
+PY
+            git add index.html scenic-fixes.css
+            if git diff --cached --quiet; then
+              echo "$branch already patched"
+            else
+              git commit -m "fix: preserve scenic Home on tablets and correct photo credit"
+              git push origin "$branch"
+            fi
+          }
+
+          patch_branch scenic-v2
+          git fetch origin main
+          git checkout -B main origin/main
+          patch_branch main
