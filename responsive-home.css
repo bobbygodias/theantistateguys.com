@@ -1,37 +1,55 @@
-/* Responsive art direction for the approved scenic Home.
-   Desktop/tablet landscape preserve the canonical 16:9 scene.
-   Tablet portrait and phone use the existing interactive elements as one continuous physical alley,
-   not as stacked UI cards. */
+/* Responsive art direction — SPACE-DRIVEN, not device-driven.
+   Canon: preserve one physical alley across all reasonable viewports.
+   The composition may recompose; the universe may not. */
 
-/* Tablet landscape: canonical scenic composition. */
-@media (min-width:621px) and (max-width:980px) and (orientation:landscape){
+/* WIDE / LANDSCAPE-SUSTAINABLE SPACE
+   Any viewport wide enough in proportion keeps the canonical 1672:941 stage. */
+@media (min-aspect-ratio: 11/10){
   .desktop-stage{display:block!important}
   .mobile-home{display:none!important}
-  .route-home{min-height:100svh;align-items:center}
+  .route-home{
+    min-height:100svh;
+    place-items:center;
+  }
 }
 
-/* Tablet portrait: one continuous scenic room. */
-@media (min-width:621px) and (max-width:980px) and (orientation:portrait){
+/* Extra touch room when a wide viewport is physically short.
+   Invisible hit areas grow; the artwork itself does not change. */
+@media (min-aspect-ratio: 11/10) and (max-height:540px){
+  .prev-hit,.play-hit,.stop-hit,.next-hit{top:79%;height:7%;width:3.4%}
+  .prev-hit{left:15.5%}.play-hit{left:18.3%}.stop-hit{left:21.1%}.next-hit{left:23.9%}
+  .library-hit{left:14.2%;top:72.8%;width:12%;height:7.2%}
+}
+
+/* VERTICAL / SQUARE-ISH SPACE
+   One continuous alley. Existing functional elements are recomposed physically
+   over a single scenic environment instead of becoming stacked UI cards. */
+@media (max-aspect-ratio: 11/10){
   .desktop-stage{display:none!important}
   .mobile-home{
+    --scene-h:clamp(1050px,250vw,1700px);
     display:block!important;
     position:relative;
     width:100%;
-    min-height:1380px;
+    min-height:100svh;
+    height:var(--scene-h);
     padding:0;
     overflow:hidden;
     background:#050403;
+    isolation:isolate;
   }
+
   .mobile-alley{
-    position:absolute;
-    inset:0;
-    z-index:0;
+    position:absolute!important;
+    inset:0!important;
+    z-index:0!important;
     background:
-      linear-gradient(180deg,rgba(4,3,2,.18) 0%,rgba(4,3,2,.08) 28%,rgba(4,3,2,.22) 62%,rgba(3,2,1,.68) 100%),
-      url('assets/home-scene.webp') 41% 56%/auto 125% no-repeat;
-    filter:saturate(.90) contrast(1.06) brightness(.82);
-    transform:none;
+      linear-gradient(180deg,rgba(4,3,2,.94) 0%,rgba(4,3,2,.72) 6%,rgba(4,3,2,.24) 14%,rgba(4,3,2,.08) 28%,rgba(3,2,1,.16) 66%,rgba(2,1,1,.64) 100%),
+      url('assets/home-scene.webp') 42% 50%/auto 112% no-repeat!important;
+    filter:saturate(.88) contrast(1.07) brightness(.79)!important;
+    transform:none!important;
   }
+
   .mobile-home::after{
     content:"";
     position:absolute;
@@ -39,180 +57,166 @@
     z-index:1;
     pointer-events:none;
     background:
-      linear-gradient(90deg,rgba(0,0,0,.38),transparent 16% 84%,rgba(0,0,0,.42)),
-      radial-gradient(ellipse at 50% 44%,transparent 0 56%,rgba(0,0,0,.38) 100%);
+      linear-gradient(90deg,rgba(0,0,0,.42),transparent 14% 86%,rgba(0,0,0,.46)),
+      radial-gradient(ellipse at 50% 47%,transparent 0 56%,rgba(0,0,0,.34) 84%,rgba(0,0,0,.58) 100%);
   }
-  .mobile-home>*:not(.mobile-alley){position:absolute;z-index:3}
+
+  .mobile-home>*:not(.mobile-alley){position:absolute!important;z-index:3}
 
   .mobile-signs{
-    top:20px;left:3.5%;width:93%;
-    display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;
+    top:clamp(12px,2.2vw,24px);
+    left:4%;
+    width:92%;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:clamp(4px,1.15vw,8px);
   }
   .mobile-signs a{
-    min-height:48px;padding:0 5px;
-    border:2px solid #2d1a0d;
+    min-height:clamp(36px,10vw,48px)!important;
+    padding:0 clamp(3px,1vw,8px)!important;
+    display:grid!important;
+    place-items:center;
     background:
-      radial-gradient(circle at 9px 9px,#2f1c0e 0 2px,#a87842 3px 4px,transparent 5px),
-      radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#2f1c0e 0 2px,#a87842 3px 4px,transparent 5px),
-      repeating-linear-gradient(0deg,rgba(78,45,23,.08) 0 1px,transparent 1px 5px),
-      linear-gradient(#a87a47,#774927);
-    box-shadow:0 5px 12px rgba(0,0,0,.65),inset 0 0 0 1px rgba(237,192,130,.15);
-    color:#170f09;font:900 10px/1 var(--display);
-    transform:rotate(-.35deg);
+      radial-gradient(circle at 8px 8px,#2d1a0d 0 2px,#9d6f3c 3px 4px,transparent 5px),
+      radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),#2d1a0d 0 2px,#9d6f3c 3px 4px,transparent 5px),
+      repeating-linear-gradient(0deg,rgba(79,45,22,.08) 0 1px,transparent 1px 5px),
+      linear-gradient(#a77946,#744725)!important;
+    border:2px solid #2b190c!important;
+    box-shadow:0 5px 12px rgba(0,0,0,.68),inset 0 0 0 1px rgba(232,185,124,.14)!important;
+    color:#160f09!important;
+    text-decoration:none;
+    font:900 clamp(8px,2.45vw,11px)/1 var(--display)!important;
+    transform:rotate(-.45deg);
   }
-  .mobile-signs a:nth-child(even){transform:rotate(.35deg)}
+  .mobile-signs a:nth-child(even){transform:rotate(.4deg)}
 
   .mobile-wordmark{
-    top:112px;right:5.5%;width:57%;
-    filter:sepia(.10) brightness(.90) contrast(1.08) drop-shadow(0 4px 4px rgba(0,0,0,.9));
+    top:12.5%;
+    right:5%;
+    left:auto!important;
+    width:clamp(255px,84vw,650px)!important;
+    max-width:90%;
+    padding:clamp(6px,1.5vw,14px);
+    background:
+      repeating-linear-gradient(0deg,rgba(128,79,42,.035) 0 1px,transparent 1px 7px),
+      linear-gradient(108deg,rgba(21,14,9,.96),rgba(25,16,10,.92) 55%,rgba(12,8,6,.97));
+    border:1px solid rgba(78,48,27,.22);
+    box-shadow:inset 0 0 42px rgba(0,0,0,.84),0 8px 22px rgba(0,0,0,.48);
+    clip-path:polygon(1% 4%,98% 0,100% 93%,96% 100%,2% 97%,0 10%);
+    filter:sepia(.10) brightness(.91) contrast(1.07) drop-shadow(0 4px 4px rgba(0,0,0,.90))!important;
   }
 
   .mobile-video-card{
-    top:300px;right:6%;width:54%;aspect-ratio:16/9;
-    border:8px solid #21150d;outline:1px solid #67452a;
-    background:#090705;box-shadow:0 18px 42px rgba(0,0,0,.72);
-    transform:rotate(.25deg);
-  }
-  .mobile-video-card img{filter:grayscale(1) brightness(.42) contrast(1.08)}
-  .mobile-video-card strong{font-size:clamp(16px,2.4vw,23px)}
-  .mobile-video-card small{font-size:9px}
-
-  .mobile-boombox{
-    top:650px;left:3%;width:58%;height:430px;padding:0;
-    filter:drop-shadow(0 22px 24px rgba(0,0,0,.68));
-  }
-  .mobile-boombox-photo{
-    position:absolute;inset:0;
-    background:url('assets/home-scene.webp') 1.2% 99.4%/325% auto no-repeat;
-  }
-  .mobile-display{
-    left:29%;top:35%;width:41%;min-height:25px;padding:4px 7px;
-    font-size:10px;
-  }
-  .mobile-library{
-    left:39%;width:22%;bottom:24%;min-height:34px;
-    background:rgba(166,126,75,.90);border:1px solid #2a1a0e;
-  }
-  .mobile-controls{left:31%;right:31%;bottom:11%;gap:5px}
-  .mobile-controls button{min-height:34px;background:rgba(166,126,75,.90);border:1px solid #2a1a0e}
-
-  .mobile-socials{
-    right:5%;bottom:110px;width:36%;
-    display:grid;grid-template-columns:1fr;gap:12px;
-  }
-  .mobile-socials a{
-    padding:12px 10px;text-align:center;
-    background:linear-gradient(145deg,#2a1a10,#160e09);
-    border:1px solid #79502e;color:#d8b889;
-    box-shadow:0 8px 18px rgba(0,0,0,.55);
-    font:900 11px/1 var(--display);
-    transform:rotate(-.5deg);
-  }
-  .mobile-socials a:nth-child(2){transform:rotate(.6deg)}
-}
-
-/* Phone: vertical scenic composition. Same place, no stacked-card layout. */
-@media (max-width:620px){
-  .desktop-stage{display:none!important}
-  .mobile-home{
-    display:block!important;
-    position:relative;
-    width:100%;
-    min-height:1540px;
-    padding:0;
+    top:29%;
+    right:5%;
+    left:auto!important;
+    width:clamp(275px,88vw,690px)!important;
+    aspect-ratio:16/9;
+    padding:0!important;
     overflow:hidden;
-    background:#050403;
+    border:clamp(6px,1.5vw,10px) solid #21150d!important;
+    outline:1px solid #68462a!important;
+    background:#090705!important;
+    box-shadow:0 18px 42px rgba(0,0,0,.72)!important;
+    transform:rotate(.2deg);
   }
-  .mobile-alley{
-    position:absolute;
-    inset:0;
-    z-index:0;
-    background:
-      linear-gradient(180deg,rgba(3,2,1,.08) 0%,rgba(3,2,1,.12) 34%,rgba(3,2,1,.26) 68%,rgba(2,1,1,.72) 100%),
-      url('assets/home-scene.webp') 39% 56%/auto 128% no-repeat;
-    filter:saturate(.90) contrast(1.07) brightness(.78);
-    transform:none;
+  .mobile-video-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.40) contrast(1.10)!important}
+  .mobile-play{top:35%!important;width:clamp(46px,12vw,68px)!important;height:clamp(46px,12vw,68px)!important;font-size:clamp(18px,5vw,26px)!important}
+  .mobile-video-card strong{
+    top:62%!important;
+    width:92%;
+    text-align:center;
+    white-space:normal!important;
+    font:900 clamp(15px,4.7vw,27px)/.95 var(--display)!important;
   }
-  .mobile-home::after{
-    content:"";
-    position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:
-      linear-gradient(90deg,rgba(0,0,0,.34),transparent 14% 86%,rgba(0,0,0,.42)),
-      radial-gradient(ellipse at 50% 48%,transparent 0 58%,rgba(0,0,0,.34) 100%);
-  }
-  .mobile-home>*:not(.mobile-alley){position:absolute;z-index:3}
-
-  .mobile-signs{
-    top:18px;left:4%;width:92%;
-    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;
-  }
-  .mobile-signs a{
-    min-height:42px;padding:0 5px;
-    background:
-      radial-gradient(circle at 8px 8px,#2e1b0e 0 2px,#9d6f3d 3px 4px,transparent 5px),
-      radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),#2e1b0e 0 2px,#9d6f3d 3px 4px,transparent 5px),
-      repeating-linear-gradient(0deg,rgba(77,44,22,.08) 0 1px,transparent 1px 5px),
-      linear-gradient(#a67845,#744725);
-    border:2px solid #2c190c;
-    box-shadow:0 5px 12px rgba(0,0,0,.68),inset 0 0 0 1px rgba(232,185,124,.14);
-    color:#160f09;font:900 10px/1 var(--display);
-    transform:rotate(-.5deg);
-  }
-  .mobile-signs a:nth-child(even){transform:rotate(.45deg)}
-
-  .mobile-wordmark{
-    top:132px;left:8%;width:84%;
-    filter:sepia(.10) brightness(.90) contrast(1.08) drop-shadow(0 4px 5px rgba(0,0,0,.92));
-  }
-
-  .mobile-video-card{
-    top:335px;left:5%;width:90%;aspect-ratio:16/9;
-    border:7px solid #21150d;outline:1px solid #69462a;
-    background:#090705;box-shadow:0 18px 42px rgba(0,0,0,.72);
-    transform:rotate(.18deg);
-  }
-  .mobile-video-card img{filter:grayscale(1) brightness(.40) contrast(1.10)}
-  .mobile-play{top:35%;width:48px;height:48px;font-size:19px}
-  .mobile-video-card strong{top:62%;font-size:clamp(16px,5.3vw,23px)}
-  .mobile-video-card small{top:76%;font-size:9px}
+  .mobile-video-card small{top:77%!important;font:900 clamp(8px,2.2vw,11px)/1 var(--display)!important;letter-spacing:.15em}
 
   .mobile-boombox{
-    top:690px;left:1%;width:98%;height:460px;padding:0;
-    filter:drop-shadow(0 22px 26px rgba(0,0,0,.70));
+    top:55%;
+    left:2%;
+    width:clamp(310px,96vw,820px)!important;
+    height:32%;
+    min-height:330px;
+    max-height:570px;
+    padding:0!important;
+    filter:drop-shadow(0 22px 26px rgba(0,0,0,.70))!important;
   }
   .mobile-boombox-photo{
-    position:absolute;inset:0;
-    background:url('assets/home-scene.webp') 1.2% 99.5%/325% auto no-repeat;
+    position:absolute!important;
+    inset:0!important;
+    background:url('assets/home-scene.webp') 1.2% 99.4%/325% auto no-repeat!important;
   }
   .mobile-display{
-    left:30%;top:35%;width:40%;min-height:24px;padding:4px 6px;
-    font-size:9px;
+    left:29.5%!important;
+    top:35%!important;
+    width:41%!important;
+    min-height:clamp(24px,4vw,30px)!important;
+    padding:4px clamp(5px,1.3vw,9px)!important;
+    font:700 clamp(8px,2.05vw,12px)/1 ui-monospace,monospace!important;
   }
   .mobile-library{
-    left:40%;width:20%;bottom:25%;min-height:32px;
-    background:rgba(164,124,73,.92);border:1px solid #29190d;
-    font-size:10px;
+    left:39%!important;
+    width:22%!important;
+    bottom:24%!important;
+    min-height:clamp(31px,7vw,38px)!important;
+    border:1px solid #2a1a0e!important;
+    background:rgba(164,124,73,.92)!important;
+    font:900 clamp(9px,2.3vw,12px)/1 var(--display)!important;
   }
-  .mobile-controls{left:31%;right:31%;bottom:12%;gap:4px}
+  .mobile-controls{
+    left:30.5%!important;
+    right:30.5%!important;
+    bottom:11%!important;
+    display:grid!important;
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:clamp(3px,.9vw,6px)!important;
+  }
   .mobile-controls button{
-    min-height:32px;padding:0;
-    background:rgba(164,124,73,.92);border:1px solid #29190d;
-    font-size:12px;
+    min-height:clamp(30px,7vw,38px)!important;
+    padding:0!important;
+    background:rgba(164,124,73,.92)!important;
+    border:1px solid #29190d!important;
+    color:#1a120c!important;
+    font-size:clamp(10px,2.5vw,14px)!important;
   }
 
   .mobile-socials{
-    left:7%;bottom:70px;width:86%;
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    left:auto!important;
+    right:5%;
+    bottom:4%;
+    width:clamp(220px,56vw,430px)!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:clamp(7px,1.8vw,12px)!important;
   }
   .mobile-socials a{
-    padding:12px 8px;text-align:center;
-    background:linear-gradient(145deg,#281910,#150d08);
-    border:1px solid #724a2a;color:#d5b585;
-    box-shadow:0 8px 18px rgba(0,0,0,.55);
-    font:900 11px/1 var(--display);
+    padding:clamp(10px,2.5vw,14px) clamp(7px,1.8vw,12px)!important;
+    text-align:center;
+    background:linear-gradient(145deg,#281910,#150d08)!important;
+    border:1px solid #724a2a!important;
+    color:#d5b585!important;
+    box-shadow:0 8px 18px rgba(0,0,0,.55)!important;
+    font:900 clamp(9px,2.25vw,12px)/1 var(--display)!important;
+    text-decoration:none;
     transform:rotate(-.35deg);
   }
   .mobile-socials a:nth-child(2){transform:rotate(.45deg)}
+}
+
+@media (max-aspect-ratio: 3/5){
+  .mobile-home{--scene-h:clamp(1100px,265vw,1780px)}
+  .mobile-wordmark{top:12%}
+  .mobile-video-card{top:28%}
+  .mobile-boombox{top:54.5%}
+}
+
+@media (min-width:560px) and (max-aspect-ratio: 11/10){
+  .mobile-signs{grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(5px,.9vw,8px)}
+  .mobile-signs a{font-size:clamp(8px,1.45vw,11px)!important;min-height:clamp(40px,6.2vw,49px)!important}
+  .mobile-wordmark{top:9.5%;width:clamp(420px,62vw,650px)!important}
+  .mobile-video-card{top:26%;width:clamp(390px,58vw,690px)!important}
+  .mobile-boombox{top:52%;width:clamp(520px,72vw,820px)!important;height:34%}
+  .mobile-socials{width:clamp(300px,40vw,430px)!important}
 }
 
 @media (prefers-reduced-motion:reduce){
