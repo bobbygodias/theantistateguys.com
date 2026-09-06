@@ -1,0 +1,48 @@
+name: Rebuild scenic assets v2
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - ASSET-FIX-GO
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scenic-v2
+        uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+
+      - name: Install Pillow
+        run: python3 -m pip install --quiet pillow
+
+      - name: Rebuild and decode-check WebP assets
+        run: |
+          python3 scripts/rebuild_scenic_assets.py | tee /tmp/asset-verify.txt
+          {
+            echo '# Scenic v2 — Asset verification'
+            echo
+            echo 'Generated automatically by GitHub Actions after Base64 validation and Pillow decode.'
+            echo
+            echo '```text'
+            cat /tmp/asset-verify.txt
+            echo '```'
+          } > ASSET-VERIFY.md
+
+      - name: Commit corrected assets and verification report
+        run: |
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add assets/home-scene.webp assets/photos-pose-6.webp assets/studio.webp assets/members/thomaz.webp ASSET-VERIFY.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "fix: verify and rebuild scenic media assets"
+            git push origin HEAD:scenic-v2
+          fi
