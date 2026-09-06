@@ -1,0 +1,220 @@
+/* Responsive art direction for the approved scenic Home.
+   Desktop/tablet landscape preserve the canonical 16:9 scene.
+   Tablet portrait and phone use the existing interactive elements as one continuous physical alley,
+   not as stacked UI cards. */
+
+/* Tablet landscape: canonical scenic composition. */
+@media (min-width:621px) and (max-width:980px) and (orientation:landscape){
+  .desktop-stage{display:block!important}
+  .mobile-home{display:none!important}
+  .route-home{min-height:100svh;align-items:center}
+}
+
+/* Tablet portrait: one continuous scenic room. */
+@media (min-width:621px) and (max-width:980px) and (orientation:portrait){
+  .desktop-stage{display:none!important}
+  .mobile-home{
+    display:block!important;
+    position:relative;
+    width:100%;
+    min-height:1380px;
+    padding:0;
+    overflow:hidden;
+    background:#050403;
+  }
+  .mobile-alley{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:
+      linear-gradient(180deg,rgba(4,3,2,.18) 0%,rgba(4,3,2,.08) 28%,rgba(4,3,2,.22) 62%,rgba(3,2,1,.68) 100%),
+      url('assets/home-scene.webp') 41% center/auto 100% no-repeat;
+    filter:saturate(.90) contrast(1.06) brightness(.82);
+    transform:none;
+  }
+  .mobile-home::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(0,0,0,.38),transparent 16% 84%,rgba(0,0,0,.42)),
+      radial-gradient(ellipse at 50% 44%,transparent 0 56%,rgba(0,0,0,.38) 100%);
+  }
+  .mobile-home>*:not(.mobile-alley){position:absolute;z-index:3}
+
+  .mobile-signs{
+    top:20px;left:3.5%;width:93%;
+    display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;
+  }
+  .mobile-signs a{
+    min-height:48px;padding:0 5px;
+    border:2px solid #2d1a0d;
+    background:
+      radial-gradient(circle at 9px 9px,#2f1c0e 0 2px,#a87842 3px 4px,transparent 5px),
+      radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#2f1c0e 0 2px,#a87842 3px 4px,transparent 5px),
+      repeating-linear-gradient(0deg,rgba(78,45,23,.08) 0 1px,transparent 1px 5px),
+      linear-gradient(#a87a47,#774927);
+    box-shadow:0 5px 12px rgba(0,0,0,.65),inset 0 0 0 1px rgba(237,192,130,.15);
+    color:#170f09;font:900 10px/1 var(--display);
+    transform:rotate(-.35deg);
+  }
+  .mobile-signs a:nth-child(even){transform:rotate(.35deg)}
+
+  .mobile-wordmark{
+    top:112px;right:5.5%;width:57%;
+    filter:sepia(.10) brightness(.90) contrast(1.08) drop-shadow(0 4px 4px rgba(0,0,0,.9));
+  }
+
+  .mobile-video-card{
+    top:300px;right:6%;width:54%;aspect-ratio:16/9;
+    border:8px solid #21150d;outline:1px solid #67452a;
+    background:#090705;box-shadow:0 18px 42px rgba(0,0,0,.72);
+    transform:rotate(.25deg);
+  }
+  .mobile-video-card img{filter:grayscale(1) brightness(.42) contrast(1.08)}
+  .mobile-video-card strong{font-size:clamp(16px,2.4vw,23px)}
+  .mobile-video-card small{font-size:9px}
+
+  .mobile-boombox{
+    top:650px;left:3%;width:58%;height:430px;padding:0;
+    filter:drop-shadow(0 22px 24px rgba(0,0,0,.68));
+  }
+  .mobile-boombox-photo{
+    position:absolute;inset:0;
+    background:url('assets/home-scene.webp') 1.2% 99.4%/325% auto no-repeat;
+  }
+  .mobile-display{
+    left:29%;top:35%;width:41%;min-height:25px;padding:4px 7px;
+    font-size:10px;
+  }
+  .mobile-library{
+    left:39%;width:22%;bottom:24%;min-height:34px;
+    background:rgba(166,126,75,.90);border:1px solid #2a1a0e;
+  }
+  .mobile-controls{left:31%;right:31%;bottom:11%;gap:5px}
+  .mobile-controls button{min-height:34px;background:rgba(166,126,75,.90);border:1px solid #2a1a0e}
+
+  .mobile-socials{
+    right:5%;bottom:110px;width:36%;
+    display:grid;grid-template-columns:1fr;gap:12px;
+  }
+  .mobile-socials a{
+    padding:12px 10px;text-align:center;
+    background:linear-gradient(145deg,#2a1a10,#160e09);
+    border:1px solid #79502e;color:#d8b889;
+    box-shadow:0 8px 18px rgba(0,0,0,.55);
+    font:900 11px/1 var(--display);
+    transform:rotate(-.5deg);
+  }
+  .mobile-socials a:nth-child(2){transform:rotate(.6deg)}
+}
+
+/* Phone: vertical scenic composition. Same place, no stacked-card layout. */
+@media (max-width:620px){
+  .desktop-stage{display:none!important}
+  .mobile-home{
+    display:block!important;
+    position:relative;
+    width:100%;
+    min-height:1540px;
+    padding:0;
+    overflow:hidden;
+    background:#050403;
+  }
+  .mobile-alley{
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:
+      linear-gradient(180deg,rgba(3,2,1,.08) 0%,rgba(3,2,1,.12) 34%,rgba(3,2,1,.26) 68%,rgba(2,1,1,.72) 100%),
+      url('assets/home-scene.webp') 39% center/auto 100% no-repeat;
+    filter:saturate(.90) contrast(1.07) brightness(.78);
+    transform:none;
+  }
+  .mobile-home::after{
+    content:"";
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(90deg,rgba(0,0,0,.34),transparent 14% 86%,rgba(0,0,0,.42)),
+      radial-gradient(ellipse at 50% 48%,transparent 0 58%,rgba(0,0,0,.34) 100%);
+  }
+  .mobile-home>*:not(.mobile-alley){position:absolute;z-index:3}
+
+  .mobile-signs{
+    top:18px;left:4%;width:92%;
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;
+  }
+  .mobile-signs a{
+    min-height:42px;padding:0 5px;
+    background:
+      radial-gradient(circle at 8px 8px,#2e1b0e 0 2px,#9d6f3d 3px 4px,transparent 5px),
+      radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),#2e1b0e 0 2px,#9d6f3d 3px 4px,transparent 5px),
+      repeating-linear-gradient(0deg,rgba(77,44,22,.08) 0 1px,transparent 1px 5px),
+      linear-gradient(#a67845,#744725);
+    border:2px solid #2c190c;
+    box-shadow:0 5px 12px rgba(0,0,0,.68),inset 0 0 0 1px rgba(232,185,124,.14);
+    color:#160f09;font:900 10px/1 var(--display);
+    transform:rotate(-.5deg);
+  }
+  .mobile-signs a:nth-child(even){transform:rotate(.45deg)}
+
+  .mobile-wordmark{
+    top:132px;left:8%;width:84%;
+    filter:sepia(.10) brightness(.90) contrast(1.08) drop-shadow(0 4px 5px rgba(0,0,0,.92));
+  }
+
+  .mobile-video-card{
+    top:335px;left:5%;width:90%;aspect-ratio:16/9;
+    border:7px solid #21150d;outline:1px solid #69462a;
+    background:#090705;box-shadow:0 18px 42px rgba(0,0,0,.72);
+    transform:rotate(.18deg);
+  }
+  .mobile-video-card img{filter:grayscale(1) brightness(.40) contrast(1.10)}
+  .mobile-play{top:35%;width:48px;height:48px;font-size:19px}
+  .mobile-video-card strong{top:62%;font-size:clamp(16px,5.3vw,23px)}
+  .mobile-video-card small{top:76%;font-size:9px}
+
+  .mobile-boombox{
+    top:690px;left:1%;width:98%;height:460px;padding:0;
+    filter:drop-shadow(0 22px 26px rgba(0,0,0,.70));
+  }
+  .mobile-boombox-photo{
+    position:absolute;inset:0;
+    background:url('assets/home-scene.webp') 1.2% 99.5%/325% auto no-repeat;
+  }
+  .mobile-display{
+    left:30%;top:35%;width:40%;min-height:24px;padding:4px 6px;
+    font-size:9px;
+  }
+  .mobile-library{
+    left:40%;width:20%;bottom:25%;min-height:32px;
+    background:rgba(164,124,73,.92);border:1px solid #29190d;
+    font-size:10px;
+  }
+  .mobile-controls{left:31%;right:31%;bottom:12%;gap:4px}
+  .mobile-controls button{
+    min-height:32px;padding:0;
+    background:rgba(164,124,73,.92);border:1px solid #29190d;
+    font-size:12px;
+  }
+
+  .mobile-socials{
+    left:7%;bottom:70px;width:86%;
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  }
+  .mobile-socials a{
+    padding:12px 8px;text-align:center;
+    background:linear-gradient(145deg,#281910,#150d08);
+    border:1px solid #724a2a;color:#d5b585;
+    box-shadow:0 8px 18px rgba(0,0,0,.55);
+    font:900 11px/1 var(--display);
+    transform:rotate(-.35deg);
+  }
+  .mobile-socials a:nth-child(2){transform:rotate(.45deg)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mobile-boombox{animation:none!important}
+}
