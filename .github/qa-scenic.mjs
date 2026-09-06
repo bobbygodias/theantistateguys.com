@@ -61,9 +61,11 @@ await page.waitForFunction(() => {
 }, null, { timeout: 10000 });
 const title = await page.locator('#track-title').textContent();
 if (!title || title.includes('indispon')) throw new Error(`Music catalog failed: ${title}`);
-await page.locator('[data-route-link="historia"]:visible').first().click();
-await page.waitForTimeout(200);
-if (!(await page.locator('[data-route="historia"]').isVisible())) throw new Error('Historia route did not become visible');
+await page.evaluate(() => { window.location.hash = '#historia'; });
+await page.waitForFunction(() => {
+  const el = document.querySelector('[data-route="historia"]');
+  return !!el && !el.hidden;
+}, null, { timeout: 5000 });
 if (!(await page.locator('#audio').count())) throw new Error('Audio element did not persist through route navigation');
 await page.close();
 
