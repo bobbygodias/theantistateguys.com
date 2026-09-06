@@ -304,3 +304,261 @@
   #historia .pinned-photo{position:relative;top:auto;width:min(92%,520px);margin:0 auto}
 }
 /* HISTORY-V3-END */
+
+/* HISTORY-V4-START */
+/* HISTORY V4 — paredão + fanzine único. Experimental on scenic-v2 only. */
+
+#historia.route-panel{
+  min-height:100svh;
+  background:#050403;
+  overflow-x:hidden;
+}
+
+#historia .internal-bg{
+  inset:0;
+  transform:none;
+  filter:none;
+  background:
+    linear-gradient(180deg,rgba(7,4,2,.30),rgba(5,3,2,.76) 66%,rgba(3,2,1,.92)),
+    radial-gradient(circle at 72% 19%,rgba(213,135,68,.16),transparent 24%),
+    radial-gradient(circle at 18% 66%,rgba(98,53,26,.16),transparent 34%),
+    repeating-linear-gradient(0deg,transparent 0 52px,rgba(77,43,24,.14) 53px 55px,transparent 56px 106px),
+    repeating-linear-gradient(90deg,rgba(17,11,8,.78) 0 128px,rgba(54,30,18,.48) 129px 131px,rgba(19,12,8,.82) 132px 258px);
+  box-shadow:inset 0 0 180px rgba(0,0,0,.86);
+}
+
+#historia .internal-bg::before,
+#historia .internal-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+#historia .internal-bg::before{
+  opacity:.44;
+  background:
+    radial-gradient(circle at 9% 11%,rgba(214,154,91,.08) 0 2px,transparent 3px),
+    radial-gradient(circle at 34% 42%,rgba(0,0,0,.24) 0 3px,transparent 4px),
+    radial-gradient(circle at 79% 73%,rgba(209,143,80,.06) 0 2px,transparent 3px),
+    repeating-linear-gradient(113deg,transparent 0 22px,rgba(255,255,255,.012) 23px 24px,transparent 25px 47px);
+  background-size:61px 57px,89px 83px,73px 71px,auto;
+}
+
+#historia .internal-bg::after{
+  background:
+    linear-gradient(94deg,transparent 0 14%,rgba(0,0,0,.50) 14.3% 14.8%,transparent 15.1% 100%),
+    linear-gradient(4deg,transparent 0 78%,rgba(0,0,0,.34) 78.3% 78.8%,transparent 79.1% 100%);
+  opacity:.62;
+}
+
+#historia .internal-nav{
+  width:min(1180px,94vw);
+  gap:clamp(5px,.6vw,9px);
+}
+#historia .internal-nav a{
+  background:
+    radial-gradient(circle at 10px 10px,#392414 0 2px,#9c693c 3px 4px,transparent 5px),
+    radial-gradient(circle at calc(100% - 10px) calc(100% - 10px),#392414 0 2px,#9c693c 3px 4px,transparent 5px),
+    repeating-linear-gradient(0deg,rgba(53,30,16,.10) 0 1px,transparent 1px 6px),
+    linear-gradient(152deg,#9a6738,#6b421f 68%,#5a3417);
+  border:2px solid #24150b;
+  color:#140c07;
+  box-shadow:0 7px 14px rgba(0,0,0,.62),inset 0 0 0 1px rgba(242,194,128,.14);
+}
+#historia .internal-nav a:nth-child(1){transform:rotate(-1.1deg) translateY(2px)}
+#historia .internal-nav a:nth-child(2){transform:rotate(.45deg) translateY(-1px)}
+#historia .internal-nav a:nth-child(3){transform:rotate(-.35deg) translateY(1px)}
+#historia .internal-nav a:nth-child(4){transform:rotate(.85deg) translateY(3px)}
+#historia .internal-nav a:nth-child(5){transform:rotate(-.7deg)}
+#historia .internal-nav a:nth-child(6){transform:rotate(.55deg) translateY(2px)}
+
+#historia .history-sheet{
+  position:relative;
+  width:min(1320px,95vw);
+  margin:3vh auto 4vh;
+  padding:clamp(26px,3.4vw,48px);
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  overflow:visible;
+  clip-path:none;
+}
+#historia .history-sheet::before,
+#historia .history-sheet::after{
+  display:none;
+}
+
+#historia .sheet-label{
+  display:inline-block;
+  position:relative;
+  z-index:3;
+  margin:0 0 10px clamp(8px,1vw,18px);
+  padding:7px 12px 6px;
+  background:#21160f;
+  color:#b77c45;
+  border:1px solid rgba(139,83,42,.48);
+  box-shadow:0 4px 12px rgba(0,0,0,.54);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.16em;
+  transform:rotate(-.6deg);
+}
+
+#historia .history-sheet>h2{
+  position:relative;
+  z-index:3;
+  width:max-content;
+  max-width:94%;
+  margin:0 0 clamp(22px,3vw,36px) clamp(4px,.6vw,10px);
+  color:#b88a52;
+  font-size:clamp(46px,6vw,86px);
+  line-height:.9;
+  letter-spacing:-.045em;
+  text-shadow:0 5px 20px rgba(0,0,0,.78);
+  transform:rotate(-.35deg);
+}
+#historia .history-sheet>h2::after{
+  content:"";
+  position:absolute;
+  left:0;right:-9%;bottom:-13px;height:4px;
+  background:linear-gradient(90deg,#7a4726,rgba(122,71,38,.20),transparent);
+  transform:rotate(.25deg);
+}
+
+#historia .history-layout{
+  position:relative;
+  display:block;
+  min-height:690px;
+}
+
+#historia .history-copy{
+  position:relative;
+  z-index:2;
+  width:min(820px,70%);
+  margin-left:clamp(0px,1vw,14px);
+  padding:clamp(34px,4vw,56px) clamp(32px,4.4vw,64px) clamp(40px,4.6vw,66px);
+  color:#1c140e;
+  font-size:clamp(16px,1.24vw,18px);
+  line-height:1.68;
+  background:
+    linear-gradient(96deg,transparent 0 2%,rgba(70,47,30,.05) 2.2% 2.7%,transparent 3% 100%),
+    repeating-linear-gradient(0deg,rgba(56,40,26,.025) 0 1px,transparent 1px 5px),
+    radial-gradient(circle at 84% 14%,rgba(94,59,30,.08),transparent 21%),
+    radial-gradient(circle at 13% 78%,rgba(73,47,29,.07),transparent 25%),
+    linear-gradient(103deg,#b89c73 0%,#ad916a 48%,#9b805e 100%);
+  border:1px solid #4a3220;
+  box-shadow:0 22px 48px rgba(0,0,0,.58),inset 0 0 36px rgba(77,51,32,.12);
+  clip-path:polygon(.5% .8%,99.4% 0,100% 8%,99.5% 20%,100% 35%,99.3% 51%,100% 68%,99.5% 82%,100% 99%,91% 99.5%,77% 100%,61% 99.4%,43% 100%,28% 99.4%,14% 100%,.3% 99.1%,0 83%,.5% 69%,0 52%,.45% 34%,0 17%);
+  transform:rotate(-.35deg);
+}
+
+#historia .history-copy::before,
+#historia .history-copy::after{
+  content:"";
+  position:absolute;
+  z-index:4;
+  pointer-events:none;
+  height:24px;
+  background:rgba(148,117,77,.62);
+  box-shadow:0 2px 5px rgba(0,0,0,.20);
+}
+#historia .history-copy::before{
+  width:112px;top:-11px;left:8%;transform:rotate(-4deg);
+}
+#historia .history-copy::after{
+  width:96px;bottom:-9px;right:11%;transform:rotate(3deg);
+}
+
+#historia .history-copy p,
+#historia .history-copy p:nth-child(n){
+  position:static;
+  width:auto;
+  margin:0 0 1.05em;
+  padding:0;
+  border:0;
+  background:none;
+  box-shadow:none;
+  clip-path:none;
+  color:#1d150f;
+  transform:none;
+}
+#historia .history-copy p::before{display:none}
+#historia .history-copy p:last-of-type{margin-bottom:0}
+#historia .history-copy strong{color:#110d09;font-weight:800}
+#historia .history-copy .history-close{
+  display:inline-block;
+  width:auto;
+  max-width:100%;
+  margin-top:1.25em;
+  padding:9px 12px 8px;
+  color:#d0aa77;
+  background:#1c130d;
+  border:1px solid rgba(101,59,29,.75);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.035em;
+  transform:rotate(-.45deg);
+}
+
+#historia .pinned-photo{
+  position:absolute;
+  z-index:5;
+  top:clamp(62px,8vw,108px);
+  right:clamp(-10px,1vw,18px);
+  width:min(470px,36vw);
+  padding:9px 9px 32px;
+  background:linear-gradient(110deg,#b69c74,#987c5d 58%,#80684e);
+  border:1px solid #3d2818;
+  box-shadow:0 24px 56px rgba(0,0,0,.68),0 0 0 7px rgba(5,3,2,.26);
+  transform:rotate(2.1deg);
+}
+#historia .pinned-photo::before{
+  top:-13px;left:33%;width:102px;height:25px;
+  background:rgba(151,119,79,.68);
+  transform:rotate(-5deg);
+}
+#historia .pinned-photo::after{
+  content:"";
+  position:absolute;
+  left:-18px;bottom:18%;width:116px;height:29px;
+  background:rgba(145,113,76,.54);
+  box-shadow:0 2px 5px rgba(0,0,0,.20);
+  transform:rotate(7deg);
+}
+#historia .pinned-photo img{
+  display:block;
+  width:100%;
+  filter:saturate(.66) contrast(1.14) brightness(.80) sepia(.10);
+}
+#historia .pinned-photo figcaption{
+  color:#2e2116;
+  letter-spacing:.07em;
+}
+
+#historia .history-layout::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  right:1%;top:34%;
+  width:27%;height:36%;
+  opacity:.32;
+  background:
+    linear-gradient(13deg,transparent 0 42%,rgba(108,59,28,.35) 42.5% 44%,transparent 44.5% 100%),
+    linear-gradient(97deg,transparent 0 71%,rgba(95,51,26,.28) 71.5% 73%,transparent 73.5% 100%);
+  filter:blur(.2px);
+}
+
+@media (max-width:980px){
+  #historia .history-layout{min-height:0;display:flex;flex-direction:column;gap:28px}
+  #historia .history-copy{width:100%;margin:0;padding:34px 30px 42px;transform:rotate(-.18deg)}
+  #historia .pinned-photo{position:relative;top:auto;right:auto;width:min(82vw,560px);align-self:center;margin:-8px 0 4px;transform:rotate(1.1deg)}
+  #historia .history-layout::after{display:none}
+}
+
+@media (max-width:620px){
+  #historia .history-sheet{width:96vw;margin-top:1vh;padding:20px 12px 32px}
+  #historia .sheet-label{font-size:10px;letter-spacing:.10em;margin-left:2px}
+  #historia .history-sheet>h2{font-size:clamp(44px,15vw,68px);margin-left:0}
+  #historia .history-copy{padding:28px 22px 34px;font-size:16px;line-height:1.64}
+  #historia .pinned-photo{width:91vw}
+}
+/* HISTORY-V4-END */
