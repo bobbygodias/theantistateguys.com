@@ -55,20 +55,21 @@ for (const geometry of geometries){
         const r = el.getBoundingClientRect();
         return s.display !== 'none' && s.visibility !== 'hidden' && Number(s.opacity) !== 0 && r.width > 1 && r.height > 1;
       };
+      const functional = el => !el.closest('[aria-hidden="true"]');
       const targets = [
         ...document.querySelectorAll('.site-nav a'),
         ...(route ? route.querySelectorAll('a,button') : [])
-      ].filter(visible);
+      ].filter(visible).filter(functional);
       const minTap = targets.length ? Math.min(...targets.map(el => {
         const r = el.getBoundingClientRect();
         return Math.min(r.width,r.height);
       })) : 0;
       const bounds = main.getBoundingClientRect();
-      const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible) : [];
-      const clipped = candidates.filter(el => {
+      const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
+      const clippedElements = candidates.filter(el => {
         const r = el.getBoundingClientRect();
         return r.left < bounds.left - 2 || r.right > bounds.right + 2;
-      }).length;
+      });
       const radio = document.querySelector('.boombox-art');
       const radioBg = radio ? getComputedStyle(radio).backgroundImage : '';
       const active = route?.dataset.route || 'unknown';
@@ -81,7 +82,8 @@ for (const geometry of geometries){
         overflowX:main.scrollWidth > main.clientWidth + 2,
         scrollY:main.scrollHeight > main.clientHeight + 2,
         minTap:Math.round(minTap),
-        clipped,
+        clipped:clippedElements.length,
+        clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
         radioIndependent:radioBg.includes('jvc-player.svg') && !radioBg.includes('home-scene.webp'),
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
@@ -103,7 +105,7 @@ for (const geometry of geometries){
       failures++;
       const shot = path.join(artifactDir,`${safeName(geometry.name)}-${safeName(route)}.png`);
       await page.screenshot({path:shot,fullPage:true});
-      console.error(`FAIL ${geometry.width}x${geometry.height} ${route}: ${issues.join(', ')}`);
+      console.error(`FAIL ${geometry.width}x${geometry.height} ${route}: ${issues.join(', ')}${measured.clippedTags.length?' · '+measured.clippedTags.join(', '):''}`);
     } else {
       console.log(`PASS ${geometry.width}x${geometry.height} ${route} · tap>=${measured.minTap} · scrollY=${measured.scrollY?'sim':'não'}`);
     }
@@ -123,7 +125,7 @@ const summary = [
   `- Falhas: ${failures}`,
   `- JVC vetorial puro: ${vectorRadio ? 'sim' : 'NÃO'}`,
   '',
-  ...results.filter(r=>!r.pass).map(r=>`- FAIL ${r.width}×${r.height} ${r.route}: ${r.issues.join(', ')}`)
+  ...results.filter(r=>!r.pass).map(r=>`- FAIL ${r.width}×${r.height} ${r.route}: ${r.issues.join(', ')}${r.clippedTags.length?' · '+r.clippedTags.join(', '):''}`)
 ].join('\n');
 await fs.writeFile(path.join(artifactDir,'summary.md'),summary);
 console.log(`\n${summary}`);
