@@ -561,4 +561,17 @@
   #historia .history-copy{padding:28px 22px 34px;font-size:16px;line-height:1.64}
   #historia .pinned-photo{width:91vw}
 }
+
+/* HISTORY V4.1 — objective cleanup after first browser render. */
+#historia .sheet-label{display:none}
+#historia .history-copy{width:min(760px,60%)}
+#historia .pinned-photo{
+  top:clamp(86px,8vw,112px);
+  right:clamp(8px,2vw,30px);
+  width:min(420px,32vw);
+}
+@media (max-width:980px){
+  #historia .history-copy{width:100%}
+  #historia .pinned-photo{width:min(82vw,540px)}
+}
 /* HISTORY-V4-END */
