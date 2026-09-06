@@ -23,7 +23,37 @@ async function assertDecodableImage(page, path) {
   console.log(`decoded ${path}: ${result.width}x${result.height}`);
 }
 
-async function capture(name, viewport, hash = '#home', fullPage = false) {
+async function assertHomeMode(page, name, viewport) {
+  const ratio = viewport.width / viewport.height;
+  const desktopVisible = await page.locator('.desktop-stage').isVisible();
+  const mobileVisible = await page.locator('.mobile-home').isVisible();
+  const expectWide = ratio >= 1.1;
+  if (expectWide && (!desktopVisible || mobileVisible)) {
+    throw new Error(`${name}: expected wide scenic mode at ratio ${ratio.toFixed(2)}`);
+  }
+  if (!expectWide && (desktopVisible || !mobileVisible)) {
+    throw new Error(`${name}: expected recomposed scenic mode at ratio ${ratio.toFixed(2)}`);
+  }
+}
+
+async function assertHomeTargets(page, name) {
+  const selector = (await page.locator('.mobile-home').isVisible())
+    ? '.mobile-signs a, .mobile-video-card, .mobile-library, .mobile-controls button, .mobile-socials a'
+    : '.hotspot, .player-hit, .photo-sign';
+  const boxes = await page.locator(selector).evaluateAll(nodes => nodes
+    .filter(n => {
+      const s = getComputedStyle(n);
+      return s.display !== 'none' && s.visibility !== 'hidden';
+    })
+    .map(n => {
+      const r = n.getBoundingClientRect();
+      return { w: r.width, h: r.height, label: n.getAttribute('aria-label') || n.textContent?.trim() || n.className };
+    }));
+  const tiny = boxes.filter(b => b.w < 28 || b.h < 28);
+  if (tiny.length) throw new Error(`${name}: interactive target below 28px: ${JSON.stringify(tiny.slice(0, 5))}`);
+}
+
+async function capture(name, viewport, hash = '#home', fullPage = false, homeChecks = false) {
   const page = await readyPage(viewport);
   await page.goto(`http://127.0.0.1:4173/${hash}`, { waitUntil: 'domcontentloaded', timeout: 15000 });
   await page.waitForTimeout(700);
@@ -31,6 +61,10 @@ async function capture(name, viewport, hash = '#home', fullPage = false) {
   if (!(await page.locator(`[data-route="${route}"]`).isVisible())) throw new Error(`${name}: route ${route} is not visible`);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
   if (overflow) throw new Error(`${name}: horizontal overflow detected`);
+  if (homeChecks) {
+    await assertHomeMode(page, name, viewport);
+    await assertHomeTargets(page, name);
+  }
   await page.screenshot({ path: `qa-screenshots/${name}.png`, fullPage });
   await page.close();
 }
@@ -47,11 +81,21 @@ for (const path of [
 ]) await assertDecodableImage(probe, path);
 await probe.close();
 
-await capture('home-1672x941', { width: 1672, height: 941 }, '#home', false);
-await capture('home-1440x900', { width: 1440, height: 900 }, '#home', false);
-await capture('home-tablet-landscape-1280x800', { width: 1280, height: 800 }, '#home', false);
-await capture('home-tablet-portrait-800x1280', { width: 800, height: 1280 }, '#home', true);
-await capture('home-phone-390x844', { width: 390, height: 844 }, '#home', true);
+const homeMatrix = [
+  ['home-320x568', { width: 320, height: 568 }, true],
+  ['home-390x844', { width: 390, height: 844 }, true],
+  ['home-430x932', { width: 430, height: 932 }, true],
+  ['home-600x1024', { width: 600, height: 1024 }, true],
+  ['home-800x1280', { width: 800, height: 1280 }, true],
+  ['home-1024x768', { width: 1024, height: 768 }, false],
+  ['home-1280x800', { width: 1280, height: 800 }, false],
+  ['home-1672x941', { width: 1672, height: 941 }, false],
+  ['home-2560x1080', { width: 2560, height: 1080 }, false]
+];
+for (const [name, viewport, fullPage] of homeMatrix) {
+  await capture(name, viewport, '#home', fullPage, true);
+}
+
 await capture('historia-1440', { width: 1440, height: 900 }, '#historia', true);
 await capture('historia-mobile-390x844', { width: 390, height: 844 }, '#historia', true);
 await capture('integrantes-1440', { width: 1440, height: 900 }, '#integrantes', true);
@@ -80,4 +124,4 @@ fs.writeFileSync('qa-screenshots/console-errors.txt', errors.join('\n') || 'none
 await browser.close();
 const fatal = errors.filter(line => line.includes('pageerror:'));
 if (fatal.length) { console.error(fatal.join('\n')); process.exitCode = 1; }
-else console.log('Preview QA completed for Home and all internal routes.');
+else console.log('Responsive QA completed across a viewport/aspect-ratio matrix plus internal routes.');
