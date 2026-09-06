@@ -575,3 +575,12 @@
   #historia .pinned-photo{width:min(82vw,540px)}
 }
 /* HISTORY-V4-END */
+
+
+/* TABLET-SCENIC-HOTFIX */
+/* Tablets preserve the approved cinematic Home instead of the stacked phone composition. */
+@media (min-width:621px) and (max-width:980px){
+  .desktop-stage{display:block!important}
+  .mobile-home{display:none!important}
+}
+/* TABLET-SCENIC-HOTFIX-END */
