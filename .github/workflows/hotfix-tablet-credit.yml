@@ -25,27 +25,13 @@ jobs:
           set -euo pipefail
           git config user.name "Bobby Dias - O Capitão"
           git config user.email "renatogodias@gmail.com"
+          cp scripts/hotfix_tablet_credit.py /tmp/hotfix_tablet_credit.py
 
           patch_branch () {
             branch="$1"
             git checkout "$branch"
             git pull --ff-only origin "$branch"
-            python - <<'PY'
-from pathlib import Path
-
-index = Path('index.html')
-html = index.read_text(encoding='utf-8')
-html = html.replace('ENSAIO FOTOGRÁFICO · GABRIELLE', 'ENSAIO FOTOGRÁFICO · GABRYELLE ARACKELLY')
-index.write_text(html, encoding='utf-8')
-
-css = Path('scenic-fixes.css')
-text = css.read_text(encoding='utf-8')
-marker = '/* TABLET-SCENIC-HOTFIX */'
-block = '''\n\n/* TABLET-SCENIC-HOTFIX */\n/* Tablets preserve the approved cinematic Home instead of the stacked phone composition. */\n@media (min-width:621px) and (max-width:980px){\n  .desktop-stage{display:block!important}\n  .mobile-home{display:none!important}\n}\n/* TABLET-SCENIC-HOTFIX-END */\n'''
-if marker not in text:
-    text += block
-css.write_text(text, encoding='utf-8')
-PY
+            python /tmp/hotfix_tablet_credit.py
             git add index.html scenic-fixes.css
             if git diff --cached --quiet; then
               echo "$branch already patched"
