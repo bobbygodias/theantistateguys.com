@@ -36,11 +36,18 @@ function syncDisplay(){
   if (mobileCurrent) mobileCurrent.textContent = formatTime(audio.currentTime);
   if (desktopTotal) desktopTotal.textContent = formatTime(audio.duration);
   if (mobileTotal) mobileTotal.textContent = formatTime(audio.duration);
-  document.body.classList.toggle('is-playing', !audio.paused && !audio.ended);
+  const playing=!audio.paused && !audio.ended;
+  document.body.classList.toggle('is-playing', playing);
   document.querySelectorAll('#play-pause,#mobile-play').forEach(btn=>{
-    btn.setAttribute('aria-label', audio.paused ? 'Reproduzir' : 'Pausar');
+    btn.setAttribute('aria-label', playing ? 'Pausar' : 'Reproduzir');
+    btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
   });
-  document.querySelectorAll('.track-row').forEach((row,i)=>row.classList.toggle('is-current',i===currentIndex));
+  document.querySelectorAll('.track-row').forEach((row,i)=>{
+    const current=i===currentIndex;
+    row.classList.toggle('is-current',current);
+    if(current) row.setAttribute('aria-current','true');
+    else row.removeAttribute('aria-current');
+  });
 }
 function loadTrack(index,{autoplay=false}={}){
   if (!tracks.length) return;
@@ -119,7 +126,15 @@ function resetScroll(){
   if(main && typeof main.scrollTo==='function') main.scrollTo({top:0,left:0,behavior:'instant'});
   else window.scrollTo({top:0,left:0,behavior:'instant'});
 }
-function setRoute(name,{replace=false}={}){
+function focusRouteHeading(route){
+  if(!route) return;
+  const labelledBy=route.getAttribute('aria-labelledby');
+  const heading=(labelledBy && document.getElementById(labelledBy)) || route.querySelector('h1,h2');
+  if(!heading) return;
+  if(!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex','-1');
+  requestAnimationFrame(()=>heading.focus({preventScroll:true}));
+}
+function setRoute(name,{replace=false,focusHeading=false}={}){
   const route = document.querySelector(`[data-route="${name}"]`) || document.querySelector('[data-route="home"]');
   document.querySelectorAll('[data-route]').forEach(section=>{
     const active=section===route;
@@ -134,13 +149,14 @@ function setRoute(name,{replace=false}={}){
   const hash=`#${route.dataset.route}`;
   if(location.hash!==hash) history[replace?'replaceState':'pushState'](null,'',hash);
   resetScroll();
+  if(focusHeading) focusRouteHeading(route);
 }
 document.addEventListener('click',event=>{
   const link=event.target.closest('[data-route-link]');
   if(!link)return;
   event.preventDefault();
-  setRoute(link.dataset.routeLink);
+  setRoute(link.dataset.routeLink,{focusHeading:true});
 });
-window.addEventListener('hashchange',()=>setRoute(location.hash.slice(1)||'home',{replace:true}));
+window.addEventListener('hashchange',()=>setRoute(location.hash.slice(1)||'home',{replace:true,focusHeading:true}));
 setRoute(location.hash.slice(1)||'home',{replace:true});
 loadMusic();
