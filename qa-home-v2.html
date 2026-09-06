@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#080604">
+  <meta name="robots" content="noindex,nofollow">
+  <title>QA Home V2 — Bobby Dias & The Anti-State Guys</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="qa-home-v2.css">
+</head>
+<body>
+  <a class="skip-link" href="#home-content">Ir para o conteúdo</a>
+
+  <main id="home-content" class="qa-home" aria-labelledby="qa-home-title">
+    <h1 id="qa-home-title" class="visually-hidden">Bobby Dias &amp; The Anti-State Guys</h1>
+    <div class="alley-bg" aria-hidden="true"></div>
+
+    <section class="home-shell" aria-label="Beco urbano noturno da banda">
+      <nav class="scene-nav" aria-label="Navegação principal">
+        <a href="/#home">HOME</a>
+        <a href="/#historia">HISTÓRIA</a>
+        <a href="/#contato">CONTATO</a>
+        <a href="/#integrantes">INTEGRANTES</a>
+        <a href="/#shows">SHOWS</a>
+        <a href="/#fotos">FOTOS</a>
+      </nav>
+
+      <div class="brand-board">
+        <img class="wordmark" src="assets/wordmark.svg" alt="Bobby Dias & The Anti-State Guys">
+      </div>
+
+      <button class="video-board" id="intro-placeholder" type="button" aria-label="Vídeo de apresentação da banda, em produção">
+        <img src="assets/band-hero.jpg" alt="" loading="eager">
+        <span class="video-play" aria-hidden="true">▶</span>
+        <strong>VÍDEO DE APRESENTAÇÃO</strong>
+        <small>EM PRODUÇÃO</small>
+      </button>
+
+      <section class="music-machine" aria-label="Player de músicas">
+        <div class="machine-photo" aria-hidden="true"></div>
+        <div class="player-display" aria-live="polite">
+          <span id="track-title">Carregando faixas...</span>
+          <span class="time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
+        </div>
+
+        <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog">FAIXAS</button>
+        <div class="player-controls" aria-label="Controles do player">
+          <button id="prev-track" type="button" aria-label="Faixa anterior">⏮</button>
+          <button id="play-pause" type="button" aria-label="Reproduzir">▶</button>
+          <button id="stop-track" type="button" aria-label="Parar">■</button>
+          <button id="next-track" type="button" aria-label="Próxima faixa">⏭</button>
+        </div>
+      </section>
+
+      <div class="social-links" aria-label="Redes sociais">
+        <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a>
+        <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="music-dialog" id="music-dialog" aria-labelledby="music-dialog-title">
+    <div class="dialog-shell">
+      <header>
+        <div><span>BOBBY DIAS &amp; THE ANTI-STATE GUYS</span><h2 id="music-dialog-title">FAIXAS</h2></div>
+        <button type="button" id="close-library" aria-label="Fechar">×</button>
+      </header>
+      <div class="music-list" id="music-list"></div>
+    </div>
+  </dialog>
+
+  <audio id="audio" preload="metadata"></audio>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="qa-home-v2.js" defer></script>
+</body>
+</html>
