@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090706"/>
+      <stop offset=".36" stop-color="#17100b"/>
+      <stop offset=".72" stop-color="#0d0907"/>
+      <stop offset="1" stop-color="#050403"/>
+    </linearGradient>
+    <radialGradient id="lampGlow" cx="82%" cy="8%" r="38%">
+      <stop offset="0" stop-color="#f0a74b" stop-opacity=".52"/>
+      <stop offset=".18" stop-color="#c97b32" stop-opacity=".24"/>
+      <stop offset=".48" stop-color="#7b431c" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="brick" width="132" height="64" patternUnits="userSpaceOnUse">
+      <rect width="132" height="64" fill="none"/>
+      <path d="M0 63H132M0 0V63M66 0V31M132 0V63M33 32H99" stroke="#5b321f" stroke-opacity=".22" stroke-width="3"/>
+      <path d="M2 60H130M3 3V61M68 2V31M130 3V61" stroke="#c17a48" stroke-opacity=".04" stroke-width="1"/>
+    </pattern>
+    <filter id="noise" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="4" seed="17" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="a">
+        <feFuncA type="table" tableValues="0 .28"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="a" mode="soft-light"/>
+    </filter>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".025 .09" numOctaves="3" seed="9" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <linearGradient id="pipe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#090807"/>
+      <stop offset=".18" stop-color="#2c2723"/>
+      <stop offset=".42" stop-color="#625444"/>
+      <stop offset=".55" stop-color="#201c19"/>
+      <stop offset=".78" stop-color="#4b3e32"/>
+      <stop offset="1" stop-color="#0b0908"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".75"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#wall)"/>
+  <rect width="1600" height="1000" fill="url(#brick)" opacity=".78"/>
+  <rect width="1600" height="1000" fill="url(#lampGlow)"/>
+  <rect width="1600" height="1000" fill="#000" opacity=".08" filter="url(#noise)"/>
+
+  <!-- old plaster / paste scars -->
+  <g opacity=".56" filter="url(#rough)">
+    <path d="M95 98 C240 40 378 76 488 58 L566 128 520 206 390 220 301 184 173 214 108 176Z" fill="#3a2619"/>
+    <path d="M1288 214 C1372 170 1489 174 1584 211 L1588 396 1515 416 1452 364 1366 389 1298 326Z" fill="#2a1c14"/>
+    <path d="M1188 704 C1298 662 1448 682 1599 648 L1600 920 1498 948 1370 902 1248 934 1176 858Z" fill="#251811"/>
+    <path d="M62 642 C156 606 210 636 292 614 L330 758 280 826 174 802 112 842 58 770Z" fill="#2f1e14"/>
+  </g>
+
+  <!-- paste streaks / stains -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M238 72C198 258 226 426 181 664" stroke="#9b5f34" stroke-opacity=".13" stroke-width="8"/>
+    <path d="M1248 86C1204 258 1270 408 1224 596" stroke="#8b4b24" stroke-opacity=".16" stroke-width="11"/>
+    <path d="M1122 188C1088 306 1118 426 1070 548" stroke="#3f2317" stroke-opacity=".28" stroke-width="6"/>
+    <path d="M468 770C612 726 744 756 896 728" stroke="#b27343" stroke-opacity=".06" stroke-width="4"/>
+  </g>
+
+  <!-- left pipe -->
+  <g filter="url(#shadow)">
+    <rect x="48" y="-25" width="86" height="1060" rx="30" fill="url(#pipe)"/>
+    <rect x="38" y="145" width="106" height="36" rx="14" fill="#1b1714" stroke="#655341" stroke-width="3"/>
+    <rect x="38" y="478" width="106" height="36" rx="14" fill="#1a1613" stroke="#59493a" stroke-width="3"/>
+    <rect x="39" y="808" width="105" height="36" rx="14" fill="#171411" stroke="#514236" stroke-width="3"/>
+    <path d="M73 0V1000" stroke="#9a8469" stroke-opacity=".16" stroke-width="5"/>
+  </g>
+
+  <!-- right pipe -->
+  <g opacity=".88" filter="url(#shadow)">
+    <rect x="1504" y="-20" width="42" height="1040" rx="18" fill="url(#pipe)"/>
+    <rect x="1495" y="244" width="60" height="28" rx="10" fill="#171411" stroke="#5d4c3d" stroke-width="2"/>
+    <rect x="1495" y="666" width="60" height="28" rx="10" fill="#171411" stroke="#5d4c3d" stroke-width="2"/>
+  </g>
+
+  <!-- lamp -->
+  <g transform="translate(1325 0)" filter="url(#shadow)">
+    <path d="M80 0V74" stroke="#2b251f" stroke-width="12"/>
+    <path d="M24 89Q80 48 136 89L120 114H40Z" fill="#29221b" stroke="#66513b" stroke-width="3"/>
+    <ellipse cx="80" cy="108" rx="38" ry="15" fill="#f6bb68" opacity=".72"/>
+    <circle cx="80" cy="110" r="56" fill="#d98a3d" opacity=".09"/>
+  </g>
+
+  <!-- blank torn poster remnants, no slogans -->
+  <g opacity=".42" filter="url(#rough)">
+    <path d="M1324 176L1468 184 1470 312 1438 324 1414 306 1382 318 1348 303 1326 274Z" fill="#9f7e58"/>
+    <path d="M180 238L298 226 306 310 278 320 244 304 214 316 182 296Z" fill="#887052"/>
+    <path d="M1286 536L1434 524 1446 608 1412 622 1378 610 1342 626 1294 600Z" fill="#71583f"/>
+  </g>
+
+  <!-- subtle floor / vignette -->
+  <path d="M0 900C356 858 612 870 820 896S1260 940 1600 890V1000H0Z" fill="#030302" opacity=".72"/>
+  <rect width="1600" height="1000" fill="none" stroke="#000" stroke-opacity=".54" stroke-width="120"/>
+</svg>
