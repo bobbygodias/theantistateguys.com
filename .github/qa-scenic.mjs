@@ -41,7 +41,9 @@ for (const path of [
   '/assets/home-scene.webp',
   '/assets/wordmark.svg',
   '/assets/photos-pose-6.webp',
-  '/assets/studio.webp'
+  '/assets/studio.webp',
+  '/assets/members/thomaz.webp',
+  '/assets/history-wall.svg'
 ]) await assertDecodableImage(probe, path);
 await probe.close();
 
@@ -49,6 +51,9 @@ await capture('home-1672x941', { width: 1672, height: 941 }, '#home', false);
 await capture('home-1440x900', { width: 1440, height: 900 }, '#home', false);
 await capture('home-mobile-390x844', { width: 390, height: 844 }, '#home', true);
 await capture('historia-1440', { width: 1440, height: 900 }, '#historia', true);
+await capture('historia-mobile-390x844', { width: 390, height: 844 }, '#historia', true);
+await capture('integrantes-1440', { width: 1440, height: 900 }, '#integrantes', true);
+await capture('integrantes-mobile-390x844', { width: 390, height: 844 }, '#integrantes', true);
 await capture('fotos-1440', { width: 1440, height: 900 }, '#fotos', true);
 await capture('shows-1440', { width: 1440, height: 900 }, '#shows', true);
 await capture('contato-1440', { width: 1440, height: 900 }, '#contato', true);
@@ -73,4 +78,4 @@ fs.writeFileSync('qa-screenshots/console-errors.txt', errors.join('\n') || 'none
 await browser.close();
 const fatal = errors.filter(line => line.includes('pageerror:'));
 if (fatal.length) { console.error(fatal.join('\n')); process.exitCode = 1; }
-else console.log('Preview QA completed; Thomaz image intentionally excluded pending binary replacement.');
+else console.log('Preview QA completed for Home and all internal routes.');
