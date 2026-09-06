@@ -1,0 +1,66 @@
+name: QA scenic v2 persisted preview
+
+on:
+  push:
+    branches: [scenic-v2]
+    paths:
+      - QA-SCENIC-GO
+
+permissions:
+  contents: write
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scenic-v2
+        uses: actions/checkout@v4
+        with:
+          ref: scenic-v2
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install playwright@1.55.0 >/dev/null 2>&1
+          npx playwright install --with-deps chromium
+
+      - name: Start local site and run QA
+        run: |
+          python3 -m http.server 4173 >/tmp/tasg-http.log 2>&1 &
+          sleep 2
+          node .github/qa-scenic.mjs
+
+      - name: Persist QA report and preview screenshots
+        run: |
+          rm -rf .qa-preview
+          mkdir -p .qa-preview
+          cp qa-screenshots/*.png .qa-preview/
+          cp qa-screenshots/console-errors.txt .qa-preview/console-errors.txt
+          {
+            echo '# Scenic v2 — Browser QA'
+            echo
+            echo '- Result: PASS'
+            echo '- Browser: Chromium / Playwright 1.55.0'
+            echo '- Tested: desktop 1672x941, desktop 1440x900, mobile 390x844, all internal routes, image decoding, music catalog and persistent audio element.'
+            echo "- Source commit: $GITHUB_SHA"
+            echo
+            echo 'Temporary screenshots are stored in `.qa-preview/` for design review and must be removed before production merge.'
+          } > QA-VERIFY.md
+
+          git config user.name "Bobby Dias - O Capitão"
+          git config user.email "renatogodias@gmail.com"
+          git add QA-VERIFY.md .qa-preview/
+          git commit -m "test: persist scenic v2 visual QA preview"
+          git push origin HEAD:scenic-v2
+
+      - name: Upload QA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scenic-v2-screenshots-persisted
+          path: qa-screenshots/
+          if-no-files-found: error
