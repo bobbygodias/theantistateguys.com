@@ -11,7 +11,9 @@
 /* Cada shell vira contexto próprio para que componentes respondam ao espaço realmente recebido. */
 .route-shell{
   container-type:inline-size;
-  container-name:route-shell
+  container-name:route-shell;
+  min-inline-size:0;
+  max-inline-size:100%
 }
 
 /* ---------- HISTÓRIA ----------
@@ -37,7 +39,9 @@
    Auto-fit decide quantidade de pôsteres; cada cartão também é um recipiente. */
 .member-card{
   container-type:inline-size;
-  container-name:member-card
+  container-name:member-card;
+  min-inline-size:0;
+  min-block-size:0
 }
 .member-card img{aspect-ratio:4/3}
 
@@ -54,7 +58,7 @@
     align-items:stretch
   }
   .member-card img{height:100%;aspect-ratio:auto;object-position:center top}
-  .member-card>div{align-self:center}
+  .member-card>div{align-self:center;min-inline-size:0}
 }
 
 /* Num espaço muito largo, evita cartões gigantes: mais colunas surgem naturalmente. */
@@ -68,21 +72,27 @@
 #fotos.route-panel{display:grid}
 .photos-shell{
   min-height:100%;
+  min-block-size:0;
   display:grid;
   grid-template-rows:auto auto minmax(0,1fr);
   align-content:stretch
 }
 .photos-shell>.sheet-label{align-self:start}
 .photos-shell>h2{align-self:start}
-.photo-gallery{min-height:0;height:100%;align-content:center}
+.photo-gallery{min-height:0;min-block-size:0;height:100%;align-content:center}
 .gallery-photo{
   display:grid;
   grid-template-rows:minmax(0,1fr) auto;
   min-height:0;
+  min-block-size:0;
+  min-inline-size:0;
   height:100%
 }
 .gallery-photo img{
   min-height:0;
+  min-block-size:0;
+  min-inline-size:0;
+  max-inline-size:100%;
   height:100%;
   max-height:none;
   object-fit:contain
@@ -109,17 +119,21 @@
 #shows.route-panel{display:grid}
 .shows-shell{
   min-height:100%;
+  min-block-size:0;
   display:grid;
   grid-template-rows:auto minmax(0,1fr);
   align-content:stretch
 }
 .show-layout{
   min-height:0;
+  min-block-size:0;
+  min-inline-size:0;
   height:100%;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,23rem),1fr));
   align-items:center
 }
-.studio-art img{max-height:none}
+.studio-art{min-inline-size:0;min-block-size:0}
+.studio-art img{max-height:none;max-inline-size:100%;min-inline-size:0}
 
 /* A foto só tenta ocupar toda a altura da sua célula quando a geometria favorece isso.
    Esta regra não cria colunas; o auto-fit acima já decidiu a composição. */
@@ -141,15 +155,19 @@
 #contato.route-panel{display:grid}
 .contact-shell{
   min-height:100%;
+  min-block-size:0;
   display:grid;
   grid-template-rows:auto auto minmax(0,1fr);
   align-content:stretch
 }
 .contact-signs{
   min-height:0;
+  min-block-size:0;
+  min-inline-size:0;
   align-content:center;
   grid-auto-rows:minmax(var(--tap),auto)
 }
+.contact-signs a,.contact-signs strong{min-inline-size:0;max-inline-size:100%;overflow-wrap:anywhere}
 
 @container site (max-height:30rem){
   .contact-shell{padding-block:clamp(7px,1.3cqb,11px)}
@@ -163,8 +181,8 @@
 
 /* ---------- TÍTULOS / RÓTULOS ----------
    cqi do route-shell evita que um título enorme domine uma faixa estreita. */
-.route-shell>h2,.show-copy h2{font-size:clamp(28px,7cqi,78px)}
-.sheet-label,.show-stamp{font-size:clamp(9px,1.45cqi,13px)}
+.route-shell>h2,.show-copy h2{font-size:clamp(28px,7cqi,78px);max-inline-size:100%;overflow-wrap:anywhere}
+.sheet-label,.show-stamp{font-size:clamp(9px,1.45cqi,13px);max-inline-size:100%;overflow-wrap:anywhere}
 
 /* ---------- GEOMETRIAS EXTREMAS ---------- */
 /* Exemplo explicitamente discutido: algo como 300×960 deve continuar utilizável. */
@@ -175,7 +193,6 @@
   .history-copy{padding:14px;font-size:14px;line-height:1.5}
   .member-wall{grid-template-columns:1fr}
   .contact-signs{grid-template-columns:1fr}
-  .contact-signs strong{overflow-wrap:anywhere}
 }
 
 /* Espaço enorme: conteúdo cresce com moderação em vez de virar uma ilha minúscula. */
@@ -185,5 +202,8 @@
   .show-copy p{font-size:clamp(19px,1.25cqi,25px)}
 }
 
-/* Segurança final: nenhum filho de grid pode impor overflow horizontal por conteúdo. */
-.history-layout>*,.member-wall>*,.photo-gallery>*,.show-layout>*,.contact-signs>*{min-width:0;max-width:100%}
+/* Segurança final: conteúdo nunca impõe largura ao grid e imagens nunca criam overflow lateral. */
+.history-layout,.member-wall,.photo-gallery,.show-layout,.contact-signs{min-inline-size:0;max-inline-size:100%}
+.history-layout>*,.member-wall>*,.photo-gallery>*,.show-layout>*,.contact-signs>*{min-width:0;min-inline-size:0;max-width:100%;max-inline-size:100%}
+.pinned-photo,.gallery-photo,.studio-art{min-inline-size:0;max-inline-size:100%}
+.pinned-photo img,.gallery-photo img,.studio-art img{max-inline-size:100%;object-fit:contain}
