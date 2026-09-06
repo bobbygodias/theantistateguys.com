@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#080604">
+  <meta name="robots" content="noindex,nofollow">
+  <title>QA V3 — Bobby Dias & The Anti-State Guys</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="qa-site-v3.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+  <nav class="site-nav" aria-label="Navegação principal">
+    <a href="#home" data-route-link="home">HOME</a>
+    <a href="#historia" data-route-link="historia">HISTÓRIA</a>
+    <a href="#contato" data-route-link="contato">CONTATO</a>
+    <a href="#integrantes" data-route-link="integrantes">INTEGRANTES</a>
+    <a href="#fotos" data-route-link="fotos">FOTOS</a>
+    <a href="#shows" data-route-link="shows">SHOWS</a>
+  </nav>
+
+  <main id="main">
+    <section class="route route-home is-active" id="home" data-route="home" aria-labelledby="home-title">
+      <h1 id="home-title" class="visually-hidden">Bobby Dias &amp; The Anti-State Guys</h1>
+
+      <div class="home-world" aria-hidden="true">
+        <img class="alley-photo" src="assets/home-scene.webp" alt="" fetchpriority="high">
+        <div class="alley-shade"></div>
+        <figure class="santiago-ghost">
+          <img src="assets/members/santiago.webp" alt="">
+        </figure>
+      </div>
+
+      <div class="home-layout">
+        <header class="home-brand">
+          <img src="assets/wordmark.svg" alt="Bobby Dias & The Anti-State Guys">
+        </header>
+
+        <div class="home-media">
+          <button class="video-board" id="intro-placeholder" type="button" aria-label="Vídeo de apresentação da banda, em produção">
+            <img src="assets/band-hero.jpg" alt="" loading="eager">
+            <span class="video-play" aria-hidden="true">▶</span>
+            <strong>VÍDEO DE APRESENTAÇÃO</strong>
+            <small>EM PRODUÇÃO</small>
+          </button>
+
+          <section class="music-machine" aria-label="Player de músicas">
+            <div class="boombox-art" aria-hidden="true"></div>
+            <div class="player-display" aria-live="polite">
+              <span id="track-title">Carregando faixas...</span>
+              <span class="time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
+            </div>
+            <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog">FAIXAS</button>
+            <div class="player-controls" aria-label="Controles do player">
+              <button id="prev-track" type="button" aria-label="Faixa anterior">⏮</button>
+              <button id="play-pause" type="button" aria-label="Reproduzir">▶</button>
+              <button id="stop-track" type="button" aria-label="Parar">■</button>
+              <button id="next-track" type="button" aria-label="Próxima faixa">⏭</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="home-socials" aria-label="Redes sociais">
+          <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a>
+          <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="route route-panel" id="historia" data-route="historia" aria-labelledby="historia-title" hidden>
+      <div class="route-world history-world" aria-hidden="true"></div>
+      <div class="route-shell history-shell">
+        <p class="sheet-label">ARQUIVO DA BANDA · GOIÂNIA · 2025</p>
+        <h2 id="historia-title">A HISTÓRIA</h2>
+        <div class="history-layout">
+          <article class="history-copy">
+            <p>A banda surgiu em Goiânia, em fevereiro de 2025, inicialmente com o nome provisório <strong>BreakNews</strong>. Break reuniu McFly no baixo, Young na guitarra solo, Thomaz na guitarra base e Santiago dividido entre vocal e DJ.</p>
+            <p>O repertório era voltado a covers de bandas internacionais. Havia uma única música autoral: <strong>“O Forasteiro”</strong>, uma demo de home studio doada por Bobby Dias depois de uma longa conversa com Break.</p>
+            <p>Meses depois, a BreakNews tocou no aniversário de Break. Trechos da apresentação chegaram a Bobby. A execução de “O Forasteiro” o deixou profundamente insatisfeito. Santiago mediou a discussão e chamou Bobby para um ensaio, para que ele explicasse o que havia sido perdido na interpretação.</p>
+            <p>Durante o ensaio, a condução de Bobby foi bem recebida por todos e veio o convite para liderar o projeto. A mudança trouxe um novo nome, escolhido pela banda em homenagem a ele, e uma nova identidade sonora: <strong>Bobby Dias &amp; The Anti-State Guys</strong>, com repertório majoritariamente autoral e uma mistura de <strong>nu-metal</strong> e <strong>grunge</strong>.</p>
+            <p class="history-close">A história segue sendo escrita.</p>
+          </article>
+          <figure class="pinned-photo">
+            <img src="assets/band-city.webp" alt="Bobby Dias & The Anti-State Guys reunidos" loading="lazy">
+            <figcaption>BOBBY DIAS &amp; THE ANTI-STATE GUYS</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="route route-panel" id="integrantes" data-route="integrantes" aria-labelledby="integrantes-title" hidden>
+      <div class="route-world members-world" aria-hidden="true"></div>
+      <div class="route-shell members-shell">
+        <p class="sheet-label">SEIS HISTÓRIAS · UMA BANDA</p>
+        <h2 id="integrantes-title">INTEGRANTES</h2>
+        <div class="member-wall">
+          <article class="member-card">
+            <img src="assets/members/bobby.webp" alt="Bobby Dias" loading="lazy">
+            <div><h3>Bobby Dias</h3><p class="role">Vocal · compositor · multiinstrumentista</p><p>Escreve desde a infância e passou por piano, cordas, bateria e diferentes bandas. A entrada no projeto redefiniu repertório, direção musical e o próprio nome da banda.</p></div>
+          </article>
+          <article class="member-card">
+            <img src="assets/members/break.webp" alt="Break" loading="lazy">
+            <div><h3>Break</h3><p class="role">Bateria · percussão</p><p>Luiz Paulino Santana cresceu entre oficina, ferramentas, motores e rodeio. Autodidata, levou para a bateria a disciplina e o impacto mecânico que sustentam o peso da banda.</p></div>
+          </article>
+          <article class="member-card">
+            <img src="assets/members/mcfly.webp" alt="Lukas McFly" loading="lazy">
+            <div><h3>Lukas McFly</h3><p class="role">Baixo · backing vocal</p><p>Bacharel em matemática e baixista, voltou à música depois de quase uma década. É uma das bases de sustentação sonora e humana do grupo.</p></div>
+          </article>
+          <article class="member-card">
+            <img src="assets/members/young.webp" alt="Marcus Young" loading="lazy">
+            <div><h3>Marcus Young</h3><p class="role">Guitarra solo · backing vocal</p><p>Vindo da cena underground de Goiânia e Inhumas, é responsável pelos arpejos, solos e timbres mais viscerais do grupo.</p></div>
+          </article>
+          <article class="member-card">
+            <img src="assets/members/thomaz.webp" alt="Thomaz" loading="lazy">
+            <div><h3>Thomaz</h3><p class="role">Guitarra base · backing vocal</p><p>O mais jovem da formação traz skate, cultura DIY e uma guitarra rítmica urbana, distorcida e pouco interessada em virtuosismo gratuito.</p></div>
+          </article>
+          <article class="member-card">
+            <img src="assets/members/santiago.webp" alt="Santiago" loading="lazy">
+            <div><h3>Santiago</h3><p class="role">Vocal · DJ · sonoplastia</p><p>Nascido em Kinshasa e criado no Brasil, mistura rap, nu-metal, scratches e sonoplastia. É a ponte entre a banda e sua camada eletrônica.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="route route-panel" id="fotos" data-route="fotos" aria-labelledby="fotos-title" hidden>
+      <div class="route-world photos-world" aria-hidden="true"></div>
+      <div class="route-shell photos-shell">
+        <p class="sheet-label">ENSAIO FOTOGRÁFICO · GABRYELLE ARACKELLY</p>
+        <h2 id="fotos-title">FOTOS</h2>
+        <div class="photo-gallery">
+          <figure class="gallery-photo">
+            <img src="assets/photos-pose-6.webp" alt="Bobby Dias & The Anti-State Guys em ensaio fotográfico" loading="lazy">
+            <figcaption>Bobby Dias &amp; The Anti-State Guys</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="route route-panel" id="shows" data-route="shows" aria-labelledby="shows-title" hidden>
+      <div class="route-world shows-world" aria-hidden="true"></div>
+      <div class="route-shell shows-shell">
+        <span class="show-stamp">SHOWS</span>
+        <div class="show-layout">
+          <div class="show-copy">
+            <h2 id="shows-title">NO MOMENTO, O PALCO É O ESTÚDIO.</h2>
+            <p>A banda está em estúdio, trabalhando no repertório e preparando as próximas apresentações.</p>
+            <p>Quando houver datas confirmadas, elas serão publicadas aqui.</p>
+          </div>
+          <figure class="studio-art">
+            <img src="assets/studio.webp" alt="Bobby Dias & The Anti-State Guys no estúdio" loading="lazy">
+            <figcaption>STUDIO</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="route route-panel" id="contato" data-route="contato" aria-labelledby="contato-title" hidden>
+      <div class="route-world contact-world" aria-hidden="true"></div>
+      <div class="route-shell contact-shell">
+        <p class="sheet-label">CANAIS OFICIAIS</p>
+        <h2 id="contato-title">CONTATO</h2>
+        <div class="contact-signs">
+          <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM</span><strong>@theantistateguys</strong></a>
+          <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer"><span>YOUTUBE</span><strong>@TheAntiStateGuys</strong></a>
+          <a href="mailto:theantistateguys@gmail.com"><span>E-MAIL DA BANDA</span><strong>theantistateguys@gmail.com</strong></a>
+          <a href="mailto:bobbygodias@gmail.com"><span>CONTATO DIRETO · BOBBY</span><strong>bobbygodias@gmail.com</strong></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="music-dialog" id="music-dialog" aria-labelledby="music-dialog-title">
+    <div class="dialog-shell">
+      <header>
+        <div><span>BOOMBOX / BIBLIOTECA</span><h2 id="music-dialog-title">FAIXAS</h2></div>
+        <button type="button" id="qa-dialog-close" aria-label="Fechar">×</button>
+      </header>
+      <div id="music-list" class="music-list"></div>
+    </div>
+  </dialog>
+
+  <aside class="qa-meter" id="qa-meter" aria-label="Diagnóstico da viewport"></aside>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <audio id="audio" preload="metadata"></audio>
+  <script src="script.js" defer></script>
+  <script src="qa-site-v3.js" defer></script>
+</body>
+</html>
