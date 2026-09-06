@@ -216,11 +216,20 @@
   .mobile-boombox{top:54.5%}
 }
 
+/* Broader portrait/square-ish space: keep the six physical signs on one row and
+   size video typography from available frame width so title/subtitle never collide. */
 @media (min-width:560px) and (max-aspect-ratio: 11/10){
   .mobile-signs{grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(5px,.9vw,8px)}
   .mobile-signs a{font-size:clamp(8px,1.45vw,11px)!important;min-height:clamp(40px,6.2vw,49px)!important}
   .mobile-wordmark{top:9.5%;width:clamp(420px,62vw,650px)!important}
   .mobile-video-card{top:26%;width:clamp(390px,58vw,690px)!important}
+  .mobile-video-card strong{
+    top:59%!important;
+    width:94%!important;
+    white-space:nowrap!important;
+    font:900 clamp(15px,2.8vw,22px)/1 var(--display)!important;
+  }
+  .mobile-video-card small{top:77%!important}
   .mobile-boombox{top:52%;width:clamp(520px,72vw,820px)!important;height:34%}
   .mobile-socials{width:clamp(300px,40vw,430px)!important}
 }
