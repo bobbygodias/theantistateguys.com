@@ -10,9 +10,10 @@ on:
       - 'qa-site-v3*.js'
       - 'script.js'
       - 'data/music.json'
-      - 'assets/jvc-player.svg'
+      - 'assets/**'
       - 'tests/responsive-qa.mjs'
       - 'tests/interaction-qa.mjs'
+      - 'tests/integrity-qa.mjs'
       - '.github/workflows/responsive-qa-v3.yml'
 
 permissions:
@@ -31,6 +32,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Run local integrity QA
+        run: node tests/integrity-qa.mjs
 
       - name: Install Playwright
         run: |
