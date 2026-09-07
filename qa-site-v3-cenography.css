@@ -85,13 +85,19 @@
   é apenas cenografia; o usuário nunca precisa acertar um ponto da raster.
 
   A região superior é translúcida para o indivíduo respirar atrás do player.
-  A região inferior permanece praticamente opaca para que a boombox física da
-  fotografia não duplique visualmente o JVC funcional.
+  A região inferior é sólida para que a boombox física da fotografia não
+  duplique visualmente o JVC funcional.
 */
 .music-machine{
   background:
-    radial-gradient(ellipse at 50% 76%,rgba(90,54,27,.13),transparent 62%),
-    linear-gradient(180deg,rgba(16,11,8,.46),rgba(9,6,4,.78) 42%,rgba(5,4,3,.94) 76%,rgba(5,4,3,.97));
+    radial-gradient(ellipse at 50% 76%,rgba(90,54,27,.11),transparent 60%),
+    linear-gradient(180deg,
+      rgba(16,11,8,.42) 0,
+      rgba(9,6,4,.64) 28%,
+      rgba(6,4,3,.90) 47%,
+      rgba(5,4,3,.985) 58%,
+      #050403 74%,
+      #050403 100%);
   backdrop-filter:none;
 }
 .music-machine::before{
