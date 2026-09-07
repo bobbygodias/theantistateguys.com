@@ -67,25 +67,38 @@
 }
 
 /* ---------- FOTOS ----------
-   Quando a rota cabe, foto, título e legenda ocupam a mesma viewport útil.
-   Se fisicamente não couber, o main continua sendo o único scroll natural. */
-#fotos.route-panel{display:grid}
-.photos-shell{
+   A rota, o shell e a galeria formam uma cadeia de altura definida.
+   Assim a foto negocia o espaço restante da viewport em vez de impor sua altura intrínseca. */
+#fotos.route-panel{
+  display:grid;
+  height:100%;
   min-height:100%;
-  min-block-size:0;
+  grid-template-rows:minmax(0,1fr)
+}
+.photos-shell{
+  min-height:0;
+  height:100%;
   display:grid;
   grid-template-rows:auto auto minmax(0,1fr);
   align-content:stretch
 }
 .photos-shell>.sheet-label{align-self:start}
 .photos-shell>h2{align-self:start}
-.photo-gallery{min-height:0;min-block-size:0;align-self:stretch;align-content:center}
+.photo-gallery{
+  min-height:0;
+  min-block-size:0;
+  height:100%;
+  align-self:stretch;
+  align-content:center
+}
 .gallery-photo{
   display:grid;
   grid-template-rows:minmax(0,1fr) auto;
   min-height:0;
   min-block-size:0;
   min-inline-size:0;
+  height:100%;
+  max-height:100%;
   align-self:stretch
 }
 .gallery-photo img{
@@ -94,7 +107,7 @@
   min-inline-size:0;
   max-inline-size:100%;
   height:100%;
-  max-height:none;
+  max-height:100%;
   object-fit:contain
 }
 
@@ -116,10 +129,15 @@
 /* ---------- SHOWS ----------
    Texto e foto negociam espaço pelo próprio mínimo confortável.
    O auto-fit decide se ficam lado a lado ou empilhados. */
-#shows.route-panel{display:grid}
-.shows-shell{
+#shows.route-panel{
+  display:grid;
+  height:100%;
   min-height:100%;
-  min-block-size:0;
+  grid-template-rows:minmax(0,1fr)
+}
+.shows-shell{
+  min-height:0;
+  height:100%;
   display:grid;
   grid-template-rows:auto minmax(0,1fr);
   align-content:stretch
@@ -128,6 +146,7 @@
   min-height:0;
   min-block-size:0;
   min-inline-size:0;
+  height:100%;
   align-self:stretch;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,23rem),1fr));
   align-items:center
