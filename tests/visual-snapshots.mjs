@@ -12,6 +12,7 @@ const samples=[
   {name:'narrow-tall-photos',width:300,height:960,route:'fotos',touch:true},
   {name:'wide-short-home',width:640,height:360,route:'home',touch:true},
   {name:'wide-short-shows',width:640,height:360,route:'shows',touch:true},
+  {name:'square-shows',width:800,height:800,route:'shows',touch:true},
   {name:'real-home',width:1280,height:664,route:'home',touch:true},
   {name:'real-history',width:1280,height:664,route:'historia',touch:true},
   {name:'real-members',width:1280,height:664,route:'integrantes',touch:true},
