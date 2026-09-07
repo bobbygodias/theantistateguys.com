@@ -15,6 +15,7 @@ on:
       - 'tests/interaction-qa.mjs'
       - 'tests/integrity-qa.mjs'
       - 'tests/visual-snapshots.mjs'
+      - 'tests/performance-qa.mjs'
       - '.github/workflows/responsive-qa-v3.yml'
 
 permissions:
@@ -54,6 +55,9 @@ jobs:
 
       - name: Run interaction and focus QA
         run: node tests/interaction-qa.mjs
+
+      - name: Measure loading and route cost
+        run: node tests/performance-qa.mjs
 
       - name: Capture representative visual samples
         run: node tests/visual-snapshots.mjs
