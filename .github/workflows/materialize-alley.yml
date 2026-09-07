@@ -24,7 +24,9 @@ jobs:
           m = re.search(r'data:image/webp;base64,([^"\']+)', src)
           if not m:
               raise SystemExit('No embedded WebP found')
-          raw = base64.b64decode(m.group(1))
+          payload = re.sub(r'\s+', '', m.group(1))
+          payload += '=' * (-len(payload) % 4)
+          raw = base64.b64decode(payload)
           if raw[:4] != b'RIFF' or raw[8:12] != b'WEBP':
               raise SystemExit('Decoded payload is not WebP')
           out = pathlib.Path('assets/home-alley-goiania.webp')
