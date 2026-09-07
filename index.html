@@ -20,6 +20,35 @@
   <link rel="stylesheet" href="qa-site-v3-cenography.css">
   <link rel="stylesheet" href="qa-site-v3-internal.css">
   <link rel="stylesheet" href="qa-site-v3-compat.css">
+  <style>
+    .home-brand-status{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      gap:clamp(6px,1.1vmin,14px);
+    }
+    .home-brand-status > img{
+      flex:1 1 24rem;
+      min-width:0;
+      width:auto;
+      max-width:46rem;
+    }
+    .site-production-notice{
+      flex:0 1 auto;
+      max-width:min(100%,20rem);
+      padding:.48em .72em;
+      color:#fff3e6;
+      background:#9f1616;
+      border:2px solid #3b0808;
+      box-shadow:0 5px 14px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,214,190,.16);
+      font:900 clamp(10px,1.25vmin,14px)/1.08 var(--display,"Arial Narrow",Impact,sans-serif);
+      letter-spacing:.045em;
+      text-align:center;
+      text-transform:uppercase;
+      transform:rotate(-1deg);
+    }
+  </style>
   <title>Bobby Dias &amp; The Anti-State Guys</title>
 </head>
 <body>
@@ -44,8 +73,9 @@
       </div>
 
       <div class="home-layout">
-        <header class="home-brand">
+        <header class="home-brand home-brand-status">
           <img src="assets/wordmark.svg" width="1600" height="439" alt="Bobby Dias & The Anti-State Guys">
+          <span class="site-production-notice" role="status">SITE PROVISÓRIO · AINDA EM PRODUÇÃO</span>
         </header>
 
         <div class="home-media">
