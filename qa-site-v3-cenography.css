@@ -70,6 +70,15 @@
   }
 }
 
+/* Quando existe largura suficiente para a borda extrema da fotografia reaparecer,
+   a cena inteira anda levemente para a esquerda. Isso mantém a boombox física
+   atrás do player funcional em vez de criar um segundo rádio na borda. */
+@container site (min-width:88rem) and (min-aspect-ratio:3/2){
+  .alley-photo{
+    transform:translateX(-4cqi) scale(1.018)!important;
+  }
+}
+
 /*
   PLAYER FUNCIONAL
   O JVC que toca música continua um objeto vetorial próprio. A boombox da foto
