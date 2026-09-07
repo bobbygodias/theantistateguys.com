@@ -9,8 +9,10 @@ on:
       - 'qa-site-v3*.css'
       - 'qa-site-v3*.js'
       - 'script.js'
+      - 'data/music.json'
       - 'assets/jvc-player.svg'
       - 'tests/responsive-qa.mjs'
+      - 'tests/interaction-qa.mjs'
       - '.github/workflows/responsive-qa-v3.yml'
 
 permissions:
@@ -44,6 +46,9 @@ jobs:
 
       - name: Run responsive matrix
         run: node tests/responsive-qa.mjs
+
+      - name: Run interaction and focus QA
+        run: node tests/interaction-qa.mjs
 
       - name: Upload QA artifacts
         if: always()
