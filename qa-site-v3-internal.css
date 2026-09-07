@@ -79,14 +79,14 @@
 }
 .photos-shell>.sheet-label{align-self:start}
 .photos-shell>h2{align-self:start}
-.photo-gallery{min-height:0;min-block-size:0;height:100%;align-content:center}
+.photo-gallery{min-height:0;min-block-size:0;align-self:stretch;align-content:center}
 .gallery-photo{
   display:grid;
   grid-template-rows:minmax(0,1fr) auto;
   min-height:0;
   min-block-size:0;
   min-inline-size:0;
-  height:100%
+  align-self:stretch
 }
 .gallery-photo img{
   min-height:0;
@@ -128,7 +128,7 @@
   min-height:0;
   min-block-size:0;
   min-inline-size:0;
-  height:100%;
+  align-self:stretch;
   grid-template-columns:repeat(auto-fit,minmax(min(100%,23rem),1fr));
   align-items:center
 }
