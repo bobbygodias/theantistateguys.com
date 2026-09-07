@@ -38,9 +38,31 @@ for(const geometry of geometries){
     deviceScaleFactor:1
   });
   const page=await context.newPage();
+  await page.addInitScript(()=>{
+    window.__tasgPerf={lcp:null,cls:0};
+    try{
+      new PerformanceObserver(list=>{
+        for(const e of list.getEntries()){
+          const el=e.element;
+          const cls=el?.className && typeof el.className==='string' ? '.'+el.className.trim().replace(/\s+/g,'.') : '';
+          window.__tasgPerf.lcp={
+            startTime:Math.round(e.startTime*10)/10,
+            size:Math.round(e.size||0),
+            url:e.url||'',
+            element:el ? `${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${cls}` : ''
+          };
+        }
+      }).observe({type:'largest-contentful-paint',buffered:true});
+    }catch{}
+    try{
+      new PerformanceObserver(list=>{
+        for(const e of list.getEntries()) if(!e.hadRecentInput) window.__tasgPerf.cls+=e.value;
+      }).observe({type:'layout-shift',buffered:true});
+    }catch{}
+  });
   await page.goto(`${baseURL}?perf=1#home`,{waitUntil:'networkidle'});
   await page.waitForSelector('[data-route="home"].is-active');
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(300);
 
   const readEntries=()=>page.evaluate(()=>performance.getEntriesByType('resource').map(e=>({
     name:e.name,
@@ -51,6 +73,37 @@ for(const geometry of geometries){
     duration:Math.round(e.duration*10)/10
   })));
 
+  const vitals=await page.evaluate(()=>{
+    const fcp=performance.getEntriesByName('first-contentful-paint')[0];
+    const images=[...document.images].filter(img=>{
+      const s=getComputedStyle(img); const r=img.getBoundingClientRect();
+      return s.display!=='none' && s.visibility!=='hidden' && Number(s.opacity)!==0 && r.width>1 && r.height>1;
+    }).map(img=>{
+      const r=img.getBoundingClientRect();
+      const renderedW=Math.round(r.width*10)/10;
+      const renderedH=Math.round(r.height*10)/10;
+      const naturalPixels=(img.naturalWidth||0)*(img.naturalHeight||0);
+      const renderedPixels=Math.max(1,renderedW*renderedH);
+      return {
+        src:img.currentSrc||img.src,
+        className:img.className||'',
+        naturalWidth:img.naturalWidth||0,
+        naturalHeight:img.naturalHeight||0,
+        renderedWidth:renderedW,
+        renderedHeight:renderedH,
+        pixelAreaRatio:Math.round(naturalPixels/renderedPixels*10)/10
+      };
+    });
+    return {
+      fcp:fcp?Math.round(fcp.startTime*10)/10:null,
+      lcp:window.__tasgPerf?.lcp||null,
+      cls:Math.round((window.__tasgPerf?.cls||0)*10000)/10000,
+      images
+    };
+  });
+  vitals.images=vitals.images.map(img=>({...img,path:localPath(img.src)}));
+  if(vitals.lcp?.url) vitals.lcp.path=localPath(vitals.lcp.url);
+
   const initial=await readEntries();
   const initialLocal=initial.filter(e=>e.name.includes('127.0.0.1:4173'));
   const initialExternal=initial.filter(e=>!e.name.includes('127.0.0.1:4173'));
@@ -60,6 +113,7 @@ for(const geometry of geometries){
     geometry:geometry.name,
     width:geometry.width,
     height:geometry.height,
+    vitals,
     initial:{
       localCount:initialLocal.length,
       localBytes:totalBytes(initialLocal),
@@ -107,6 +161,9 @@ for(const row of report){
   lines.push(`- Home local production-like: ${row.initial.productionLikeCount} recursos · ${kb(row.initial.productionLikeBytes)} KB`);
   lines.push(`- Overhead exclusivo de QA: ${row.initial.qaOnlyCount} recursos · ${kb(row.initial.qaOnlyBytes)} KB`);
   for(const r of row.initial.qaOnlyResources) lines.push(`  - ${r.path}: ${kb(r.encodedBodySize||r.transferSize)} KB · ${r.initiatorType}`);
+  lines.push(`- Sinais de renderização local: FCP ${row.vitals.fcp??'n/a'} ms · LCP ${row.vitals.lcp?.startTime??'n/a'} ms (${row.vitals.lcp?.element||row.vitals.lcp?.path||'n/a'}) · CLS ${row.vitals.cls}`);
+  lines.push('- Imagens visíveis na Home (natural → renderizado · razão de área):');
+  for(const img of row.vitals.images) lines.push(`  - ${img.path}: ${img.naturalWidth}×${img.naturalHeight} → ${img.renderedWidth}×${img.renderedHeight} · ${img.pixelAreaRatio}×`);
   lines.push(`- Home inicial externo: ${row.initial.externalCount} recursos · ${kb(row.initial.externalBytes)} KB`);
   lines.push('- Maiores recursos locais production-like:');
   for(const r of row.initial.resources.slice(0,10)) lines.push(`  - ${r.path}: ${kb(r.encodedBodySize||r.transferSize)} KB · ${r.initiatorType}`);
