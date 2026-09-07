@@ -73,6 +73,9 @@ for (const geometry of geometries){
       const radio = document.querySelector('.boombox-art');
       const radioBg = radio ? getComputedStyle(radio).backgroundImage : '';
       const active = route?.dataset.route || 'unknown';
+      const showLayout = document.querySelector('.show-layout');
+      const showTemplate = showLayout && visible(showLayout) ? getComputedStyle(showLayout).gridTemplateColumns : '';
+      const showCols = showTemplate && showTemplate !== 'none' ? showTemplate.trim().split(/\s+/).filter(Boolean).length : 0;
       return {
         active,
         mainWidth:Math.round(main.clientWidth),
@@ -85,6 +88,7 @@ for (const geometry of geometries){
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
         radioIndependent:radioBg.includes('jvc-player.svg') && !radioBg.includes('home-scene.webp'),
+        showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
     });
@@ -96,6 +100,8 @@ for (const geometry of geometries){
     if(measured.clipped > 0) issues.push(`clip-x-${measured.clipped}`);
     if(route === 'home' && !measured.radioIndependent) issues.push('radio-scene');
     if(route === 'home' && geometry.homeMustFit && measured.scrollY) issues.push('home-scroll-y');
+    if(route === 'fotos' && measured.scrollY) issues.push('photos-scroll-y');
+    if(route === 'shows' && measured.showCols >= 2 && measured.scrollY) issues.push(`shows-scroll-y-${measured.showCols}cols`);
 
     const pass = issues.length === 0;
     const row = {geometry:geometry.name,width:geometry.width,height:geometry.height,route,pass,issues,...measured};
@@ -107,7 +113,7 @@ for (const geometry of geometries){
       await page.screenshot({path:shot,fullPage:true});
       console.error(`FAIL ${geometry.width}x${geometry.height} ${route}: ${issues.join(', ')}${measured.clippedTags.length?' · '+measured.clippedTags.join(', '):''}`);
     } else {
-      console.log(`PASS ${geometry.width}x${geometry.height} ${route} · tap>=${measured.minTap} · scrollY=${measured.scrollY?'sim':'não'}`);
+      console.log(`PASS ${geometry.width}x${geometry.height} ${route} · tap>=${measured.minTap} · scrollY=${measured.scrollY?'sim':'não'}${route==='shows'?` · showCols=${measured.showCols}`:''}`);
     }
   }
   await context.close();
