@@ -14,6 +14,7 @@ on:
       - 'tests/responsive-qa.mjs'
       - 'tests/interaction-qa.mjs'
       - 'tests/integrity-qa.mjs'
+      - 'tests/visual-snapshots.mjs'
       - '.github/workflows/responsive-qa-v3.yml'
 
 permissions:
@@ -53,6 +54,9 @@ jobs:
 
       - name: Run interaction and focus QA
         run: node tests/interaction-qa.mjs
+
+      - name: Capture representative visual samples
+        run: node tests/visual-snapshots.mjs
 
       - name: Upload QA artifacts
         if: always()
