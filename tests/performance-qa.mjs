@@ -26,6 +26,10 @@ function totalBytes(entries){
   return entries.reduce((sum,e)=>sum+(e.encodedBodySize||e.transferSize||0),0);
 }
 function kb(bytes){return Math.round(bytes/1024*10)/10;}
+function isQaOnly(entry){
+  const p=localPath(entry.name);
+  return p==='qa-site-v3.js' || (p==='assets/jvc-player.svg' && entry.initiatorType==='fetch');
+}
 
 for(const geometry of geometries){
   const context=await browser.newContext({
@@ -50,6 +54,8 @@ for(const geometry of geometries){
   const initial=await readEntries();
   const initialLocal=initial.filter(e=>e.name.includes('127.0.0.1:4173'));
   const initialExternal=initial.filter(e=>!e.name.includes('127.0.0.1:4173'));
+  const qaOnly=initialLocal.filter(isQaOnly);
+  const productionLike=initialLocal.filter(e=>!isQaOnly(e));
   const row={
     geometry:geometry.name,
     width:geometry.width,
@@ -57,9 +63,14 @@ for(const geometry of geometries){
     initial:{
       localCount:initialLocal.length,
       localBytes:totalBytes(initialLocal),
+      productionLikeCount:productionLike.length,
+      productionLikeBytes:totalBytes(productionLike),
+      qaOnlyCount:qaOnly.length,
+      qaOnlyBytes:totalBytes(qaOnly),
+      qaOnlyResources:qaOnly.map(e=>({...e,path:localPath(e.name)})),
       externalCount:initialExternal.length,
       externalBytes:totalBytes(initialExternal),
-      resources:initialLocal.map(e=>({...e,path:localPath(e.name)})).sort((a,b)=>(b.encodedBodySize||b.transferSize)-(a.encodedBodySize||a.transferSize))
+      resources:productionLike.map(e=>({...e,path:localPath(e.name)})).sort((a,b)=>(b.encodedBodySize||b.transferSize)-(a.encodedBodySize||a.transferSize))
     },
     routeDeltas:[]
   };
@@ -92,9 +103,12 @@ await fs.writeFile(path.join(out,'performance-results.json'),JSON.stringify(repo
 const lines=['# TASG V3 Performance Measurement',''];
 for(const row of report){
   lines.push(`## ${row.geometry} — ${row.width}×${row.height}`,'');
-  lines.push(`- Home inicial local: ${row.initial.localCount} recursos · ${kb(row.initial.localBytes)} KB`);
+  lines.push(`- Home local bruta no laboratório: ${row.initial.localCount} recursos · ${kb(row.initial.localBytes)} KB`);
+  lines.push(`- Home local production-like: ${row.initial.productionLikeCount} recursos · ${kb(row.initial.productionLikeBytes)} KB`);
+  lines.push(`- Overhead exclusivo de QA: ${row.initial.qaOnlyCount} recursos · ${kb(row.initial.qaOnlyBytes)} KB`);
+  for(const r of row.initial.qaOnlyResources) lines.push(`  - ${r.path}: ${kb(r.encodedBodySize||r.transferSize)} KB · ${r.initiatorType}`);
   lines.push(`- Home inicial externo: ${row.initial.externalCount} recursos · ${kb(row.initial.externalBytes)} KB`);
-  lines.push('- Maiores recursos locais iniciais:');
+  lines.push('- Maiores recursos locais production-like:');
   for(const r of row.initial.resources.slice(0,10)) lines.push(`  - ${r.path}: ${kb(r.encodedBodySize||r.transferSize)} KB · ${r.initiatorType}`);
   lines.push('- Custo incremental ao visitar rotas:');
   for(const d of row.routeDeltas){
