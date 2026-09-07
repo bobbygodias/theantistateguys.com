@@ -68,7 +68,7 @@
 
 /* ---------- FOTOS ----------
    A rota, o shell e a galeria formam uma cadeia de altura definida.
-   Assim a foto negocia o espaço restante da viewport em vez de impor sua altura intrínseca. */
+   O crédito fotográfico fica junto da imagem e não disputa hierarquia com o título. */
 #fotos.route-panel{
   display:grid;
   height:100%;
@@ -79,10 +79,9 @@
   min-height:0;
   height:100%;
   display:grid;
-  grid-template-rows:auto auto minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr);
   align-content:stretch
 }
-.photos-shell>.sheet-label{align-self:start}
 .photos-shell>h2{align-self:start}
 .photo-gallery{
   min-height:0;
@@ -110,13 +109,30 @@
   max-height:100%;
   object-fit:contain
 }
+.gallery-photo figcaption{
+  display:grid;
+  justify-items:center;
+  gap:2px;
+  padding-top:6px;
+  color:#9c7449;
+  letter-spacing:.045em;
+  text-align:center;
+  font-size:clamp(9px,.85vmin,11px)
+}
+.gallery-photo .photo-credit{
+  color:#8b7a68;
+  opacity:.72;
+  font:400 clamp(8px,.72vmin,10px)/1.2 var(--body);
+  letter-spacing:.025em;
+  text-transform:none
+}
 
 @container site (max-height:32rem){
   .photos-shell{padding-block:clamp(7px,1.5cqb,12px)}
-  .photos-shell>.sheet-label{margin-bottom:5px;padding-block:5px}
   .photos-shell>h2{margin-bottom:7px;font-size:clamp(25px,8cqb,42px);padding-block:5px}
-  .gallery-photo{padding-bottom:22px}
-  .gallery-photo figcaption{padding-top:5px;font-size:10px}
+  .gallery-photo{padding-bottom:18px}
+  .gallery-photo figcaption{padding-top:4px;font-size:9px}
+  .gallery-photo .photo-credit{font-size:8px}
 }
 
 /* Em recipientes estreitos, a imagem não força largura; em recipientes muito altos,
