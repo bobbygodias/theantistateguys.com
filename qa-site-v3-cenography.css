@@ -1,66 +1,72 @@
 /*
   QA SITE V3 — CENOGRAPHY LAYER
-  Esta camada NÃO define versões de aparelho.
-  Ela faz o mundo visual responder ao recipiente já calculado pelo núcleo.
+  Esta camada NÃO cria versões por aparelho.
+  Ela dirige o cenário aprovado conforme a geometria real do recipiente.
 */
 
 /*
-  O home-scene original ainda contém uma boombox fotografada no canto.
-  Em vez de cobri-la com uma grande mancha preta, usamos um elemento de
-  primeiro plano com textura de parede/caixote industrial que faz parte do beco.
-  A solução continua provisória até existir uma fotografia-base limpa.
+  Base aprovada provisoriamente por Bobby:
+  - beco em Goiânia;
+  - sem textos, slogans, pichações ou simbolismos;
+  - sem escadas externas de incêndio;
+  - sem case de instrumento;
+  - ponto de fuga terminando em escuridão;
+  - indivíduo junto à boombox física no lado direito.
+
+  A imagem é apenas cenário. Nenhum controle funcional depende dos pixels dela.
 */
+.alley-photo{
+  object-position:52% 50%!important;
+  filter:saturate(.72) contrast(1.08) brightness(.55) blur(.18px)!important;
+  transform:scale(1.018)!important;
+}
+
+/* Vignette atmosférica apenas. Não esconde mais interface antiga. */
 .alley-shade{
-  display:block;
+  display:block!important;
   position:absolute;
   z-index:3;
   inset:0;
   pointer-events:none;
   background:
-    linear-gradient(180deg,transparent 0 56%,rgba(3,2,1,.10) 70%,rgba(2,1,1,.42) 100%),
-    radial-gradient(ellipse at 48% 82%,rgba(116,69,31,.08),transparent 34%);
+    linear-gradient(180deg,rgba(2,1,1,.08) 0,transparent 22%,transparent 67%,rgba(2,1,1,.46) 100%),
+    radial-gradient(ellipse at 50% 49%,transparent 0 30%,rgba(0,0,0,.10) 62%,rgba(0,0,0,.43) 100%);
 }
-.alley-shade::before{
-  content:"";
-  position:absolute;
-  left:-3%;
-  bottom:-5%;
-  width:clamp(150px,25cqi,390px);
-  height:clamp(118px,27cqb,270px);
-  transform:perspective(420px) rotateY(-5deg) rotate(-1.5deg);
-  transform-origin:left bottom;
-  background:
-    linear-gradient(90deg,rgba(0,0,0,.34),transparent 24% 77%,rgba(0,0,0,.30)),
-    repeating-linear-gradient(0deg,rgba(210,147,79,.045) 0 2px,transparent 2px 29px),
-    repeating-linear-gradient(90deg,rgba(210,147,79,.035) 0 2px,transparent 2px 54px),
-    linear-gradient(145deg,#17100b 0,#0d0906 48%,#090604 100%);
-  border-top:1px solid rgba(136,86,43,.24);
-  border-right:1px solid rgba(84,52,29,.22);
-  box-shadow:
-    28px -10px 48px rgba(0,0,0,.34),
-    inset -28px 12px 45px rgba(0,0,0,.38),
-    inset 0 1px rgba(210,160,100,.05);
-  opacity:.93;
+.alley-shade::before,.alley-shade::after{content:none!important}
+
+/* Em recipientes altos/estreitos, desloca o foco para a direita para preservar
+   o indivíduo e a boombox sem abandonar o ponto de fuga escuro. */
+@container site (max-aspect-ratio:2/3){
+  .alley-photo{
+    object-position:68% 50%!important;
+    transform:scale(1.055)!important;
+  }
+  .alley-shade{
+    background:
+      linear-gradient(180deg,rgba(2,1,1,.08) 0,transparent 23%,transparent 70%,rgba(2,1,1,.48) 100%),
+      radial-gradient(ellipse at 61% 48%,transparent 0 29%,rgba(0,0,0,.12) 61%,rgba(0,0,0,.48) 100%);
+  }
 }
-.alley-shade::after{
-  content:"";
-  position:absolute;
-  left:-10%;right:-10%;bottom:-8%;height:30%;
-  background:
-    radial-gradient(ellipse at 18% 50%,rgba(106,62,28,.15),transparent 24%),
-    linear-gradient(180deg,transparent,rgba(1,1,1,.42));
-  filter:blur(clamp(2px,.5vmin,6px));
+
+/* Em recipientes muito largos o centro escuro continua sendo o eixo visual,
+   mas a borda direita preserva a leitura do personagem e do rádio físico. */
+@container site (min-aspect-ratio:2/1){
+  .alley-photo{
+    object-position:55% 52%!important;
+    transform:scale(1.025)!important;
+  }
 }
-.santiago-ghost{z-index:4}
 
 /*
-  O player é um objeto cenográfico próprio. O JVC agora é SVG vetorial
-  transparente; não contém WebP, recorte de parede ou pixels do beco.
+  PLAYER FUNCIONAL
+  O JVC que toca música continua um objeto vetorial próprio. A boombox da foto
+  é apenas cenografia; o usuário nunca precisa acertar um ponto da raster.
 */
 .music-machine{
   background:
-    radial-gradient(ellipse at 50% 76%,rgba(90,54,27,.24),transparent 62%),
-    linear-gradient(180deg,#100b08,#090604 58%,#050403);
+    radial-gradient(ellipse at 50% 76%,rgba(90,54,27,.20),transparent 62%),
+    linear-gradient(180deg,rgba(16,11,8,.92),rgba(9,6,4,.90) 58%,rgba(5,4,3,.94));
+  backdrop-filter:blur(1.2px);
 }
 .music-machine::before{
   content:"";
@@ -69,16 +75,16 @@
   left:7%;right:7%;bottom:7%;height:24%;
   background:radial-gradient(ellipse at 50% 60%,rgba(0,0,0,.76),rgba(0,0,0,.30) 44%,transparent 73%);
   filter:blur(clamp(4px,1.2vmin,12px));
-  pointer-events:none;
+  pointer-events:none
 }
 .boombox-art{
   inset:clamp(3px,1cqi,12px) clamp(5px,1.5cqi,18px) clamp(2px,.7cqb,8px)!important;
   background:url('assets/jvc-player.svg') center bottom/contain no-repeat!important;
-  opacity:.96;
-  filter:sepia(.08) saturate(.72) contrast(1.08) brightness(.78) drop-shadow(0 clamp(5px,1.4vmin,13px) clamp(8px,2.6vmin,24px) rgba(0,0,0,.72))!important;
+  opacity:.93;
+  filter:sepia(.08) saturate(.72) contrast(1.08) brightness(.76) drop-shadow(0 clamp(5px,1.4vmin,13px) clamp(8px,2.6vmin,24px) rgba(0,0,0,.72))!important;
   transform:none!important;
   -webkit-mask-image:none!important;
-  mask-image:none!important;
+  mask-image:none!important
 }
 .music-machine::after{
   background:
@@ -87,44 +93,11 @@
   box-shadow:inset 0 0 clamp(24px,7vmin,60px) clamp(7px,2vmin,15px) rgba(4,3,2,.48)
 }
 
-/* Fundo alto/estreito: o primeiro plano cresce e sobe para continuar cobrindo
-   a região da raster sem virar uma cortina escura sobre a cena inteira. */
-@container site (max-aspect-ratio:2/3){
-  .alley-shade{
-    background:
-      linear-gradient(180deg,transparent 0 62%,rgba(2,1,1,.35) 100%),
-      radial-gradient(ellipse at 56% 78%,rgba(108,63,29,.08),transparent 30%);
-  }
-  .alley-shade::before{
-    left:-9%;
-    bottom:-2%;
-    width:clamp(180px,64cqi,390px);
-    height:clamp(132px,26cqb,280px);
-    transform:perspective(420px) rotateY(-7deg) rotate(-2deg);
-  }
-}
-
-/* Fundo muito largo: a obstrução fica baixa e lateral, preservando profundidade. */
-@container site (min-aspect-ratio:2/1){
-  .alley-shade{
-    background:
-      linear-gradient(180deg,transparent 0 63%,rgba(2,1,1,.34) 100%),
-      radial-gradient(ellipse at 42% 90%,rgba(117,71,35,.07),transparent 28%);
-  }
-  .alley-shade::before{
-    left:-2%;
-    bottom:-8%;
-    width:clamp(170px,20cqi,360px);
-    height:clamp(105px,30cqb,230px);
-  }
-}
-
-/* O próprio rádio responde ao recipiente do player. */
 @container player (max-aspect-ratio:1/1){
   .boombox-art{
     inset:clamp(14px,5cqb,30px) 0 clamp(20px,8cqb,44px)!important;
     background-position:center 58%!important;
-    background-size:contain!important;
+    background-size:contain!important
   }
 }
 
@@ -132,13 +105,13 @@
   .boombox-art{
     inset:0 clamp(12px,3cqi,38px) 0!important;
     background-position:center bottom!important;
-    background-size:contain!important;
+    background-size:contain!important
   }
 }
 
 @container player (max-height:13rem){
   .boombox-art{
     inset:4px clamp(18px,5cqi,48px) 2px!important;
-    filter:sepia(.07) saturate(.70) contrast(1.06) brightness(.74) drop-shadow(0 5px 9px rgba(0,0,0,.66))!important;
+    filter:sepia(.07) saturate(.70) contrast(1.06) brightness(.73) drop-shadow(0 5px 9px rgba(0,0,0,.66))!important
   }
 }
