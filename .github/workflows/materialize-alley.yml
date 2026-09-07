@@ -1,0 +1,45 @@
+name: materialize-alley
+
+on:
+  push:
+    branches: [qa/alley-binary]
+    paths:
+      - '.github/workflows/materialize-alley.yml'
+      - 'assets/home-alley-goiania.svg'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract embedded WebP
+        shell: python
+        run: |
+          import base64, pathlib, re
+          src = pathlib.Path('assets/home-alley-goiania.svg').read_text(encoding='utf-8')
+          m = re.search(r'data:image/webp;base64,([^"\']+)', src)
+          if not m:
+              raise SystemExit('No embedded WebP found')
+          raw = base64.b64decode(m.group(1))
+          if raw[:4] != b'RIFF' or raw[8:12] != b'WEBP':
+              raise SystemExit('Decoded payload is not WebP')
+          out = pathlib.Path('assets/home-alley-goiania.webp')
+          out.write_bytes(raw)
+          print(f'Wrote {len(raw)} bytes to {out}')
+
+      - name: Inspect asset
+        run: |
+          file assets/home-alley-goiania.webp
+          sha256sum assets/home-alley-goiania.webp
+
+      - name: Commit binary asset
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/home-alley-goiania.webp
+          git commit -m 'assets: materialize approved Goiânia alley WebP [skip ci]'
+          git push
