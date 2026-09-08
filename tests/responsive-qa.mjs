@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/qa-site-v3.html';
+const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
 const routes = ['home','historia','contato','integrantes','fotos','shows'];
 const geometries = [
   {name:'narrow-tall', width:300, height:960, homeMustFit:true, hasTouch:true},
@@ -19,16 +19,9 @@ const geometries = [
 const artifactDir = path.resolve('test-artifacts');
 await fs.mkdir(artifactDir,{recursive:true});
 
-const svg = await fs.readFile(path.resolve('assets/jvc-player.svg'),'utf8');
-const vectorRadio = !/<image\b/i.test(svg) && !/data:image\//i.test(svg);
-if(!vectorRadio){
-  console.error('FAIL: assets/jvc-player.svg voltou a embutir raster.');
-  process.exitCode = 1;
-}
-
 const browser = await chromium.launch({headless:true});
 const results = [];
-let failures = vectorRadio ? 0 : 1;
+let failures = 0;
 
 function safeName(value){ return value.replace(/[^a-z0-9_-]+/gi,'-'); }
 
@@ -43,7 +36,7 @@ for (const geometry of geometries){
   for (const route of routes){
     const url = `${baseURL}?matrix=1#${route}`;
     await page.goto(url,{waitUntil:'networkidle'});
-    await page.waitForSelector('#qa-meter');
+    await page.waitForSelector('[data-route].is-active');
     await page.waitForTimeout(120);
 
     const measured = await page.evaluate(() => {
@@ -71,7 +64,7 @@ for (const geometry of geometries){
         return r.left < bounds.left - 2 || r.right > bounds.right + 2;
       });
       const radio = document.querySelector('.boombox-art');
-      const radioBg = radio ? getComputedStyle(radio).backgroundImage : '';
+      const radioSrc = radio?.getAttribute('src') || '';
       const active = route?.dataset.route || 'unknown';
       const showLayout = document.querySelector('.show-layout');
       const showTemplate = showLayout && visible(showLayout) ? getComputedStyle(showLayout).gridTemplateColumns : '';
@@ -87,7 +80,7 @@ for (const geometry of geometries){
         minTap:Math.round(minTap),
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
-        radioIndependent:radioBg.includes('jvc-player.svg') && !radioBg.includes('home-scene.webp'),
+        radioIndependent:radioSrc.includes('boombox-real-v4.webp') && radio.complete && radio.naturalWidth > 0,
         showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
@@ -120,7 +113,7 @@ for (const geometry of geometries){
 }
 
 await browser.close();
-await fs.writeFile(path.join(artifactDir,'results.json'),JSON.stringify({vectorRadio,failures,results},null,2));
+await fs.writeFile(path.join(artifactDir,'results.json'),JSON.stringify({failures,results},null,2));
 
 const summary = [
   '# TASG V3 Responsive QA',
@@ -129,7 +122,6 @@ const summary = [
   `- Rotas por geometria: ${routes.length}`,
   `- Casos executados: ${results.length}`,
   `- Falhas: ${failures}`,
-  `- JVC vetorial puro: ${vectorRadio ? 'sim' : 'NÃO'}`,
   '',
   ...results.filter(r=>!r.pass).map(r=>`- FAIL ${r.width}×${r.height} ${r.route}: ${r.issues.join(', ')}${r.clippedTags.length?' · '+r.clippedTags.join(', '):''}`)
 ].join('\n');

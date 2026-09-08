@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const baseURL=process.env.QA_BASE_URL || 'http://127.0.0.1:4173/qa-site-v3.html';
+const baseURL=process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
 const out=path.resolve('test-artifacts');
 await fs.mkdir(out,{recursive:true});
 
@@ -18,7 +18,7 @@ const report=[];
 function localPath(url){
   try{
     const u=new URL(url);
-    if(u.hostname==='127.0.0.1') return u.pathname.replace(/^\//,'') || 'qa-site-v3.html';
+    if(u.hostname==='127.0.0.1') return u.pathname.replace(/^\//,'') || 'index.html';
     return u.origin+u.pathname;
   }catch{return url;}
 }

@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const baseURL=process.env.QA_BASE_URL || 'http://127.0.0.1:4173/qa-site-v3.html';
+const baseURL=process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
 const out=path.resolve('test-artifacts','visual');
 await fs.mkdir(out,{recursive:true});
 

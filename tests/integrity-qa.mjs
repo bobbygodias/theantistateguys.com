@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const root=process.cwd();
-const htmlPath='qa-site-v3.html';
+const htmlPath='index.html';
 const html=await fs.readFile(path.join(root,htmlPath),'utf8');
 const issues=[];
 const checked=new Set();
@@ -37,10 +37,13 @@ for(const css of expectedStyles){
 
 // Scripts must be local and loaded once.
 const scripts=[...html.matchAll(/<script\b[^>]*src=["']([^"']+)["'][^>]*>/gi)].map(m=>m[1]);
-for(const js of ['script.js','qa-site-v3.js']){
+for(const js of ['script.js']){
   const count=scripts.filter(x=>cleanRef(x)===js).length;
   if(count!==1) issue(`script-count:${js}:${count}`);
 }
+
+if (html.includes('video-board')) issue('intro-placeholder-returned');
+if (!html.includes('assets/wordmark-bobby-original.webp')) issue('original-wordmark-missing');
 
 // Parse CSS url() dependencies recursively for the V3 layers.
 for(const css of expectedStyles){

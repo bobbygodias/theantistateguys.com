@@ -29,8 +29,16 @@ Official video channel: https://www.youtube.com/@TheAntiStateGuys
 ## Updating copy
 
 - Main page: `index.html`
-- Visual system: `styles.css`
+- Visual system: `qa-site-v3.css`, `qa-site-v3-cenography.css`, `qa-site-v3-internal.css`, `qa-site-v3-compat.css`
 - YouTube rendering: `script.js`
 - Video updater: `scripts/update_youtube.py`
 
-The site is intentionally dependency-free so it can be hosted on GitHub Pages, Cloudflare Pages, or any static host without code changes.
+Production is intentionally dependency-free so it can be hosted on GitHub Pages, Cloudflare Pages, or any static host without code changes.
+
+## Underground Home — September 2026
+
+The Home uses a photographic alley and an independent, functional boombox. The original supplied band wordmark is preserved as lossless WebP. The intro placeholder has been removed. See `TASG-SITE-25-UNDERGROUND-HOME.md` for the implementation and verification record.
+
+The QA workflow now targets `index.html` directly. `qa-site-v3.html` is a compatibility redirect to that same page.
+
+An optional development server is available with `npm ci` and `npm run dev`. Vite is development-only; GitHub Pages serves the static root without a build.

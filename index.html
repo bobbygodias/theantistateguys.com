@@ -14,41 +14,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://theantistateguys.com/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/home-alley-goiania.webp" as="image" type="image/webp" fetchpriority="high">
-  <link rel="preload" href="assets/jvc-player.svg" as="image" type="image/svg+xml">
-  <link rel="stylesheet" href="qa-site-v3.css">
-  <link rel="stylesheet" href="qa-site-v3-cenography.css">
-  <link rel="stylesheet" href="qa-site-v3-internal.css">
-  <link rel="stylesheet" href="qa-site-v3-compat.css">
-  <style>
-    .home-brand-status{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:center;
-      gap:clamp(6px,1.1vmin,14px);
-    }
-    .home-brand-status > img{
-      flex:1 1 24rem;
-      min-width:0;
-      width:auto;
-      max-width:46rem;
-    }
-    .site-production-notice{
-      flex:0 1 auto;
-      max-width:min(100%,20rem);
-      padding:.48em .72em;
-      color:#fff3e6;
-      background:#9f1616;
-      border:2px solid #3b0808;
-      box-shadow:0 5px 14px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,214,190,.16);
-      font:900 clamp(10px,1.25vmin,14px)/1.08 var(--display,"Arial Narrow",Impact,sans-serif);
-      letter-spacing:.045em;
-      text-align:center;
-      text-transform:uppercase;
-      transform:rotate(-1deg);
-    }
-  </style>
+  <link rel="preload" href="assets/alley-underground-v4.webp" as="image" type="image/webp" fetchpriority="high">
+  <link rel="preload" href="assets/boombox-real-v4.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="qa-site-v3.css?rev=underground4">
+  <link rel="stylesheet" href="qa-site-v3-cenography.css?rev=underground4">
+  <link rel="stylesheet" href="qa-site-v3-internal.css?rev=underground4">
+  <link rel="stylesheet" href="qa-site-v3-compat.css?rev=underground4">
+
   <title>Bobby Dias &amp; The Anti-State Guys</title>
 </head>
 <body>
@@ -68,35 +40,30 @@
       <h1 id="home-title" class="visually-hidden">Bobby Dias &amp; The Anti-State Guys</h1>
 
       <div class="home-world" aria-hidden="true">
-        <img class="alley-photo" src="assets/home-alley-goiania.webp" width="1536" height="1024" alt="" fetchpriority="high" decoding="async">
+        <img class="alley-photo" src="assets/alley-underground-v4.webp" width="1672" height="941" alt="" fetchpriority="high" decoding="async">
         <div class="alley-shade"></div>
       </div>
 
       <div class="home-layout">
         <header class="home-brand home-brand-status">
-          <img src="assets/wordmark.svg" width="1600" height="439" alt="Bobby Dias & The Anti-State Guys">
+          <img src="assets/wordmark-bobby-original.webp" width="1600" height="439" alt="Bobby Dias & The Anti-State Guys">
           <span class="site-production-notice" role="status">SITE PROVISÓRIO · AINDA EM PRODUÇÃO</span>
         </header>
 
         <div class="home-media">
-          <button class="video-board" id="intro-placeholder" type="button" aria-label="Vídeo de apresentação da banda, em produção">
-            <img src="assets/band-hero.webp" alt="" loading="eager">
-            <span class="video-play" aria-hidden="true">▶</span>
-            <strong>VÍDEO DE APRESENTAÇÃO</strong>
-            <small>EM PRODUÇÃO</small>
-          </button>
-
           <section class="music-machine" aria-label="Player de músicas">
-            <div class="boombox-art" aria-hidden="true"></div>
+            <img class="boombox-art" src="assets/boombox-real-v4.webp" width="1536" height="1024" alt="" aria-hidden="true">
+            <span class="speaker-motion speaker-left" aria-hidden="true"></span>
+            <span class="speaker-motion speaker-right" aria-hidden="true"></span>
             <div class="player-display" aria-live="polite">
               <span id="track-title">Carregando faixas...</span>
               <span class="time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
             </div>
-            <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog">FAIXAS</button>
+            <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog" aria-label="Abrir CDs e faixas">CD / FAIXAS</button>
             <div class="player-controls" aria-label="Controles do player">
+              <button id="stop-track" type="button" aria-label="Parar">■</button>
               <button id="prev-track" type="button" aria-label="Faixa anterior">⏮</button>
               <button id="play-pause" type="button" aria-label="Reproduzir">▶</button>
-              <button id="stop-track" type="button" aria-label="Parar">■</button>
               <button id="next-track" type="button" aria-label="Próxima faixa">⏭</button>
             </div>
           </section>
@@ -225,7 +192,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <audio id="audio" preload="metadata"></audio>
-  <script src="script.js" defer></script>
-  <script src="qa-site-v3.js" defer></script>
+  <script src="script.js?rev=underground4" defer></script>
+
 </body>
 </html>

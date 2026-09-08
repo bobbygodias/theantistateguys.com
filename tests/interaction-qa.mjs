@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/qa-site-v3.html';
+const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
 const cases = [
   {name:'compact',width:390,height:844,hasTouch:true},
   {name:'real-custom-tab',width:1280,height:664,hasTouch:true}
@@ -28,7 +28,7 @@ for(const geometry of cases){
   page.on('pageerror',error=>pageErrors.push(error.message));
 
   await page.goto(`${baseURL}?interaction=1#home`,{waitUntil:'networkidle'});
-  await page.waitForSelector('#qa-meter');
+  await page.waitForSelector('[data-route].is-active');
   await page.waitForFunction(()=>document.querySelectorAll('.track-row').length>=2);
 
   const issues=[];

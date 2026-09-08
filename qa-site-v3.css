@@ -61,7 +61,7 @@ img{display:block;max-width:100%}
 .site-nav{
   position:relative;z-index:100;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,5.65rem),1fr));
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,6.1rem),1fr));
   gap:var(--nav-gap);
   width:min(100%,96rem);
   margin-inline:auto;
@@ -81,13 +81,14 @@ img{display:block;max-width:100%}
     radial-gradient(circle at 10px 9px,#2d190d 0 2px,#a17447 3px 4px,transparent 5px),
     radial-gradient(circle at calc(100% - 10px) calc(100% - 9px),#2d190d 0 2px,#a17447 3px 4px,transparent 5px),
     repeating-linear-gradient(0deg,rgba(70,40,20,.08) 0 1px,transparent 1px 5px),
-    linear-gradient(180deg,var(--wood-a),var(--wood-b));
+    linear-gradient(125deg,#a39982d9,#666454eb),url("assets/alley-underground-v4.webp") center/cover;
   border:2px solid #2b190c;
   box-shadow:0 6px 14px rgba(0,0,0,.55),inset 0 0 0 1px rgba(238,197,140,.17);
-  font:900 clamp(9px,1.2vmin,15px)/1 var(--display);
+  font:900 clamp(14px,1.5vmin,18px)/1.1 var(--display);
   letter-spacing:.005em;
   overflow-wrap:anywhere
 }
+.site-nav a[data-route-link="integrantes"]{letter-spacing:-.055em;white-space:nowrap}
 .site-nav a.is-active,.site-nav a[aria-current="page"]{
   filter:brightness(1.15);
   box-shadow:0 0 0 2px rgba(218,170,107,.35),0 7px 16px rgba(0,0,0,.55)
@@ -123,262 +124,64 @@ main{
   --gap:clamp(7px,1.55vmin,20px)
 }
 
-/* ========================= HOME / MUNDO ========================= */
-.route-home{display:grid;min-height:100%;background:#050403}
-.home-world{
-  position:absolute;z-index:-4;inset:0;overflow:hidden;background:#050403
-}
-.alley-photo{
-  position:absolute;
-  inset:-3%;
-  width:106%;
-  height:106%;
-  object-fit:cover;
-  object-position:44% 52%;
-  filter:saturate(.63) contrast(1.13) brightness(.39) blur(.45px);
-  transform:scale(1.018);
-  transform-origin:center
-}
-.home-world::before{
-  content:"";
-  position:absolute;z-index:1;inset:0;
-  background:
-    linear-gradient(102deg,rgba(10,7,5,.74) 0 13%,transparent 29% 72%,rgba(8,5,3,.64) 91% 100%),
-    radial-gradient(ellipse at 48% 28%,rgba(197,118,48,.14),transparent 22%),
-    radial-gradient(ellipse at 54% 78%,rgba(192,122,58,.10),transparent 28%);
-  pointer-events:none
-}
-.home-world::after{
-  content:"";
-  position:absolute;z-index:2;inset:0;
-  background:
-    linear-gradient(180deg,rgba(3,2,1,.12),rgba(3,2,1,.18) 42%,rgba(2,1,1,.68) 100%),
-    radial-gradient(ellipse at 50% 48%,transparent 0 31%,rgba(0,0,0,.18) 61%,rgba(0,0,0,.57) 100%);
-  pointer-events:none
-}
+/* HOME — a place with a working radio. One composition, reflowed by available space. */
+.route-home{display:grid;min-height:100%;background:#080706}
+.home-world{position:absolute;z-index:-4;inset:0;overflow:hidden;background:#080706}
+.alley-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 65%}
+.home-world::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.15),transparent 35%,rgba(0,0,0,.12))}
 .alley-shade{display:none}
-.santiago-ghost{
-  position:absolute;z-index:3;
-  left:clamp(10px,5cqi,78px);
-  bottom:clamp(18px,9cqb,120px);
-  width:clamp(72px,12vmin,172px);
-  margin:0;
-  opacity:.20;
-  filter:grayscale(.52) sepia(.10) brightness(.43) contrast(1.16);
-  mix-blend-mode:screen;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 72%,transparent 100%);
-  mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 72%,transparent 100%);
-  transform:rotate(-2deg)
+.home-layout{width:min(calc(100% - 2 * var(--edge)),100rem);min-height:100%;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(12rem,1fr) auto;column-gap:clamp(14px,4vw,64px);padding:clamp(18px,4cqb,48px) 0 max(20px,4cqb);align-items:start}
+.home-brand{grid-column:2;grid-row:1;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;min-width:0;align-self:start;padding-top:clamp(12px,5cqb,60px)}
+.home-brand img{width:100%;height:auto;max-height:none;filter:brightness(2.2) saturate(.6) drop-shadow(0 2px 2px #0006)}
+.site-production-notice{display:block;max-width:100%;padding:8px 12px;background:#901b17;color:#fff5e9;border:1px solid #c05847;box-shadow:0 3px 8px #0009;font:800 .75rem/1.25 var(--body);letter-spacing:.04em;text-align:center;transform:rotate(-1deg)}
+.home-media{grid-column:1;grid-row:1 / 4;min-width:0;display:flex;align-self:end;align-items:end;justify-content:center;padding-bottom:clamp(8px,2cqb,24px)}
+.music-machine{position:relative;isolation:isolate;width:100%;max-width:38rem;aspect-ratio:3/2;container-type:inline-size;container-name:player;min-width:0;overflow:visible;background:transparent;border:0;box-shadow:none;padding:0}
+.boombox-art{position:absolute;z-index:-1;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 14px 9px #000b);pointer-events:none}
+.player-display{position:absolute;z-index:2;left:40%;top:38%;width:29%;min-width:0;display:flex;flex-direction:column;gap:3px;justify-content:center;padding:5px 7px;background:#0b0e0c;color:#e0ca92;border:1px solid #5a5e50;border-radius:2px;font:600 max(12px,2.4cqi)/1.15 ui-monospace,monospace;box-shadow:inset 0 0 6px #000}
+.player-display>span:first-child{display:block;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.player-display .time{font-size:max(11px,2cqi);white-space:nowrap;color:#bcb399}
+.library-button{position:absolute;z-index:3;left:37%;top:53%;width:35%;min-height:44px;border:1px solid #6e6a5d;border-bottom:3px solid #272621;background:linear-gradient(#a7a295,#646358);color:#11130f;box-shadow:0 2px 3px #000b;font:800 max(12px,2.5cqi)/1.1 var(--body);cursor:pointer}
+.player-controls{position:absolute;z-index:3;left:39%;bottom:23%;width:30%;display:grid;grid-template-columns:repeat(4,minmax(44px,1fr));gap:3px}
+.player-controls button{min-width:44px;min-height:44px;padding:0;border:1px solid #635f55;border-bottom:3px solid #22231f;border-radius:2px;background:linear-gradient(#b0aa9c,#77766b);color:#11130f;box-shadow:0 3px 3px #000b;font-size:18px;cursor:pointer}
+.player-controls button:active,.library-button:active{transform:translateY(2px);box-shadow:none}
+.home-socials{grid-column:2;grid-row:3;justify-self:center;align-self:center;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:100%;margin-bottom:clamp(12px,5cqb,60px)}
+.home-socials a{min-height:44px;display:grid;place-items:center;padding:10px 16px;border:1px solid #60513d;background:linear-gradient(130deg,#302e27,#191b17);color:#d6c7ac;box-shadow:2px 6px 8px #0009;font:800 .875rem/1.2 var(--display);text-decoration:none;transform:rotate(-2deg)}
+.home-socials a+a{transform:rotate(2deg)}
+.speaker-motion{position:absolute;pointer-events:none;z-index:1;top:40%;width:26%;height:43%;border-radius:50%;background:radial-gradient(ellipse,#0000 40%,#dfcda30a 59%,#0000 70%);opacity:0}
+.speaker-left{left:8%}.speaker-right{right:3%}
+.is-playing .speaker-motion{animation:speaker-pulse .16s ease-in-out infinite alternate}
+@keyframes speaker-pulse{from{opacity:.1;transform:scale(.99)}to{opacity:.6;transform:scale(1.025)}}
+/* Narrow/tall space: keep the dark figure above the radio and the branding readable. */
+@container site (max-aspect-ratio:1/1){
+ .home-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(5rem,1fr) auto auto;row-gap:12px;padding-top:12px;padding-bottom:16px}
+ .home-brand{grid-column:1;grid-row:1;padding-top:0;width:min(100%,36rem);justify-self:center;gap:8px}
+ .home-brand img{max-height:18cqb;object-fit:contain}
+ .home-media{grid-column:1;grid-row:3;width:min(100%,34rem);justify-self:center;padding:0}
+ .home-socials{grid-column:1;grid-row:4;margin:0}
+ .alley-photo{object-position:12% 65%}
 }
-.santiago-ghost img{width:100%;height:auto}
-
-.home-layout{
-  width:min(calc(100% - (2 * var(--edge))),96rem);
-  min-height:100%;
-  margin-inline:auto;
-  padding-top:clamp(2px,.8cqb,9px);
-  padding-bottom:max(clamp(7px,1.4cqb,16px),env(safe-area-inset-bottom));
-  display:grid;
-  grid-template-rows:auto minmax(0,1fr) auto;
-  gap:clamp(6px,1.35vmin,18px);
-  align-items:stretch
+@container site (max-aspect-ratio:1/1) and (max-height:32rem){
+ .home-layout{grid-template-rows:auto minmax(0,1fr) auto auto;row-gap:8px}
 }
-.home-brand{
-  min-width:0;min-height:0;
-  display:grid;place-items:center
+/* Low/wide space uses columns fully instead of shrinking touch controls. */
+@container site (min-aspect-ratio:1/1) and (max-height:32rem){
+ .home-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;column-gap:16px;padding-block:8px}
+ .home-brand{grid-column:2;grid-row:1;padding:0;align-self:center;gap:8px}
+ .home-brand img{max-height:35cqb;object-fit:contain}
+ .home-media{grid-column:1;grid-row:1 / 3;align-self:end;padding:0}
+ .music-machine{width:min(100%,65cqb);min-width:min(100%,20rem)}
+ .home-socials{grid-column:2;grid-row:2;margin:8px 0 0;gap:8px}
 }
-.home-brand img{
-  width:min(100%,46rem);
-  max-height:clamp(44px,12cqb,122px);
-  object-fit:contain;
-  filter:drop-shadow(0 7px 13px rgba(0,0,0,.72))
+/* The controls leave the small physical face when there is not enough touch space. */
+@container player (max-width:36rem){
+ .player-display{top:37%;left:40%;width:29%;font-size:12px;padding:3px 4px;gap:1px;transform:skewY(-4deg)}
+ .library-button{top:53%;left:37%;width:35%;font-size:12px;background:transparent;border-color:transparent;box-shadow:none;transform:skewY(-4deg)}
+ .player-controls{left:9%;bottom:-2%;width:82%;gap:5px}
 }
-.home-media{
-  min-width:0;min-height:0;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,18.5rem),1fr));
-  grid-auto-rows:minmax(clamp(184px,31cqb,410px),1fr);
-  gap:clamp(7px,1.35vmin,18px);
-  align-items:stretch
-}
-.video-board,.music-machine{
-  position:relative;
-  min-width:0;
-  min-height:0;
-  height:100%;
-  overflow:hidden;
-  background:#0b0806;
-  border:1px solid rgba(119,76,43,.86);
-  box-shadow:0 16px 38px rgba(0,0,0,.66)
-}
-
-/* Vídeo: o próprio quadro é um recipiente responsivo. */
-.video-board{
-  container-type:size;
-  container-name:intro;
-  padding:clamp(12px,2.2vmin,24px);
-  color:#efcf9c;
-  cursor:pointer;
-  display:grid;
-  grid-template-rows:minmax(0,1fr) auto auto;
-  place-items:center;
-  gap:clamp(8px,1.4vmin,16px)
-}
-.video-board>img{
-  position:absolute;z-index:0;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center;
-  filter:grayscale(1) brightness(.40) contrast(1.12)
-}
-.video-board::after{
-  content:"";position:absolute;z-index:1;inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.24) 46%,rgba(0,0,0,.68));
-  pointer-events:none
-}
-.video-play,.video-board strong,.video-board small{position:relative;z-index:2}
-.video-play{
-  grid-row:1;
-  align-self:center;
-  display:grid;place-items:center;
-  width:clamp(44px,18cqb,72px);aspect-ratio:1;
-  border:clamp(3px,1cqi,4px) solid currentColor;border-radius:50%;
-  font-size:clamp(18px,7cqi,28px);padding-left:.13em
-}
-.video-board strong{
-  grid-row:2;
-  width:min(100%,34rem);
-  text-align:center;
-  font:900 clamp(16px,5.6cqi,30px)/.98 var(--display)
-}
-.video-board small{
-  grid-row:3;
-  font:900 clamp(9px,3cqi,13px)/1 var(--display);
-  letter-spacing:.16em;white-space:nowrap
-}
-
-/* Player: também é um recipiente; controles respondem ao quadro real. */
-.music-machine{
-  container-type:size;
-  container-name:player;
-  isolation:isolate;
-  display:grid;
-  grid-template-rows:auto minmax(0,1fr) auto auto;
-  gap:clamp(7px,1.25vmin,14px);
-  padding:clamp(12px,2vmin,22px)
-}
-.boombox-art{
-  position:absolute;z-index:-1;inset:0;
-  background:
-    linear-gradient(180deg,rgba(5,4,3,.02),rgba(5,4,3,.18)),
-    url('assets/home-scene.webp') 2% 100%/285% auto no-repeat;
-  filter:saturate(.78) contrast(1.08) brightness(.70);
-  transform:scale(1.025)
-}
-.music-machine::after{
-  content:"";position:absolute;z-index:0;inset:0;pointer-events:none;
-  box-shadow:inset 0 0 50px 12px rgba(4,3,2,.54)
-}
-.player-display{
-  position:relative;z-index:3;
-  width:100%;
-  min-height:40px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:7px 10px;
-  color:#d6ac68;background:rgba(7,6,5,.92);border:1px solid rgba(181,139,81,.54);
-  font:700 clamp(10px,3cqi,14px)/1.15 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace
-}
-.player-display>span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.player-display .time{flex:0 0 auto;white-space:nowrap;color:#c7a675}
-.library-button,.player-controls button{
-  min-width:var(--tap);min-height:var(--tap);
-  border:2px solid #2d1b0e;
-  background:rgba(176,132,77,.94);
-  color:#1b120b;
-  box-shadow:0 5px 12px rgba(0,0,0,.44),inset 0 0 0 1px rgba(238,202,151,.28);
-  font-weight:900;cursor:pointer
-}
-.library-button{
-  position:relative;z-index:4;
-  grid-row:3;
-  justify-self:center;
-  width:min(42%,190px);
-  font:900 clamp(10px,3.2cqi,14px)/1 var(--display)
-}
-.player-controls{
-  position:relative;z-index:4;
-  grid-row:4;
-  width:100%;
-  display:grid;grid-template-columns:repeat(4,minmax(var(--tap),1fr));
-  gap:clamp(5px,2cqi,10px)
-}
-.player-controls button{font-size:clamp(15px,5cqi,21px)}
-
-@container player (min-aspect-ratio:3/2){
-  .boombox-art{background-size:245% auto;background-position:0 100%}
-}
-@container player (max-aspect-ratio:4/3){
-  .boombox-art{background-size:350% auto;background-position:1% 100%}
-  .library-button{width:min(52%,190px)}
-}
-@container player (max-height:13rem){
-  .music-machine{padding:8px;gap:5px}
-  .player-display{min-height:36px;padding-block:5px}
-}
-@container intro (max-height:13rem){
-  .video-board{padding:9px;gap:5px}
-  .video-play{width:44px}
-  .video-board strong{font-size:clamp(15px,5.2cqi,22px)}
-}
-
-.home-socials{
-  min-width:0;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr));
-  gap:clamp(6px,.9vmin,11px);
-  width:min(100%,46rem);
-  justify-self:center
-}
-.home-socials a{
-  display:grid;place-items:center;
-  min-height:var(--tap);padding:8px;
-  text-align:center;text-decoration:none;
-  color:#d5b585;background:linear-gradient(145deg,#281910,#150d08);
-  border:1px solid #724a2a;box-shadow:0 8px 18px rgba(0,0,0,.55);
-  font:900 clamp(10px,1.4vmin,14px)/1 var(--display)
-}
-
-/* Geometrias estreitas: empilha com escala confortável e rolagem natural se necessário. */
-@container site (max-width:38rem){
-  .home-layout{grid-template-rows:auto auto auto;align-content:start}
-  .home-brand img{width:min(92%,32rem);max-height:clamp(50px,10cqb,92px)}
-  .home-media{
-    grid-template-columns:1fr;
-    grid-auto-rows:minmax(clamp(190px,28cqb,300px),auto)
-  }
-  .santiago-ghost{left:auto;right:-1rem;bottom:23%;width:clamp(70px,30cqi,124px);opacity:.16}
-  .alley-photo{object-position:35% 50%;transform:scale(1.07)}
-}
-
-/* Larga e baixa: usa a largura para economizar altura, mesmo sem “largura de desktop”. */
-@container site (min-width:29rem) and (min-aspect-ratio:7/5){
-  .home-media{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(184px,1fr)}
-  .home-brand img{max-height:clamp(38px,9cqb,76px);width:min(62cqi,38rem)}
-}
-
-/* Muito baixa: preserva toque e legibilidade; se faltar espaço, main rola em vez de miniaturizar. */
-@container site (max-height:27rem){
-  .home-layout{grid-template-rows:auto auto auto;align-content:start;gap:clamp(4px,.8cqb,7px);padding-bottom:5px}
-  .home-brand img{max-height:clamp(34px,8cqb,52px);width:min(58cqi,34rem)}
-  .home-media{grid-auto-rows:minmax(184px,auto)}
-  .santiago-ghost{bottom:4%;opacity:.15}
-}
-
-/* Direção do próprio cenário por geometria do recipiente. */
-@container site (min-aspect-ratio:2/1){
-  .alley-photo{object-position:51% 56%;transform:scale(1.04)}
-  .santiago-ghost{left:7%;right:auto;bottom:5%;width:clamp(62px,10vmin,138px)}
-}
-@container site (max-aspect-ratio:2/3){
-  .alley-photo{object-position:33% 48%;transform:scale(1.09)}
+@container player (min-width:36rem){
+ .player-controls{gap:1px}
+ .player-controls button{font-size:16px}
+ .player-display,.library-button,.player-controls{transform:skewY(-4deg)}
 }
 
 /* ========================= ROTAS INTERNAS ========================= */

@@ -39,6 +39,7 @@ function syncDisplay(){
   const playing=!audio.paused && !audio.ended;
   document.body.classList.toggle('is-playing', playing);
   document.querySelectorAll('#play-pause,#mobile-play').forEach(btn=>{
+    btn.textContent = playing ? 'Ⅱ' : '▶';
     btn.setAttribute('aria-label', playing ? 'Pausar' : 'Reproduzir');
     btn.setAttribute('aria-pressed', playing ? 'true' : 'false');
   });
@@ -112,7 +113,7 @@ function bind(id,fn){ document.getElementById(id)?.addEventListener('click',fn);
 ['prev-track','mobile-prev'].forEach(id=>bind(id,previousTrack));
 ['next-track','mobile-next'].forEach(id=>bind(id,nextTrack));
 ['open-library','mobile-library'].forEach(id=>bind(id,()=>dialog?.showModal()));
-['intro-placeholder','mobile-intro-placeholder'].forEach(id=>bind(id,()=>showToast('O vídeo de apresentação da banda ainda está em produção.')));
+bind('qa-dialog-close',()=>dialog?.close());
 
 audio.addEventListener('play',syncDisplay);
 audio.addEventListener('pause',syncDisplay);

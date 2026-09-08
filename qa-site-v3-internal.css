@@ -6,7 +6,7 @@
 
 /* Escala funcional cresce em recipientes muito grandes (ex.: TV), sem encolher abaixo do toque seguro. */
 :root{--tap:clamp(44px,3.2vmin,72px)}
-.site-nav a{font-size:clamp(9px,1.2vmin,20px)}
+.site-nav a{font-size:clamp(14px,1.5vmin,20px)}
 
 /* Cada shell vira contexto próprio para que componentes respondam ao espaço realmente recebido. */
 .route-shell{
