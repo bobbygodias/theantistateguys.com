@@ -8,3 +8,14 @@
 @import url("members-final-v1.css?rev=1");
 @import url("photos-final-v1.css?rev=1");
 @import url("shows-final-v1.css?rev=1");
+
+/*
+  Correção cirúrgica de interação no player compacto.
+  approved-direction-v2.css é carregado depois desta camada e recoloca o transporte em bottom:5%,
+  fazendo o botão Play interceptar o clique em CD / FAIXAS no viewport 390×844.
+  Mantemos os controles na face inferior da boombox e apenas abrimos a folga necessária entre
+  biblioteca e transporte; !important existe só para vencer essa regra posterior da cascata.
+*/
+@media(max-width:720px){
+  .route-home .player-controls{bottom:0!important}
+}
