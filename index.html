@@ -177,14 +177,43 @@
 
     <section class="route route-panel" id="contato" data-route="contato" aria-labelledby="contato-title" hidden>
       <div class="route-world contact-world" aria-hidden="true"></div>
-      <div class="route-shell contact-shell">
+      <div class="route-shell contact-shell contact-final-shell">
         <p class="sheet-label">CANAIS OFICIAIS</p>
         <h2 id="contato-title">CONTATO</h2>
-        <div class="contact-signs">
-          <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM</span><strong>@theantistateguys</strong></a>
-          <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer"><span>YOUTUBE</span><strong>@TheAntiStateGuys</strong></a>
-          <a href="mailto:theantistateguys@gmail.com"><span>E-MAIL DA BANDA</span><strong>theantistateguys@gmail.com</strong></a>
-          <a href="mailto:bobbygodias@gmail.com"><span>CONTATO DIRETO · BOBBY</span><strong>bobbygodias@gmail.com</strong></a>
+
+        <div class="contact-final-layout">
+          <section class="contact-form-panel" aria-labelledby="contact-form-title">
+            <h3 id="contact-form-title">FALE COM A BANDA</h3>
+            <form class="contact-form" id="contact-form">
+              <label class="contact-field">
+                <span>Nome</span>
+                <input type="text" name="name" autocomplete="name" required maxlength="120">
+              </label>
+
+              <label class="contact-field">
+                <span>E-mail</span>
+                <input type="email" name="email" autocomplete="email" required maxlength="180">
+              </label>
+
+              <label class="contact-field">
+                <span>Mensagem</span>
+                <textarea name="message" required maxlength="4000"></textarea>
+              </label>
+
+              <button class="contact-submit" type="submit">ENVIAR MENSAGEM</button>
+              <p class="contact-form-note">Ao enviar, seu aplicativo de e-mail será aberto com a mensagem pronta para a banda.</p>
+              <p class="contact-form-status" id="contact-form-status" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <aside class="contact-directory" aria-labelledby="contact-directory-title">
+            <h3 id="contact-directory-title">CONTATOS</h3>
+            <div class="contact-signs">
+              <a href="mailto:theantistateguys@gmail.com"><span>E-MAIL DA BANDA</span><strong>theantistateguys@gmail.com</strong></a>
+              <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM</span><strong>@theantistateguys</strong></a>
+              <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer"><span>YOUTUBE</span><strong>@TheAntiStateGuys</strong></a>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
