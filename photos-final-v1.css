@@ -1,0 +1,167 @@
+/*
+  FOTOS FINAL V1 — direção aprovada com Bobby
+  Arquivo visual com fotos reais da banda. Nada de pessoas geradas ou categorias inventadas.
+*/
+
+.photos-final-shell{
+  min-height:100%;
+  min-block-size:0;
+  display:grid;
+  grid-template-rows:auto auto minmax(0,1fr);
+  align-content:stretch;
+}
+
+.photo-wall-final{
+  min-width:0;
+  min-height:0;
+  height:100%;
+  display:grid;
+  grid-template-columns:minmax(0,1.65fr) minmax(13rem,.85fr);
+  grid-template-rows:repeat(2,minmax(0,1fr));
+  gap:clamp(10px,1.7cqi,22px);
+  align-items:stretch;
+  align-content:stretch;
+  padding:clamp(4px,.8cqi,10px);
+}
+
+.photo-card{
+  min-width:0;
+  min-height:0;
+  position:relative;
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto;
+  margin:0;
+  padding:clamp(7px,.85cqi,11px) clamp(7px,.85cqi,11px) clamp(12px,1.4cqi,17px);
+  border:1px solid #3e2b1b;
+  background:
+    repeating-linear-gradient(176deg,rgba(61,36,19,.07) 0 1px,transparent 1px 5px),
+    linear-gradient(138deg,#b2a58d 0%,#8b806d 48%,#665f52 100%);
+  box-shadow:0 16px 28px rgba(0,0,0,.48),inset 0 0 0 1px rgba(255,224,181,.13);
+  overflow:hidden;
+}
+
+.photo-card::before,
+.photo-card::after{
+  content:"";
+  position:absolute;
+  z-index:3;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#c09360 0 18%,#684429 34%,#20150d 70%);
+  box-shadow:0 1px 2px #0009;
+}
+.photo-card::before{top:7px;left:7px}
+.photo-card::after{right:7px;bottom:7px}
+
+.photo-card-featured{
+  grid-row:1 / span 2;
+  transform:rotate(-.35deg);
+}
+.photo-card-studio{transform:rotate(.55deg)}
+.photo-card-band{transform:rotate(-.45deg)}
+
+.photo-frame{
+  min-width:0;
+  min-height:0;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #201913;
+  background:#090806;
+  box-shadow:inset 0 0 18px #000a;
+}
+.photo-frame::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent 62%,rgba(7,5,4,.20));
+  box-shadow:inset 0 0 26px rgba(0,0,0,.28);
+}
+
+.photo-card img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  filter:saturate(.82) contrast(1.04) brightness(.94);
+}
+.photo-card-featured img{object-position:center center}
+.photo-card-studio img{object-position:center center}
+.photo-card-band img{object-position:center center}
+
+.photo-card figcaption{
+  min-width:0;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:3px 10px;
+  align-items:baseline;
+  padding:clamp(8px,1.1cqi,13px) 4px 0;
+  color:#21170f;
+  text-align:left;
+}
+.photo-card figcaption strong{
+  grid-row:1 / span 2;
+  align-self:center;
+  padding:5px 8px;
+  border:1px solid #49301d;
+  background:linear-gradient(135deg,#8e2a20,#581611);
+  color:#f0dfca;
+  box-shadow:0 3px 7px #0005;
+  font:900 clamp(9px,1cqi,12px)/1 var(--display);
+  letter-spacing:.075em;
+}
+.photo-card figcaption span{
+  min-width:0;
+  color:#21170f;
+  font:900 clamp(12px,1.35cqi,17px)/1.08 var(--display);
+  letter-spacing:.018em;
+  overflow-wrap:anywhere;
+}
+.photo-card .photo-credit{
+  min-width:0;
+  color:#544334;
+  opacity:.82;
+  font:500 clamp(9px,.9cqi,11px)/1.2 var(--body);
+  letter-spacing:.01em;
+}
+
+/* Portrait/estreito: vira arquivo vertical legível, sem desktop espremido. */
+@container site (max-aspect-ratio:1/1){
+  .photos-final-shell{height:auto;min-height:100%;align-content:start}
+  .photo-wall-final{
+    height:auto;
+    grid-template-columns:1fr;
+    grid-template-rows:none;
+    align-content:start;
+    padding-bottom:clamp(18px,5cqb,42px);
+  }
+  .photo-card-featured{grid-row:auto}
+  .photo-card{transform:none!important;min-height:auto}
+  .photo-frame{aspect-ratio:4/3}
+  .photo-card-band .photo-frame{aspect-ratio:16/9}
+}
+
+/* Paisagem baixa: mantém as três fotos presentes sem transformar a rota numa rolagem infinita. */
+@container site (max-height:31rem) and (min-aspect-ratio:3/2){
+  .photos-final-shell{padding-block:7px}
+  .photos-final-shell>.sheet-label{margin-bottom:4px;padding-block:4px}
+  .photos-final-shell>h2{margin-bottom:6px;padding-block:4px;font-size:clamp(25px,8cqb,40px)}
+  .photo-wall-final{gap:8px;padding:2px}
+  .photo-card{padding:5px 5px 7px}
+  .photo-card figcaption{padding-top:5px;gap:2px 6px}
+  .photo-card figcaption strong{padding:4px 6px;font-size:8px}
+  .photo-card figcaption span{font-size:10px}
+  .photo-card .photo-credit{font-size:8px}
+}
+
+@container site (max-width:20rem){
+  .photo-wall-final{gap:14px;padding-inline:0}
+  .photo-card figcaption{grid-template-columns:1fr;gap:5px}
+  .photo-card figcaption strong{grid-row:auto;justify-self:start}
+}
+
+@media (prefers-contrast:more){
+  .photo-card{box-shadow:none}
+  .photo-card img{filter:none}
+}
