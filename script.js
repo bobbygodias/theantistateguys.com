@@ -162,8 +162,13 @@ window.addEventListener('hashchange',()=>setRoute(location.hash.slice(1)||'home'
 setRoute(location.hash.slice(1)||'home',{replace:true});
 loadMusic();
 
-// Carrega a camada final da Home sem misturá-la ao motor base do player.
+// Camadas finais isoladas: preservam o motor base e permitem QA por seção.
 const homeFinalScript=document.createElement('script');
 homeFinalScript.src='home-final-v1.js?rev=1';
 homeFinalScript.defer=true;
 document.head.appendChild(homeFinalScript);
+
+const contactFinalScript=document.createElement('script');
+contactFinalScript.src='contact-final-v1.js?rev=1';
+contactFinalScript.defer=true;
+document.head.appendChild(contactFinalScript);
