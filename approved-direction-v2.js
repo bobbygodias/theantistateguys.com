@@ -1,4 +1,9 @@
 (() => {
+  const hotfix = document.createElement('link');
+  hotfix.rel = 'stylesheet';
+  hotfix.href = 'approved-direction-v2-hotfix.css?rev=1';
+  document.head.appendChild(hotfix);
+
   const header = document.querySelector('.site-header');
   const toggle = document.getElementById('site-menu-toggle');
   const nav = document.getElementById('site-nav');
@@ -12,6 +17,6 @@
   nav.addEventListener('click', event => { if (event.target.closest('[data-route-link]')) setOpen(false); });
   document.querySelector('.site-mark')?.addEventListener('click', () => setOpen(false));
   window.addEventListener('hashchange', () => setOpen(false));
-  window.matchMedia('(min-width: 721px)').addEventListener?.('change', event => { if (event.matches) setOpen(false); });
+  window.matchMedia('(min-width: 901px)').addEventListener?.('change', event => { if (event.matches) setOpen(false); });
   if (new URLSearchParams(location.search).has('interaction')) setOpen(true);
 })();
