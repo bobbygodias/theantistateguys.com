@@ -1,0 +1,49 @@
+/*
+  TASG HOME FINAL V1 — touch target safety layer
+  Mantém todos os controles físicos da boombox com alvo mínimo de 44×44px.
+*/
+.library-button{
+  min-height:44px!important;
+}
+
+.player-controls{
+  left:50%!important;
+  width:max(42%,228px)!important;
+  grid-template-columns:repeat(5,minmax(44px,1fr))!important;
+  gap:2px!important;
+  transform:translateX(-50%) skewY(-4deg)!important;
+}
+.player-controls button{
+  min-width:44px!important;
+  min-height:44px!important;
+}
+
+@container player (max-width:36rem){
+  .library-button{
+    min-height:44px!important;
+  }
+  .player-controls{
+    left:50%!important;
+    width:max(80%,228px)!important;
+    bottom:10.5%!important;
+    grid-template-columns:repeat(5,minmax(44px,1fr))!important;
+    transform:translateX(-50%) skewY(-4deg)!important;
+  }
+  .player-controls button{
+    min-width:44px!important;
+    min-height:44px!important;
+    font-size:14px;
+  }
+}
+
+@container player (max-width:23rem){
+  .player-controls{
+    left:50%!important;
+    width:max(86%,228px)!important;
+    bottom:8.5%!important;
+  }
+  .player-controls button{
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+}
