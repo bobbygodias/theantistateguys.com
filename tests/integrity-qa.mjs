@@ -45,6 +45,16 @@ for(const js of ['script.js']){
 if (html.includes('video-board')) issue('intro-placeholder-returned');
 if (!html.includes('assets/wordmark-bobby-original.webp')) issue('original-wordmark-missing');
 
+// Contact contract approved with Bobby: one official email, no WhatsApp/personal email, final form present.
+if(!html.includes('theantistateguys@gmail.com')) issue('contact-official-email-missing');
+if(/bobbygodias@gmail\.com/i.test(html)) issue('contact-personal-email-returned');
+if(/(?:whatsapp|wa\.me|api\.whatsapp)/i.test(html)) issue('contact-whatsapp-returned');
+for(const id of ['contact-form','contact-form-title','contact-directory-title','contact-form-status']){
+  if(!new RegExp(`\\bid=["']${id}["']`,'i').test(html)) issue(`contact-final-id-missing:${id}`);
+}
+if(!/>FALE COM A BANDA</i.test(html)) issue('contact-heading-fale-missing');
+if(!/>CONTATOS</i.test(html)) issue('contact-heading-contatos-missing');
+
 // Parse CSS url() dependencies recursively for the V3 layers.
 for(const css of expectedStyles){
   const text=await fs.readFile(path.join(root,css),'utf8');
@@ -113,10 +123,14 @@ if(music){
   if(trackCount<2) issue(`music-track-count:${trackCount}`);
 }
 
-// Critical V3 scripts should reference the expected local catalog and not inject compat CSS dynamically.
+// Critical V3 scripts should reference expected local layers and not inject compat CSS dynamically.
 const appJS=await fs.readFile(path.join(root,'script.js'),'utf8');
 const qaJS=await fs.readFile(path.join(root,'qa-site-v3.js'),'utf8');
 if(!appJS.includes("fetch('data/music.json'")) issue('script-music-catalog-ref-missing');
+if(!appJS.includes('home-final-v1.js')) issue('home-final-script-ref-missing');
+if(!appJS.includes('contact-final-v1.js')) issue('contact-final-script-ref-missing');
+await assertFile('home-final-v1.js','script.js');
+await assertFile('contact-final-v1.js','script.js');
 if(/createElement\(['"]link['"]\)[\s\S]{0,800}qa-site-v3-compat\.css/i.test(qaJS)) issue('compat-dynamic-injection-returned');
 
 const summary={
