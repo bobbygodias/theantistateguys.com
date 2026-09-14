@@ -5,6 +5,9 @@
 **Data:** 14/09/2026  
 **Status:** direção visual da Home confirmada por Bobby como referência principal de acabamento  
 **Branch de trabalho:** `home-final-direction-v1`
+**Referência canônica da Home no Drive do Andrew:** `TASG-HOME-REFERENCIA-CANONICA-2026-09-14.png`
+**Drive file ID:** `1sqZGICIFpZiHB4wWNT7yV7QhXA6P_zkz`
+**Este MD no Drive do Andrew:** `1IEOnJFm8OWt0qYqvwDMT1ruGysZ2bjIt`
 
 ---
 
