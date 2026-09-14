@@ -36,6 +36,16 @@
 }
 
 @media(max-width:720px) and (orientation:landscape){
+  .home-layout{padding-block:2px!important;gap:6px!important}
+  .home-brand{gap:4px!important}
+  .home-brand img{max-height:25cqb!important}
+  .site-production-notice{padding:7px 10px!important;font-size:10px!important}
+  .home-media{align-self:center!important;padding:0!important}
+  .music-machine{min-width:0!important;width:min(100%,70cqb)!important;max-width:270px!important}
+  .cd-disc{min-width:80px!important;min-height:80px!important;transform:translateY(14%) rotateX(50deg) rotateZ(-7deg)!important}
+  .music-machine[data-cd-state="closing"] .cd-disc{transform:translateY(-25%) scale(.72) rotateX(20deg) rotateZ(4deg)!important}
+  .home-socials{gap:6px!important;margin:0!important}
+  .home-socials a{min-height:44px!important;padding:7px 8px!important;font-size:11px!important}
   .photos-shell{padding-block:3px!important}
   .photos-shell>h2{font-size:30px!important;margin-bottom:3px!important;padding-block:3px!important}
   .photo-wall-v2{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:4px!important}
