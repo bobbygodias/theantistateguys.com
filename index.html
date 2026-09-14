@@ -51,8 +51,18 @@
         </header>
 
         <div class="home-media">
-          <section class="music-machine" aria-label="Player de músicas">
+          <section class="music-machine" aria-label="Player de músicas" data-cd-state="open">
             <img class="boombox-art" src="assets/boombox-real-v4.webp" width="1536" height="1024" alt="" aria-hidden="true">
+
+            <div class="cd-mechanism" id="cd-mechanism">
+              <div class="cd-tray" aria-hidden="true"></div>
+              <button class="cd-disc" id="insert-cd" type="button" aria-label="Inserir CD na boombox">
+                <span class="cd-disc-title">BOBBY DIAS</span>
+                <span class="cd-disc-subtitle">&amp; THE ANTI-STATE GUYS</span>
+              </button>
+              <button class="eject-button" id="eject-cd" type="button" aria-label="Ejetar CD" disabled>EJECT</button>
+            </div>
+
             <span class="speaker-motion speaker-left" aria-hidden="true"></span>
             <span class="speaker-motion speaker-right" aria-hidden="true"></span>
             <div class="player-display" aria-live="polite">
@@ -61,10 +71,10 @@
             </div>
             <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog" aria-label="Abrir CDs e faixas">CD / FAIXAS</button>
             <div class="player-controls" aria-label="Controles do player">
-              <button id="stop-track" type="button" aria-label="Parar">■</button>
-              <button id="prev-track" type="button" aria-label="Faixa anterior">⏮</button>
-              <button id="play-pause" type="button" aria-label="Reproduzir">▶</button>
-              <button id="next-track" type="button" aria-label="Próxima faixa">⏭</button>
+              <button id="stop-track" type="button" aria-label="Parar" disabled>■</button>
+              <button id="prev-track" type="button" aria-label="Faixa anterior" disabled>⏮</button>
+              <button id="play-pause" type="button" aria-label="Reproduzir" disabled>▶</button>
+              <button id="next-track" type="button" aria-label="Próxima faixa" disabled>⏭</button>
             </div>
           </section>
         </div>
@@ -192,6 +202,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <audio id="audio" preload="metadata"></audio>
+  <audio id="cd-close-sfx" src="assets/cd-drawer-close.mp3" preload="auto"></audio>
   <script src="script.js?rev=underground4" defer></script>
 
 </body>
