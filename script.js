@@ -30,7 +30,7 @@ function installFinalHomeUI(){
       eject.type='button';
       eject.id='eject-track';
       eject.setAttribute('aria-label','Ejetar CD');
-      eject.textContent='EJ';
+      eject.textContent='⏏';
       controls.appendChild(eject);
     }
   }
@@ -56,7 +56,6 @@ const mobileCurrent = document.getElementById('mobile-time-current');
 const mobileTotal = document.getElementById('mobile-time-total');
 
 const cdInsert = document.getElementById('cd-insert');
-const ejectTrack = document.getElementById('eject-track');
 const libraryButton = document.getElementById('open-library');
 const playbackButtons = ['play-pause','stop-track','prev-track','next-track','eject-track']
   .map(id => document.getElementById(id))
@@ -66,6 +65,7 @@ let releases = [];
 let tracks = [];
 let currentIndex = 0;
 let toastTimer;
+let cdReadyTimer;
 let cdLoaded = false;
 let cdBusy = false;
 
@@ -173,6 +173,8 @@ function nextTrack(){
 }
 
 function finishCdInsert(){
+  if (!cdBusy) return;
+  clearTimeout(cdReadyTimer);
   cdBusy = false;
   cdLoaded = true;
   syncDisplay();
@@ -185,17 +187,25 @@ function insertCd(){
   cdBusy = true;
   syncDisplay();
 
-  if (cdSfx){
-    try{
-      cdSfx.pause();
-      cdSfx.currentTime = 0;
-      cdSfx.playbackRate = 1.15;
-      cdSfx.play().catch(()=>{});
-    }catch{}
+  clearTimeout(cdReadyTimer);
+  cdSfx.onended = finishCdInsert;
+  cdSfx.onerror = finishCdInsert;
+
+  try{
+    cdSfx.pause();
+    cdSfx.currentTime = 0;
+    const result=cdSfx.play();
+    if(result?.catch) result.catch(()=>{
+      // Sem som, a interação ainda precisa completar de forma previsível.
+      clearTimeout(cdReadyTimer);
+      cdReadyTimer=window.setTimeout(finishCdInsert,2450);
+    });
+  }catch{
+    cdReadyTimer=window.setTimeout(finishCdInsert,2450);
   }
 
-  // A animação visual fecha primeiro; o efeito pode terminar naturalmente.
-  window.setTimeout(finishCdInsert, 2450);
+  // Fallback para arquivo de áudio travado ou evento ended perdido.
+  cdReadyTimer=window.setTimeout(finishCdInsert,7200);
 }
 
 function ejectCd(){
