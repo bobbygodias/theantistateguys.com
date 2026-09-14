@@ -11,6 +11,37 @@
   --cd-edge:#d6d0bd;
 }
 
+/* Placas: metal envelhecido, quatro rebites, desgaste discreto e vermelho só no estado ativo. */
+.site-nav a{
+  color:#1b140e;
+  text-shadow:0 1px 0 rgba(255,244,220,.22);
+  border:2px solid #28180d;
+  background:
+    radial-gradient(circle at 9px 9px,#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px,#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px),#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    repeating-linear-gradient(174deg,rgba(55,31,16,.10) 0 1px,transparent 1px 5px),
+    linear-gradient(132deg,#c2b49a 0%,#968b77 37%,#6f6a5b 72%,#a08c70 100%);
+  box-shadow:
+    0 6px 14px rgba(0,0,0,.60),
+    inset 0 0 0 1px rgba(255,221,170,.18),
+    inset 0 -7px 12px rgba(55,32,17,.17);
+}
+.site-nav a.is-active,.site-nav a[aria-current="page"]{
+  color:#f4e7d5;
+  text-shadow:0 1px 1px #190604;
+  background:
+    radial-gradient(circle at 9px 9px,#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px,#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px),#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    repeating-linear-gradient(174deg,rgba(24,8,5,.18) 0 1px,transparent 1px 5px),
+    linear-gradient(132deg,#7e241b 0%,#5e1813 46%,#32110e 100%);
+  box-shadow:0 0 0 2px rgba(189,113,70,.32),0 7px 16px rgba(0,0,0,.62),inset 0 0 0 1px rgba(255,212,169,.10);
+  filter:none;
+}
+
 /* CD + gaveta: ficam presos à mesma geometria da boombox. */
 .cd-mechanism{
   position:absolute;
@@ -129,10 +160,12 @@
 /* Controles continuam fisicamente dentro do aparelho, inclusive no estreito. */
 @container player (max-width:36rem){
   .player-controls{
-    left:28%;
+    left:50%;
     bottom:13%;
-    width:46%;
+    width:max(60%,182px);
+    max-width:78%;
     gap:2px;
+    transform:translateX(-50%) skewY(-4deg);
   }
   .player-controls button{
     min-width:44px;
