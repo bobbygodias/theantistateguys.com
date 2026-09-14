@@ -201,11 +201,21 @@
   }
 }
 
+/* Espaço extremamente baixo/largo: recupera os 10 px de respiro sem desmontar a cena. */
+@container site (min-aspect-ratio:1/1) and (max-height:32rem){
+  .home-layout{padding-block:2px}
+  .home-socials{margin-top:2px}
+}
+
 /* Estado desligado antes de inserir o disco. */
 .music-machine button:disabled{
   cursor:not-allowed;
   filter:saturate(.35) brightness(.72);
   opacity:.68;
+}
+.music-machine .eject-button:disabled{
+  opacity:0;
+  pointer-events:none;
 }
 .cd-disc:disabled{opacity:.55}
 
