@@ -3,11 +3,12 @@ name: responsive-qa-v3
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, home-final-v1]
     paths:
       - 'index.html'
       - 'qa-site-v3*.css'
       - 'qa-site-v3*.js'
+      - 'home-final-v1.css'
       - 'script.js'
       - 'data/music.json'
       - 'assets/**'
