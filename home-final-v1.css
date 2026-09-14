@@ -1,0 +1,394 @@
+/*
+  TASG HOME FINAL V1
+  Direção aprovada com Bobby em 12–13/09/2026.
+  Regra: beco + boombox como objeto real + placas industriais + reflow verdadeiro.
+*/
+
+:root{
+  --tasg-plate:#c7b18c;
+  --tasg-plate-hi:#e1cda8;
+  --tasg-plate-mid:#a98e67;
+  --tasg-plate-dark:#5c452f;
+  --tasg-rust:#6d2f1f;
+  --tasg-rust-hi:#9b4630;
+  --tasg-shadow:#050403;
+}
+
+/* PLACAS — mais físicas, menos "botão web". */
+.site-nav a{
+  position:relative;
+  isolation:isolate;
+  color:#1c140d;
+  text-shadow:0 1px 0 rgba(255,240,208,.2);
+  background:
+    radial-gradient(circle at 9px 9px,#16100b 0 2px,#8f6b47 2.5px 4px,#26180e 4.5px 5px,transparent 5.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px,#16100b 0 2px,#8f6b47 2.5px 4px,#26180e 4.5px 5px,transparent 5.5px),
+    radial-gradient(circle at 9px calc(100% - 9px),#16100b 0 2px,#8f6b47 2.5px 4px,#26180e 4.5px 5px,transparent 5.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#16100b 0 2px,#8f6b47 2.5px 4px,#26180e 4.5px 5px,transparent 5.5px),
+    repeating-linear-gradient(176deg,rgba(63,42,24,.09) 0 1px,transparent 1px 6px),
+    linear-gradient(118deg,var(--tasg-plate-hi),var(--tasg-plate) 38%,var(--tasg-plate-mid) 71%,#8b7458);
+  border:2px solid #312116;
+  border-radius:2px;
+  box-shadow:
+    0 7px 14px rgba(0,0,0,.62),
+    inset 0 0 0 1px rgba(255,232,189,.22),
+    inset 0 -7px 12px rgba(55,33,19,.13);
+  transform:rotate(var(--plate-tilt,0deg));
+}
+.site-nav a:nth-child(2n){--plate-tilt:.25deg}
+.site-nav a:nth-child(3n){--plate-tilt:-.25deg}
+.site-nav a::after{
+  content:"";
+  position:absolute;
+  inset:4px;
+  pointer-events:none;
+  opacity:.45;
+  background:
+    linear-gradient(105deg,transparent 0 22%,rgba(71,39,20,.12) 22.5% 23%,transparent 23.5% 62%,rgba(255,235,194,.09) 62.5% 63%,transparent 63.5%),
+    radial-gradient(ellipse at 75% 25%,rgba(87,43,21,.20),transparent 25%);
+  mix-blend-mode:multiply;
+}
+.site-nav a.is-active,.site-nav a[aria-current="page"]{
+  color:#f0dfc7;
+  background:
+    radial-gradient(circle at 9px 9px,#160d09 0 2px,#8f6247 2.5px 4px,#28110c 4.5px 5px,transparent 5.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#160d09 0 2px,#8f6247 2.5px 4px,#28110c 4.5px 5px,transparent 5.5px),
+    repeating-linear-gradient(173deg,rgba(33,10,7,.16) 0 1px,transparent 1px 5px),
+    linear-gradient(118deg,#8a3a2a,#642719 54%,#3d1a12);
+  border-color:#24120d;
+  box-shadow:0 8px 18px rgba(0,0,0,.68),inset 0 0 0 1px rgba(245,184,138,.15);
+  filter:none;
+}
+
+/* HOME — composição final sem transformar tudo em placa. */
+.route-home{
+  background:#060504;
+}
+.home-world::after{
+  background:
+    radial-gradient(ellipse at 25% 70%,transparent 0 18%,rgba(0,0,0,.10) 47%,rgba(0,0,0,.35) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.08),transparent 34%,rgba(0,0,0,.22));
+}
+.home-layout{
+  width:min(calc(100% - 2 * var(--edge)),104rem);
+  column-gap:clamp(20px,4.5vw,76px);
+}
+.home-brand{
+  width:min(100%,52rem);
+  justify-self:center;
+}
+.home-brand img{
+  filter:brightness(2.02) saturate(.58) contrast(1.06) drop-shadow(0 3px 3px #0009);
+}
+.site-production-notice{
+  position:relative;
+  border:2px solid #42170f;
+  border-radius:1px;
+  background:
+    repeating-linear-gradient(176deg,rgba(0,0,0,.08) 0 1px,transparent 1px 5px),
+    linear-gradient(118deg,#a12720,#741b16 58%,#53130f);
+  box-shadow:0 6px 12px #000a,inset 0 0 0 1px rgba(255,199,165,.14);
+  transform:rotate(-.6deg);
+}
+
+.home-media{
+  padding-bottom:clamp(6px,1.5cqb,18px);
+}
+.music-machine{
+  max-width:44rem;
+  aspect-ratio:3/2;
+  overflow:visible;
+}
+.boombox-art{
+  filter:drop-shadow(0 18px 13px rgba(0,0,0,.82)) contrast(1.03) saturate(.88);
+}
+
+/* Display no lugar do tuner. */
+.player-display{
+  left:39.5%;
+  top:37.5%;
+  width:30%;
+  min-height:9%;
+  background:linear-gradient(#090d0b,#101511);
+  color:#dfc88d;
+  border:1px solid #535748;
+  box-shadow:inset 0 0 9px #000,0 1px 1px #b8996530;
+  text-shadow:0 0 5px rgba(226,196,125,.22);
+}
+body:not(.cd-is-loaded) .player-display #track-title{
+  letter-spacing:.03em;
+}
+
+/* Gaveta física sobre a região central do aparelho. */
+.cd-tray{
+  position:absolute;
+  z-index:2;
+  left:36.5%;
+  top:50.4%;
+  width:37%;
+  height:12.5%;
+  pointer-events:none;
+  transform-origin:50% 0%;
+  transform:perspective(420px) rotateX(-55deg) translateY(42%);
+  border:1px solid #282822;
+  border-top-color:#7c7768;
+  border-radius:2px;
+  background:
+    linear-gradient(90deg,transparent 0 9%,rgba(0,0,0,.28) 9.5% 10.5%,transparent 11% 89%,rgba(0,0,0,.28) 89.5% 90.5%,transparent 91%),
+    linear-gradient(#4d4c43,#272922 52%,#171914);
+  box-shadow:0 10px 10px rgba(0,0,0,.72),inset 0 1px 0 rgba(228,208,173,.16);
+  opacity:.98;
+}
+.cd-tray::before{
+  content:"";
+  position:absolute;
+  inset:14% 8%;
+  border:1px solid #11130f;
+  border-radius:50%;
+  background:radial-gradient(circle,#080a08 0 10%,#34352f 11% 39%,#0c0e0b 40% 44%,#242620 45% 100%);
+  opacity:.9;
+}
+.cd-tray::after{
+  content:"CD";
+  position:absolute;
+  right:7%;
+  bottom:6%;
+  color:#b9ab90;
+  font:700 max(8px,1.25cqi)/1 ui-monospace,monospace;
+  letter-spacing:.08em;
+  opacity:.65;
+}
+.cd-is-loaded .cd-tray{
+  transform:perspective(420px) rotateX(0deg) translateY(0);
+  opacity:.38;
+  box-shadow:inset 0 2px 7px rgba(0,0,0,.8);
+}
+.cd-is-loading .cd-tray{
+  animation:tasg-tray-close 2.45s cubic-bezier(.28,.75,.22,1) forwards;
+}
+@keyframes tasg-tray-close{
+  0%,30%{transform:perspective(420px) rotateX(-55deg) translateY(42%);opacity:.98}
+  58%{transform:perspective(420px) rotateX(-25deg) translateY(20%);opacity:.88}
+  78%,100%{transform:perspective(420px) rotateX(0deg) translateY(0);opacity:.38}
+}
+
+/* CD que o visitante realmente toca. */
+.cd-disc-button{
+  position:absolute;
+  z-index:6;
+  left:22%;
+  top:65%;
+  width:16.5%;
+  aspect-ratio:1;
+  min-width:44px;
+  min-height:44px;
+  padding:0;
+  border-radius:50%;
+  border:1px solid rgba(218,206,179,.72);
+  cursor:pointer;
+  overflow:visible;
+  background:
+    radial-gradient(circle at 50% 50%,#10110e 0 8%,#c9c9be 9% 12%,#454940 13% 16%,transparent 17%),
+    conic-gradient(from 25deg,#d8d5c8,#65706b,#f0dfb7,#6a8081,#d9c5b7,#7b7776,#e1d8c7,#65706b,#d8d5c8);
+  box-shadow:0 8px 10px rgba(0,0,0,.68),inset 0 0 0 2px rgba(255,255,255,.14);
+  transform:rotate(-13deg);
+  transition:filter .18s ease,box-shadow .18s ease;
+}
+.cd-disc-button::before{
+  content:"BD";
+  position:absolute;
+  inset:27%;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#d8c7a9;
+  background:#17120f;
+  border:1px solid #614535;
+  font:900 max(8px,2.1cqi)/1 var(--display);
+  letter-spacing:.04em;
+}
+.cd-disc-button::after{
+  content:"TOQUE NO CD";
+  position:absolute;
+  left:50%;
+  top:106%;
+  transform:translateX(-50%) rotate(1deg);
+  width:max-content;
+  max-width:220%;
+  padding:5px 8px;
+  color:#1a120c;
+  background:linear-gradient(118deg,#dcc8a4,#aa8f69);
+  border:1px solid #39271a;
+  box-shadow:0 4px 8px #0009;
+  font:900 max(8px,1.7cqi)/1 var(--display);
+  letter-spacing:.035em;
+  white-space:nowrap;
+}
+.cd-disc-button:hover{filter:brightness(1.12)}
+.cd-disc-button:focus-visible{outline:3px solid #f0c37f;outline-offset:5px}
+.cd-is-loading .cd-disc-button{
+  pointer-events:none;
+  animation:tasg-cd-in 1.28s cubic-bezier(.25,.72,.25,1) forwards;
+}
+.cd-is-loading .cd-disc-button::after{opacity:0}
+.cd-is-loaded .cd-disc-button{display:none}
+@keyframes tasg-cd-in{
+  0%{left:22%;top:65%;transform:rotate(-13deg) scale(1);opacity:1}
+  62%{left:46%;top:56%;transform:rotate(150deg) scale(.72);opacity:1}
+  100%{left:46%;top:54%;transform:rotate(210deg) scale(.62);opacity:0}
+}
+
+/* Biblioteca deixa de ser um elemento dominante: é uma função física do aparelho. */
+.library-button{
+  left:43%;
+  top:52.8%;
+  width:24%;
+  min-height:34px;
+  padding:3px 5px;
+  background:linear-gradient(#8f897a,#55564d);
+  border:1px solid #3b3a33;
+  border-bottom:2px solid #1a1b17;
+  color:#141510;
+  font-size:max(9px,1.85cqi);
+  opacity:.35;
+  pointer-events:none;
+}
+.cd-is-loaded .library-button{
+  opacity:.92;
+  pointer-events:auto;
+}
+
+.player-controls{
+  left:36.5%;
+  bottom:20.5%;
+  width:37%;
+  grid-template-columns:repeat(5,minmax(38px,1fr));
+  gap:2px;
+}
+.player-controls button{
+  min-width:38px;
+  min-height:38px;
+  border:1px solid #4e4c43;
+  border-bottom:3px solid #1b1c18;
+  background:linear-gradient(#999486,#626258);
+  color:#10110e;
+  box-shadow:0 3px 3px #000b,inset 0 1px 0 rgba(255,255,255,.12);
+  font-size:max(14px,2.1cqi);
+}
+.player-controls button:disabled{
+  opacity:.38;
+  cursor:not-allowed;
+  filter:saturate(.45);
+}
+.player-controls #eject-track{
+  font-size:max(10px,1.6cqi);
+  letter-spacing:-.08em;
+}
+
+.home-socials a{
+  position:relative;
+  color:#1b130d;
+  background:
+    radial-gradient(circle at 9px 9px,#18110b 0 2px,#8d6946 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#18110b 0 2px,#8d6946 2.5px 4px,transparent 4.5px),
+    repeating-linear-gradient(175deg,rgba(63,42,24,.09) 0 1px,transparent 1px 6px),
+    linear-gradient(118deg,#d4c09d,#a48a66 60%,#7f694f);
+  border:2px solid #362316;
+  box-shadow:0 7px 13px #000a,inset 0 0 0 1px rgba(255,231,187,.16);
+  transform:rotate(-1deg);
+}
+.home-socials a+a{transform:rotate(1deg)}
+
+/* Vertical: recompõe, não espreme. */
+@container site (max-aspect-ratio:1/1){
+  .home-layout{
+    width:min(calc(100% - 2 * var(--edge)),40rem);
+    grid-template-rows:auto minmax(4rem,.42fr) auto auto;
+    row-gap:clamp(8px,1.6cqb,16px);
+  }
+  .home-brand{
+    width:min(100%,34rem);
+  }
+  .home-brand img{
+    max-height:16cqb;
+  }
+  .home-media{
+    width:min(100%,35rem);
+  }
+  .music-machine{
+    max-width:none;
+  }
+  .alley-photo{
+    object-position:16% 66%;
+  }
+  .cd-disc-button{
+    left:18%;
+    top:64%;
+    width:17.5%;
+  }
+  @keyframes tasg-cd-in{
+    0%{left:18%;top:64%;transform:rotate(-13deg) scale(1);opacity:1}
+    62%{left:46%;top:56%;transform:rotate(150deg) scale(.72);opacity:1}
+    100%{left:46%;top:54%;transform:rotate(210deg) scale(.62);opacity:0}
+  }
+}
+
+/* Em aparelhos realmente estreitos os controles continuam no aparelho,
+   mas ganham área física suficiente para toque. */
+@container player (max-width:36rem){
+  .player-display{
+    top:37.5%;
+    left:39.5%;
+    width:30%;
+    transform:skewY(-4deg);
+  }
+  .library-button{
+    left:43%;
+    top:52.8%;
+    width:24%;
+    min-height:30px;
+    transform:skewY(-4deg);
+  }
+  .player-controls{
+    left:31%;
+    bottom:13.5%;
+    width:47%;
+    grid-template-columns:repeat(5,minmax(36px,1fr));
+    gap:2px;
+    transform:skewY(-4deg);
+  }
+  .player-controls button{
+    min-width:36px;
+    min-height:36px;
+    font-size:14px;
+  }
+  .cd-disc-button::after{
+    font-size:max(8px,2cqi);
+  }
+}
+
+@container player (max-width:23rem){
+  .player-controls{
+    left:28.5%;
+    width:52%;
+    bottom:11.5%;
+    grid-template-columns:repeat(5,minmax(32px,1fr));
+  }
+  .player-controls button{min-width:32px;min-height:34px}
+  .library-button{font-size:8px}
+}
+
+/* Paisagem baixa: mantém o rádio grande sem mandar controles para fora dele. */
+@container site (min-aspect-ratio:1/1) and (max-height:32rem){
+  .music-machine{width:min(100%,70cqb)}
+  .home-brand img{max-height:32cqb}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cd-is-loading .cd-disc-button,
+  .cd-is-loading .cd-tray,
+  .is-playing .speaker-motion{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+  }
+}
