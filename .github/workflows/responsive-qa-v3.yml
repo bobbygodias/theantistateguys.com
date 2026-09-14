@@ -10,6 +10,8 @@ on:
       - 'qa-site-v3*.js'
       - '*-final-v1.css'
       - '*-final-v1.js'
+      - 'approved-direction-v2.css'
+      - 'approved-direction-v2.js'
       - 'script.js'
       - 'data/music.json'
       - 'assets/**'
