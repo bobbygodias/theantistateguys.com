@@ -1,3 +1,5 @@
+@import url("home-final-v1.css?rev=1");
+
 /* V4: image assets contain only scenery and the separate physical radio.
    Composition and controls are owned by the single home layout in qa-site-v3.css. */
 .alley-photo{filter:saturate(.78) contrast(1.04)}
