@@ -33,10 +33,13 @@ for(const geometry of cases){
 
   const issues=[];
 
-  // Estado inicial da rota e player.
+  // Estado inicial: rota ativa, CD visível e player bloqueado antes da inserção.
   assert(await page.locator('[data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
   assert(await page.locator('#play-pause').getAttribute('aria-pressed')==='false','play-sem-aria-pressed-false',issues);
-  assert((await page.locator('#track-title').textContent()||'').trim().length>0,'titulo-faixa-vazio',issues);
+  assert(await page.locator('#play-pause').isDisabled(),'play-deveria-iniciar-bloqueado',issues);
+  assert(await page.locator('#open-library').isDisabled(),'biblioteca-deveria-iniciar-bloqueada',issues);
+  assert(await page.locator('#cd-insert').isVisible(),'cd-nao-visivel',issues);
+  assert((await page.locator('#track-title').textContent()||'').trim()==='INSIRA O CD','display-inicial-incorreto',issues);
 
   // Navegação via teclado: Enter na placa deve trocar rota e focar o título da seção.
   for(const route of routes.filter(r=>r!=='home')){
@@ -71,6 +74,16 @@ for(const geometry of cases){
   const homeFocused=await page.evaluate(()=>document.activeElement===document.getElementById('home-title'));
   assert(homeFocused,'home-titulo-sem-foco-no-retorno',issues);
 
+  // Interação física: tocar no CD deve iniciar carregamento e só liberar o aparelho depois da gaveta/som.
+  await page.locator('#cd-insert').click();
+  await page.waitForFunction(()=>document.body.classList.contains('cd-is-loading'));
+  assert((await page.locator('#track-title').textContent()||'').trim()==='CARREGANDO CD...','display-nao-mostra-carregamento',issues);
+  assert(await page.locator('#play-pause').isDisabled(),'play-liberado-cedo-demais',issues);
+  await page.waitForFunction(()=>document.body.classList.contains('cd-is-loaded'),null,{timeout:9000});
+  assert(!(await page.locator('#play-pause').isDisabled()),'play-nao-liberado-apos-cd',issues);
+  assert(!(await page.locator('#open-library').isDisabled()),'biblioteca-nao-liberada-apos-cd',issues);
+  assert(!(await page.locator('#cd-insert').isVisible()),'cd-ainda-visivel-apos-insercao',issues);
+
   // Biblioteca: abrir, conferir conteúdo e fechar por Escape.
   await page.locator('#open-library').click();
   assert(await page.locator('#music-dialog').evaluate(el=>el.open),'dialog-nao-abriu',issues);
@@ -95,6 +108,13 @@ for(const geometry of cases){
   await page.locator('#qa-dialog-close').click();
   await page.waitForTimeout(30);
   assert(!(await page.locator('#music-dialog').evaluate(el=>el.open)),'botao-fechar-nao-fechou-dialog',issues);
+
+  // Ejetar devolve o aparelho ao estado inicial e bloqueia novamente os controles.
+  await page.locator('#eject-track').click();
+  await page.waitForTimeout(80);
+  assert((await page.locator('#track-title').textContent()||'').trim()==='INSIRA O CD','display-nao-resetou-apos-eject',issues);
+  assert(await page.locator('#play-pause').isDisabled(),'play-nao-bloqueou-apos-eject',issues);
+  assert(await page.locator('#cd-insert').isVisible(),'cd-nao-retornou-apos-eject',issues);
 
   // Nenhum erro JS não tratado no fluxo.
   if(pageErrors.length) issues.push(`pageerror:${pageErrors.join('|')}`);
