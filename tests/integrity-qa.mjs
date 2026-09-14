@@ -27,9 +27,9 @@ async function assertFile(ref,origin){
 const attrRe=/\b(?:src|href)\s*=\s*["']([^"']+)["']/gi;
 for(const match of html.matchAll(attrRe)) await assertFile(match[1],htmlPath);
 
-// Stylesheets must be present exactly once and compat must be direct, not JS-injected.
+// Core styles + the approved final cascade must be present exactly once.
 const styles=[...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi)].map(m=>m[1]);
-const expectedStyles=['qa-site-v3.css','qa-site-v3-cenography.css','qa-site-v3-internal.css','qa-site-v3-compat.css'];
+const expectedStyles=['qa-site-v3.css','qa-site-v3-cenography.css','qa-site-v3-internal.css','qa-site-v3-compat.css','site-final-v1.css'];
 for(const css of expectedStyles){
   const count=styles.filter(x=>cleanRef(x)===css).length;
   if(count!==1) issue(`stylesheet-count:${css}:${count}`);
@@ -55,7 +55,7 @@ for(const id of ['contact-form','contact-form-title','contact-directory-title','
 if(!/>FALE COM A BANDA</i.test(html)) issue('contact-heading-fale-missing');
 if(!/>CONTATOS</i.test(html)) issue('contact-heading-contatos-missing');
 
-// Parse CSS url() dependencies recursively for the V3 layers.
+// Parse CSS url() dependencies recursively for the V3/final layers.
 for(const css of expectedStyles){
   const text=await fs.readFile(path.join(root,css),'utf8');
   for(const match of text.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/gi)){
