@@ -16,10 +16,13 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/alley-underground-v4.webp" as="image" type="image/webp" fetchpriority="high">
   <link rel="preload" href="assets/boombox-real-v4.webp" as="image" type="image/webp">
+  <link rel="preload" href="assets/cd-tray-close.mp3" as="audio" type="audio/mpeg">
   <link rel="stylesheet" href="qa-site-v3.css?rev=underground4">
   <link rel="stylesheet" href="qa-site-v3-cenography.css?rev=underground4">
   <link rel="stylesheet" href="qa-site-v3-internal.css?rev=underground4">
   <link rel="stylesheet" href="qa-site-v3-compat.css?rev=underground4">
+  <link rel="stylesheet" href="home-final-v1.css?rev=1" data-home-final="1">
+  <link rel="stylesheet" href="home-final-v1-touch.css?rev=1">
 
   <title>Bobby Dias &amp; The Anti-State Guys</title>
 </head>
@@ -55,16 +58,21 @@
             <img class="boombox-art" src="assets/boombox-real-v4.webp" width="1536" height="1024" alt="" aria-hidden="true">
             <span class="speaker-motion speaker-left" aria-hidden="true"></span>
             <span class="speaker-motion speaker-right" aria-hidden="true"></span>
+
+            <div class="cd-tray" id="cd-tray" aria-hidden="true"></div>
+            <button class="cd-disc-button" id="cd-insert" type="button" aria-label="Inserir CD no player"></button>
+
             <div class="player-display" aria-live="polite">
-              <span id="track-title">Carregando faixas...</span>
+              <span id="track-title">INSIRA O CD</span>
               <span class="time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
             </div>
-            <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog" aria-label="Abrir CDs e faixas">CD / FAIXAS</button>
+            <button class="library-button" id="open-library" type="button" aria-haspopup="dialog" aria-controls="music-dialog" aria-label="Abrir CDs e faixas" disabled>CD / FAIXAS</button>
             <div class="player-controls" aria-label="Controles do player">
-              <button id="stop-track" type="button" aria-label="Parar">■</button>
-              <button id="prev-track" type="button" aria-label="Faixa anterior">⏮</button>
-              <button id="play-pause" type="button" aria-label="Reproduzir">▶</button>
-              <button id="next-track" type="button" aria-label="Próxima faixa">⏭</button>
+              <button id="stop-track" type="button" aria-label="Parar" disabled>■</button>
+              <button id="prev-track" type="button" aria-label="Faixa anterior" disabled>⏮</button>
+              <button id="play-pause" type="button" aria-label="Reproduzir" disabled>▶</button>
+              <button id="next-track" type="button" aria-label="Próxima faixa" disabled>⏭</button>
+              <button id="eject-track" type="button" aria-label="Ejetar CD" disabled>⏏</button>
             </div>
           </section>
         </div>
@@ -174,7 +182,6 @@
           <a href="https://www.instagram.com/theantistateguys/" target="_blank" rel="noopener noreferrer"><span>INSTAGRAM</span><strong>@theantistateguys</strong></a>
           <a href="https://www.youtube.com/@TheAntiStateGuys" target="_blank" rel="noopener noreferrer"><span>YOUTUBE</span><strong>@TheAntiStateGuys</strong></a>
           <a href="mailto:theantistateguys@gmail.com"><span>E-MAIL DA BANDA</span><strong>theantistateguys@gmail.com</strong></a>
-          <a href="mailto:bobbygodias@gmail.com"><span>CONTATO DIRETO · BOBBY</span><strong>bobbygodias@gmail.com</strong></a>
         </div>
       </div>
     </section>
@@ -192,7 +199,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <audio id="audio" preload="metadata"></audio>
-  <script src="script.js?rev=underground4" defer></script>
-
+  <script src="script.js?rev=homefinal1" defer></script>
 </body>
 </html>

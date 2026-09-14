@@ -1,0 +1,79 @@
+/*
+  TASG HOME FINAL V1 — touch + physical-control polish
+  Mantém todos os controles físicos da boombox com alvo mínimo de 44×44px.
+*/
+.library-button{
+  min-height:44px!important;
+  opacity:.62;
+}
+.cd-is-loaded .library-button{opacity:.94}
+
+.player-controls{
+  left:50%!important;
+  width:max(42%,228px)!important;
+  grid-template-columns:repeat(5,minmax(44px,1fr))!important;
+  gap:2px!important;
+  transform:translateX(-50%) skewY(-4deg)!important;
+}
+.player-controls button{
+  min-width:44px!important;
+  min-height:44px!important;
+}
+.player-controls button:disabled{
+  opacity:.68!important;
+  filter:saturate(.62) brightness(.93)!important;
+}
+
+/* O CD começa sobre a gaveta aberta, não flutuando fora do aparelho. */
+.cd-disc-button{
+  left:46.4%!important;
+  top:53.3%!important;
+  width:16.8%;
+  transform:rotate(-8deg);
+}
+.cd-disc-button::after{
+  top:112%;
+}
+@keyframes tasg-cd-in{
+  0%{left:46.4%;top:53.3%;transform:rotate(-8deg) scale(1);opacity:1}
+  55%{left:46.4%;top:51.8%;transform:rotate(120deg) scale(.82);opacity:1}
+  100%{left:46.4%;top:50.8%;transform:rotate(210deg) scale(.62);opacity:0}
+}
+
+@container player (max-width:36rem){
+  .library-button{
+    min-height:44px!important;
+  }
+  .player-controls{
+    left:50%!important;
+    width:max(80%,228px)!important;
+    bottom:10.5%!important;
+    grid-template-columns:repeat(5,minmax(44px,1fr))!important;
+    transform:translateX(-50%) skewY(-4deg)!important;
+  }
+  .player-controls button{
+    min-width:44px!important;
+    min-height:44px!important;
+    font-size:14px;
+  }
+  .cd-disc-button{
+    left:46.4%!important;
+    top:53.3%!important;
+  }
+}
+
+@container player (max-width:23rem){
+  .player-controls{
+    left:50%!important;
+    width:max(86%,228px)!important;
+    bottom:8.5%!important;
+  }
+  .player-controls button{
+    min-width:44px!important;
+    min-height:44px!important;
+  }
+  .cd-disc-button::after{
+    top:116%;
+    font-size:8px;
+  }
+}

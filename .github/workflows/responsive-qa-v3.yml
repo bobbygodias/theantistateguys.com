@@ -8,6 +8,7 @@ on:
       - 'index.html'
       - 'qa-site-v3*.css'
       - 'qa-site-v3*.js'
+      - 'home-final-v1*.css'
       - 'script.js'
       - 'data/music.json'
       - 'assets/**'
