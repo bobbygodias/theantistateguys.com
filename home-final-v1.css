@@ -42,32 +42,34 @@
   filter:none;
 }
 
-/* CD + gaveta: ficam presos à mesma geometria da boombox. */
+/* CD + gaveta: presos à geometria da boombox e projetados como mecanismo físico. */
 .cd-mechanism{
   position:absolute;
   z-index:4;
   left:35%;
-  top:58%;
+  top:47%;
   width:38%;
-  height:28%;
+  height:34%;
   perspective:700px;
   pointer-events:none;
 }
 
 .cd-tray{
   position:absolute;
-  left:5%;
-  top:27%;
-  width:90%;
-  height:42%;
-  border:1px solid #4f4c43;
+  left:4%;
+  top:33%;
+  width:92%;
+  height:38%;
+  z-index:1;
+  border:1px solid #5b584f;
   border-bottom:4px solid #171815;
-  border-radius:3px 3px 8px 8px;
+  border-radius:3px 3px 7px 7px;
+  clip-path:polygon(7% 0,93% 0,100% 100%,0 100%);
   background:
-    linear-gradient(180deg,#3f4039 0 18%,#1b1d19 20% 78%,#30312b 80%),
-    repeating-linear-gradient(90deg,#111 0 3px,#24251f 3px 6px);
-  box-shadow:0 8px 9px #000b,inset 0 1px 0 #aaa8;
-  transform:translateY(38%) rotateX(-8deg);
+    linear-gradient(180deg,#77766d 0 12%,#41413a 15% 48%,#20221e 52% 76%,#4b4b43 80%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 2px,transparent 2px 7px);
+  box-shadow:0 9px 11px #000c,inset 0 1px 0 #c7c1b866;
+  transform:translateY(10%) rotateX(62deg) scaleX(1.03);
   transform-origin:50% 0;
   transition:transform .9s cubic-bezier(.3,.75,.15,1),opacity .45s ease;
 }
@@ -76,8 +78,8 @@
   position:absolute;
   z-index:2;
   left:50%;
-  top:16%;
-  width:46%;
+  top:14%;
+  width:44%;
   aspect-ratio:1;
   min-width:68px;
   max-width:150px;
@@ -92,13 +94,13 @@
   background:
     radial-gradient(circle at 50% 50%,#161616 0 8%,#b2ab9b 9% 12%,transparent 13%),
     conic-gradient(from 25deg,#d9d4c8,#8e8b84,#dedbd1,#747875,#d8d1c5,#8f8c86,#d9d4c8);
-  box-shadow:0 7px 12px #000b,inset 0 0 0 5px #ffffff24;
+  box-shadow:0 8px 10px #000a,inset 0 0 0 5px #ffffff24;
   font:900 clamp(7px,1.55cqi,11px)/1 var(--display);
   letter-spacing:.015em;
   text-align:center;
   cursor:pointer;
   pointer-events:auto;
-  transform:translateY(42%) rotateX(57deg) rotateZ(-8deg);
+  transform:translateY(15%) rotateX(58deg) rotateZ(-8deg);
   transform-origin:50% 70%;
   transition:transform 1.05s cubic-bezier(.25,.8,.15,1),opacity .35s ease,filter .35s ease;
 }
@@ -117,8 +119,9 @@
 
 .eject-button{
   position:absolute;
+  z-index:3;
   right:-2%;
-  bottom:3%;
+  bottom:8%;
   min-width:44px;
   min-height:44px;
   padding:4px 8px;
@@ -135,27 +138,27 @@
 
 .music-machine[data-cd-state="closing"] .cd-disc{
   pointer-events:none;
-  transform:translateY(-26%) scale(.74) rotateX(18deg) rotateZ(4deg);
+  transform:translateY(-36%) scale(.74) rotateX(22deg) rotateZ(4deg);
   filter:brightness(.72);
 }
 .music-machine[data-cd-state="closing"] .cd-tray{
-  transform:translateY(-12%) rotateX(0deg) scaleY(.84);
+  transform:translateY(-42%) rotateX(14deg) scaleY(.52);
 }
 .music-machine[data-cd-state="ready"] .cd-disc{
   opacity:0;
   pointer-events:none;
-  transform:translateY(-38%) scale(.6) rotateX(0deg);
+  transform:translateY(-52%) scale(.6) rotateX(0deg);
 }
 .music-machine[data-cd-state="ready"] .cd-tray{
-  transform:translateY(-27%) rotateX(0deg) scaleY(.62);
-  opacity:.42;
+  transform:translateY(-50%) rotateX(0deg) scaleY(.28);
+  opacity:.28;
 }
 .music-machine[data-cd-state="ready"] .eject-button{
   opacity:1;
   pointer-events:auto;
 }
 .music-machine[data-cd-state="opening"] .cd-disc{opacity:0;pointer-events:none}
-.music-machine[data-cd-state="opening"] .cd-tray{transform:translateY(38%) rotateX(-8deg)}
+.music-machine[data-cd-state="opening"] .cd-tray{transform:translateY(10%) rotateX(62deg) scaleX(1.03)}
 
 /* Controles continuam fisicamente dentro do aparelho, inclusive no estreito. */
 @container player (max-width:36rem){
@@ -185,9 +188,9 @@
   }
   .cd-mechanism{
     left:34%;
-    top:55%;
+    top:44%;
     width:40%;
-    height:27%;
+    height:34%;
   }
   .cd-disc{min-width:62px;width:42%}
 }
@@ -206,16 +209,16 @@
   .home-layout{padding-block:2px}
   .home-socials{margin-top:0}
   .cd-mechanism{
-    top:47%;
-    height:24%;
+    top:39%;
+    height:31%;
   }
   .cd-disc{
     width:38%;
     min-width:58px;
-    transform:translateY(18%) rotateX(57deg) rotateZ(-8deg);
+    transform:translateY(8%) rotateX(58deg) rotateZ(-8deg);
   }
   .music-machine[data-cd-state="closing"] .cd-disc{
-    transform:translateY(-20%) scale(.72) rotateX(18deg) rotateZ(4deg);
+    transform:translateY(-31%) scale(.72) rotateX(20deg) rotateZ(4deg);
   }
 }
 
