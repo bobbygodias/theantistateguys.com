@@ -17,6 +17,16 @@ let failures=0;
 
 function assert(condition,message,issues){ if(!condition) issues.push(message); }
 
+async function ensureNavOpen(page){
+  const toggle=page.locator('#site-menu-toggle');
+  if(!(await toggle.count()) || !(await toggle.isVisible())) return;
+  if((await toggle.getAttribute('aria-expanded'))!=='true'){
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(()=>document.getElementById('site-menu-toggle')?.getAttribute('aria-expanded')==='true');
+  }
+}
+
 for(const geometry of cases){
   const context=await browser.newContext({
     viewport:{width:geometry.width,height:geometry.height},
@@ -41,8 +51,9 @@ for(const geometry of cases){
   assert((await page.locator('#track-title').textContent()||'').trim().length>0,'titulo-faixa-vazio',issues);
   assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='open','cd-inicial-nao-aberto',issues);
 
-  // Navegação via teclado: Enter na placa deve trocar rota e focar o título da seção.
+  // Navegação via teclado: no mobile, abre o menu real antes de focar cada placa.
   for(const route of routes.filter(r=>r!=='home')){
+    await ensureNavOpen(page);
     const link=page.locator(`[data-route-link="${route}"]`);
     await link.focus();
     await page.keyboard.press('Enter');
@@ -67,6 +78,7 @@ for(const geometry of cases){
   }
 
   // Volta à Home pelo mesmo caminho de teclado.
+  await ensureNavOpen(page);
   await page.locator('[data-route-link="home"]').focus();
   await page.keyboard.press('Enter');
   await page.waitForFunction(()=>document.querySelector('[data-route].is-active')?.dataset.route==='home');
