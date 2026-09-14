@@ -120,7 +120,7 @@
   right:-2%;
   bottom:3%;
   min-width:44px;
-  min-height:30px;
+  min-height:44px;
   padding:4px 8px;
   border:1px solid #5a584f;
   border-bottom:3px solid #181916;
@@ -176,7 +176,7 @@
     top:50%;
     left:38%;
     width:33%;
-    min-height:40px;
+    min-height:44px;
   }
   .player-display{
     left:39.5%;
