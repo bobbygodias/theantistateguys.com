@@ -201,10 +201,22 @@
   }
 }
 
-/* Espaço extremamente baixo/largo: recupera os 10 px de respiro sem desmontar a cena. */
+/* Espaço extremamente baixo/largo: mantém CD e gaveta dentro da própria cena, sem scroll. */
 @container site (min-aspect-ratio:1/1) and (max-height:32rem){
   .home-layout{padding-block:2px}
-  .home-socials{margin-top:2px}
+  .home-socials{margin-top:0}
+  .cd-mechanism{
+    top:47%;
+    height:24%;
+  }
+  .cd-disc{
+    width:38%;
+    min-width:58px;
+    transform:translateY(18%) rotateX(57deg) rotateZ(-8deg);
+  }
+  .music-machine[data-cd-state="closing"] .cd-disc{
+    transform:translateY(-20%) scale(.72) rotateX(18deg) rotateZ(4deg);
+  }
 }
 
 /* Estado desligado antes de inserir o disco. */
