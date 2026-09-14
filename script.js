@@ -161,3 +161,9 @@ document.addEventListener('click',event=>{
 window.addEventListener('hashchange',()=>setRoute(location.hash.slice(1)||'home',{replace:true,focusHeading:true}));
 setRoute(location.hash.slice(1)||'home',{replace:true});
 loadMusic();
+
+// Carrega a camada final da Home sem misturá-la ao motor base do player.
+const homeFinalScript=document.createElement('script');
+homeFinalScript.src='home-final-v1.js?rev=1';
+homeFinalScript.defer=true;
+document.head.appendChild(homeFinalScript);
