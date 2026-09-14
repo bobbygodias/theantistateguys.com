@@ -1,0 +1,9 @@
+/*
+  SITE FINAL V1 — última camada da cascata.
+  As decisões aprovadas de cada rota precisam vencer as camadas-base de QA/compatibilidade,
+  sem duplicar regras dentro dos arquivos de infraestrutura.
+*/
+@import url("home-final-v1.css?rev=1");
+@import url("contact-final-v1.css?rev=1");
+@import url("members-final-v1.css?rev=1");
+@import url("photos-final-v1.css?rev=1");
