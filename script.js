@@ -124,7 +124,7 @@ audio.addEventListener('error',()=>showToast('Não foi possível reproduzir esta
 
 function resetScroll(){
   const main=document.querySelector('main');
-  if(main && typeof main.scrollTo==='function') main.scrollTo({top:0,left:0,behavior:'instant'});
+  if(main && main.scrollHeight > main.clientHeight && typeof main.scrollTo==='function') main.scrollTo({top:0,left:0,behavior:'instant'});
   else window.scrollTo({top:0,left:0,behavior:'instant'});
 }
 function focusRouteHeading(route){

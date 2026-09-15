@@ -44,7 +44,7 @@ for(const geometry of cases){
   const issues=[];
 
   // Estado inicial: Home ativa, catálogo carregado, mas transporte desligado até inserir o CD.
-  assert(await page.locator('[data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
+  assert(await page.locator('.site-nav [data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
   assert(await page.locator('#play-pause').getAttribute('aria-pressed')==='false','play-sem-aria-pressed-false',issues);
   assert(await page.locator('#play-pause').isDisabled(),'play-inicial-deveria-estar-desligado',issues);
   assert(await page.locator('#open-library').isDisabled(),'biblioteca-inicial-deveria-estar-desligada',issues);
@@ -54,7 +54,7 @@ for(const geometry of cases){
   // Navegação via teclado: no mobile, abre o menu real antes de focar cada placa.
   for(const route of routes.filter(r=>r!=='home')){
     await ensureNavOpen(page);
-    const link=page.locator(`[data-route-link="${route}"]`);
+    const link=page.locator(`.site-nav [data-route-link="${route}"]`);
     await link.focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(expected=>document.querySelector('[data-route].is-active')?.dataset.route===expected,route);
@@ -68,7 +68,7 @@ for(const geometry of cases){
         hidden:section?.hidden??true,
         current:document.querySelector(`[data-route-link="${expected}"]`)?.getAttribute('aria-current'),
         focused:document.activeElement===heading,
-        scrollTop:document.querySelector('main')?.scrollTop||0
+        scrollTop:Math.max(window.scrollY,document.querySelector('main')?.scrollTop||0)
       };
     },route);
     assert(state.active && !state.hidden,`${route}-nao-ativo`,issues);
@@ -77,9 +77,21 @@ for(const geometry of cases){
     assert(state.scrollTop===0,`${route}-scroll-nao-resetado`,issues);
   }
 
+  // Photos stay inline; only native browser zoom is available.
+  await ensureNavOpen(page);
+  await page.locator('.site-nav [data-route-link="fotos"]').click();
+  const photo=page.locator('.photo-card img').first();
+  await photo.click();
+  assert(await page.locator('dialog[open]').count()===0,'foto-abriu-modal',issues);
+  assert(await page.locator('[data-photo],.expand-icon,#photo-dialog').count()===0,'expansao-residual',issues);
+  const viewport=await page.locator('meta[name="viewport"]').getAttribute('content');
+  assert(!/user-scalable=no|maximum-scale=1/.test(viewport||''),'zoom-nativo-bloqueado',issues);
+  const saveBlocked=await photo.evaluate(el=>!el.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true})));
+  assert(saveBlocked,'menu-salvar-nao-bloqueado',issues);
+
   // Volta à Home pelo mesmo caminho de teclado.
   await ensureNavOpen(page);
-  await page.locator('[data-route-link="home"]').focus();
+  await page.locator('.site-nav [data-route-link="home"]').focus();
   await page.keyboard.press('Enter');
   await page.waitForFunction(()=>document.querySelector('[data-route].is-active')?.dataset.route==='home');
   await page.waitForTimeout(40);

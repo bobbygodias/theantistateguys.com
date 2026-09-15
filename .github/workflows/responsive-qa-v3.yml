@@ -6,6 +6,8 @@ on:
     branches: [main, home-final-direction-v1]
     paths:
       - 'index.html'
+      - 'approved-pages.css'
+      - 'approved-pages.js'
       - 'qa-site-v3*.css'
       - 'qa-site-v3*.js'
       - '*-final-v1.css'
@@ -65,6 +67,7 @@ jobs:
         run: node tests/performance-qa.mjs
 
       - name: Capture representative visual samples
+        if: always()
         run: node tests/visual-snapshots.mjs
 
       - name: Upload QA artifacts

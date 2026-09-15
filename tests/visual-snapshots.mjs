@@ -50,7 +50,7 @@ for(const sample of samples){
 
   await page.waitForTimeout(180);
   const file=`${sample.name}.png`;
-  await page.screenshot({path:path.join(out,file),fullPage:false});
+  await page.screenshot({path:path.join(out,file),fullPage:true});
   const state=await page.evaluate(()=>({
     meter:document.querySelector('#qa-meter')?.textContent||'',
     scrollTop:document.querySelector('main')?.scrollTop||0,

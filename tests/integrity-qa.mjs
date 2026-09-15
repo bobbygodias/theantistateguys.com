@@ -28,8 +28,8 @@ const attrRe=/\b(?:src|href)\s*=\s*["']([^"']+)["']/gi;
 for(const match of html.matchAll(attrRe)) await assertFile(match[1],htmlPath);
 
 // Core styles + the approved final cascade must be present exactly once.
-const styles=[...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi)].map(m=>m[1]);
-const expectedStyles=['qa-site-v3.css','qa-site-v3-cenography.css','qa-site-v3-internal.css','qa-site-v3-compat.css','site-final-v1.css'];
+const styles=[...html.matchAll(/<link\b[^>]*>/gi)].filter(m=>/rel=["']stylesheet["']/i.test(m[0])).map(m=>m[0].match(/href=["']([^"']+)["']/i)?.[1]).filter(Boolean);
+const expectedStyles=['qa-site-v3.css','home-final-v1.css','approved-pages.css'];
 for(const css of expectedStyles){
   const count=styles.filter(x=>cleanRef(x)===css).length;
   if(count!==1) issue(`stylesheet-count:${css}:${count}`);
@@ -67,7 +67,8 @@ for(const css of expectedStyles){
 }
 
 // Every navigation route maps 1:1 to a section and vice versa.
-const navRoutes=[...html.matchAll(/data-route-link=["']([^"']+)["']/gi)].map(m=>m[1]);
+const navMarkup=html.match(/<nav\b[\s\S]*?<\/nav>/i)?.[0] || "";
+const navRoutes=[...navMarkup.matchAll(/data-route-link=["']([^"']+)["']/gi)].map(m=>m[1]);
 const sectionRoutes=[...html.matchAll(/\bdata-route=["']([^"']+)["']/gi)].map(m=>m[1]);
 const unique=a=>[...new Set(a)];
 if(navRoutes.length!==unique(navRoutes).length) issue('duplicate-nav-route');

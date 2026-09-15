@@ -13,7 +13,7 @@
     const email = String(data.get('email') || '').trim();
     const message = String(data.get('message') || '').trim();
 
-    const subject = `Contato pelo site — ${name || 'Bobby Dias & The Anti-State Guys'}`;
+    const subject = String(data.get('subject') || '').trim() || `Contato pelo site — ${name || 'Bobby Dias & The Anti-State Guys'}`;
     const body = [
       `Nome: ${name}`,
       `E-mail: ${email}`,
