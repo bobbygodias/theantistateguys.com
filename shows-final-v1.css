@@ -1,0 +1,85 @@
+/*
+  SHOWS FINAL V1 — mantém o estado factual atual e corrige a hierarquia em paisagem baixa.
+  Nenhuma data ou informação de show é inventada.
+*/
+
+/* Em telas baixas e largas, mensagem e foto dividem a primeira visão.
+   O recado editorial não pode desaparecer atrás da fotografia. */
+@container site (max-height:31rem) and (min-aspect-ratio:3/2){
+  .shows-shell{
+    min-height:100%;
+    height:100%;
+    padding-block:7px;
+    grid-template-rows:auto minmax(0,1fr);
+  }
+
+  .show-stamp{
+    margin-bottom:5px;
+    padding-block:4px;
+  }
+
+  .show-layout{
+    min-height:0;
+    height:100%;
+    grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+    grid-template-rows:minmax(0,1fr);
+    gap:clamp(10px,2cqi,18px);
+    align-items:center;
+    overflow:hidden;
+  }
+
+  .show-copy{
+    order:1;
+    min-width:0;
+    align-self:center;
+    position:relative;
+    z-index:2;
+  }
+
+  .show-copy h2{
+    max-width:14ch;
+    margin:0 0 7px;
+    padding:6px 8px;
+    font-size:clamp(22px,7.3cqb,34px);
+    line-height:.95;
+  }
+
+  .show-copy p{
+    max-width:36ch;
+    margin:.38em 0;
+    font-size:clamp(11px,3.2cqb,14px);
+    line-height:1.28;
+  }
+
+  .studio-art{
+    order:2;
+    align-self:stretch;
+    width:100%;
+    height:100%;
+    min-height:0;
+    display:grid;
+    grid-template-rows:minmax(0,1fr) auto;
+    padding:5px 5px 14px;
+    overflow:hidden;
+  }
+
+  .studio-art img{
+    width:100%;
+    height:100%;
+    min-height:0;
+    max-height:none;
+    object-fit:cover;
+    object-position:center 43%;
+  }
+
+  .studio-art figcaption{
+    padding-top:3px;
+    font-size:8px;
+  }
+}
+
+/* Em retrato continua empilhado e legível; mensagem vem antes da imagem. */
+@container site (max-aspect-ratio:1/1){
+  .show-copy{order:1}
+  .studio-art{order:2}
+}

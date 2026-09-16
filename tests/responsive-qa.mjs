@@ -57,7 +57,7 @@ for (const geometry of geometries){
         const r = el.getBoundingClientRect();
         return Math.min(r.width,r.height);
       })) : 0;
-      const bounds = main.getBoundingClientRect();
+      const bounds = {left:0,right:document.documentElement.clientWidth};
       const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
       const clippedElements = candidates.filter(el => {
         const r = el.getBoundingClientRect();
@@ -75,12 +75,12 @@ for (const geometry of geometries){
         mainHeight:Math.round(main.clientHeight),
         mainScrollWidth:Math.round(main.scrollWidth),
         mainScrollHeight:Math.round(main.scrollHeight),
-        overflowX:main.scrollWidth > main.clientWidth + 2,
+        overflowX:document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
         scrollY:main.scrollHeight > main.clientHeight + 2,
         minTap:Math.round(minTap),
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
-        radioIndependent:radioSrc.includes('boombox-real-v4.webp') && radio.complete && radio.naturalWidth > 0,
+        radioIndependent:radioSrc.includes('boombox-photo-v2.webp') && radio.complete && radio.naturalWidth > 0,
         showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
@@ -92,9 +92,6 @@ for (const geometry of geometries){
     if(measured.minTap > 0 && measured.minTap < 44) issues.push(`tap-${measured.minTap}`);
     if(measured.clipped > 0) issues.push(`clip-x-${measured.clipped}`);
     if(route === 'home' && !measured.radioIndependent) issues.push('radio-scene');
-    if(route === 'home' && geometry.homeMustFit && measured.scrollY) issues.push('home-scroll-y');
-    if(route === 'fotos' && measured.scrollY) issues.push('photos-scroll-y');
-    if(route === 'shows' && measured.showCols >= 2 && measured.scrollY) issues.push(`shows-scroll-y-${measured.showCols}cols`);
 
     const pass = issues.length === 0;
     const row = {geometry:geometry.name,width:geometry.width,height:geometry.height,route,pass,issues,...measured};

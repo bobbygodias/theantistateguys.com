@@ -3,11 +3,18 @@ name: responsive-qa-v3
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, home-final-direction-v1]
     paths:
       - 'index.html'
+      - 'approved-pages.css'
+      - 'approved-pages.js'
       - 'qa-site-v3*.css'
       - 'qa-site-v3*.js'
+      - '*-final-v1.css'
+      - '*-final-v1.js'
+      - 'approved-direction-v2.css'
+      - 'approved-direction-v2-hotfix.css'
+      - 'approved-direction-v2.js'
       - 'script.js'
       - 'data/music.json'
       - 'assets/**'
@@ -60,6 +67,7 @@ jobs:
         run: node tests/performance-qa.mjs
 
       - name: Capture representative visual samples
+        if: always()
         run: node tests/visual-snapshots.mjs
 
       - name: Upload QA artifacts

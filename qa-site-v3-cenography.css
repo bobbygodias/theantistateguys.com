@@ -1,5 +1,6 @@
 /* V4: image assets contain only scenery and the separate physical radio.
-   Composition and controls are owned by the single home layout in qa-site-v3.css. */
+   Composition and controls are owned by the single home layout in qa-site-v3.css.
+   Final route layers load after compatibility through site-final-v1.css. */
 .alley-photo{filter:saturate(.78) contrast(1.04)}
 .route-world::before{background-image:linear-gradient(180deg,#07060555,#070605bb),url("assets/alley-underground-v4.webp")}
 .shows-world::before{background-image:linear-gradient(180deg,#07060555,#070605bb),url("assets/studio.webp")}

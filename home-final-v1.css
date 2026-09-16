@@ -1,0 +1,239 @@
+/*
+  HOME FINAL V1 — direção aprovada com Bobby
+  Camada de acabamento sobre o motor responsivo existente.
+  Objetivo: a boombox deve se comportar como objeto físico, não como widget web.
+*/
+
+.music-machine{
+  --metal-dark:#262720;
+  --metal-mid:#77766b;
+  --metal-light:#b0aa9c;
+  --cd-edge:#d6d0bd;
+}
+
+/* Placas: metal envelhecido, quatro rebites, desgaste discreto e vermelho só no estado ativo. */
+.site-nav a{
+  color:#1b140e;
+  text-shadow:0 1px 0 rgba(255,244,220,.22);
+  border:2px solid #28180d;
+  background:
+    radial-gradient(circle at 9px 9px,#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px,#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px),#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#24150b 0 2px,#ad8357 2.5px 4px,transparent 4.5px),
+    repeating-linear-gradient(174deg,rgba(55,31,16,.10) 0 1px,transparent 1px 5px),
+    linear-gradient(132deg,#c2b49a 0%,#968b77 37%,#6f6a5b 72%,#a08c70 100%);
+  box-shadow:
+    0 6px 14px rgba(0,0,0,.60),
+    inset 0 0 0 1px rgba(255,221,170,.18),
+    inset 0 -7px 12px rgba(55,32,17,.17);
+}
+.site-nav a.is-active,.site-nav a[aria-current="page"]{
+  color:#f4e7d5;
+  text-shadow:0 1px 1px #190604;
+  background:
+    radial-gradient(circle at 9px 9px,#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px,#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px),#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px),#1d0d08 0 2px,#a46d49 2.5px 4px,transparent 4.5px),
+    repeating-linear-gradient(174deg,rgba(24,8,5,.18) 0 1px,transparent 1px 5px),
+    linear-gradient(132deg,#7e241b 0%,#5e1813 46%,#32110e 100%);
+  box-shadow:0 0 0 2px rgba(189,113,70,.32),0 7px 16px rgba(0,0,0,.62),inset 0 0 0 1px rgba(255,212,169,.10);
+  filter:none;
+}
+
+/* CD + gaveta: presos à geometria da boombox e projetados como mecanismo físico. */
+.cd-mechanism{
+  position:absolute;
+  z-index:4;
+  left:35%;
+  top:47%;
+  width:38%;
+  height:34%;
+  perspective:700px;
+  pointer-events:none;
+}
+
+.cd-tray{
+  position:absolute;
+  left:4%;
+  top:33%;
+  width:92%;
+  height:38%;
+  z-index:1;
+  border:1px solid #5b584f;
+  border-bottom:4px solid #171815;
+  border-radius:3px 3px 7px 7px;
+  clip-path:polygon(7% 0,93% 0,100% 100%,0 100%);
+  background:
+    linear-gradient(180deg,#77766d 0 12%,#41413a 15% 48%,#20221e 52% 76%,#4b4b43 80%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 2px,transparent 2px 7px);
+  box-shadow:0 9px 11px #000c,inset 0 1px 0 #c7c1b866;
+  transform:translateY(10%) rotateX(62deg) scaleX(1.03);
+  transform-origin:50% 0;
+  transition:transform .9s cubic-bezier(.3,.75,.15,1),opacity .45s ease;
+}
+
+.cd-disc{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  top:14%;
+  width:44%;
+  aspect-ratio:1;
+  min-width:68px;
+  max-width:150px;
+  translate:-50% 0;
+  display:grid;
+  place-content:center;
+  gap:2px;
+  padding:14%;
+  border:2px solid var(--cd-edge);
+  border-radius:50%;
+  color:#17130e;
+  background:
+    radial-gradient(circle at 50% 50%,#161616 0 8%,#b2ab9b 9% 12%,transparent 13%),
+    conic-gradient(from 25deg,#d9d4c8,#8e8b84,#dedbd1,#747875,#d8d1c5,#8f8c86,#d9d4c8);
+  box-shadow:0 8px 10px #000a,inset 0 0 0 5px #ffffff24;
+  font:900 clamp(7px,1.55cqi,11px)/1 var(--display);
+  letter-spacing:.015em;
+  text-align:center;
+  cursor:pointer;
+  pointer-events:auto;
+  transform:translateY(15%) rotateX(58deg) rotateZ(-8deg);
+  transform-origin:50% 70%;
+  transition:transform 1.05s cubic-bezier(.25,.8,.15,1),opacity .35s ease,filter .35s ease;
+}
+.cd-disc::after{
+  content:"";
+  position:absolute;
+  inset:43%;
+  border-radius:50%;
+  background:#141510;
+  box-shadow:0 0 0 3px #c4beae;
+}
+.cd-disc-title,.cd-disc-subtitle{position:relative;z-index:1;display:block}
+.cd-disc-subtitle{font-size:.72em}
+.cd-disc:hover{filter:brightness(1.08)}
+.cd-disc:focus-visible,.eject-button:focus-visible{outline:3px solid #f0c37f;outline-offset:3px}
+
+.eject-button{
+  position:absolute;
+  z-index:3;
+  right:-2%;
+  bottom:8%;
+  min-width:44px;
+  min-height:44px;
+  padding:4px 8px;
+  border:1px solid #5a584f;
+  border-bottom:3px solid #181916;
+  border-radius:2px;
+  background:linear-gradient(#969185,#5c5c53);
+  color:#13140f;
+  font:900 clamp(9px,1.8cqi,12px)/1 var(--display);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+
+.music-machine[data-cd-state="closing"] .cd-disc{
+  pointer-events:none;
+  transform:translateY(-36%) scale(.74) rotateX(22deg) rotateZ(4deg);
+  filter:brightness(.72);
+}
+.music-machine[data-cd-state="closing"] .cd-tray{
+  transform:translateY(-42%) rotateX(14deg) scaleY(.52);
+}
+.music-machine[data-cd-state="ready"] .cd-disc{
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(-52%) scale(.6) rotateX(0deg);
+}
+.music-machine[data-cd-state="ready"] .cd-tray{
+  transform:translateY(-50%) rotateX(0deg) scaleY(.28);
+  opacity:.28;
+}
+.music-machine[data-cd-state="ready"] .eject-button{
+  opacity:1;
+  pointer-events:auto;
+}
+.music-machine[data-cd-state="opening"] .cd-disc{opacity:0;pointer-events:none}
+.music-machine[data-cd-state="opening"] .cd-tray{transform:translateY(10%) rotateX(62deg) scaleX(1.03)}
+
+/* Controles continuam fisicamente dentro do aparelho, inclusive no estreito. */
+@container player (max-width:36rem){
+  .player-controls{
+    left:50%;
+    bottom:13%;
+    width:max(60%,182px);
+    max-width:78%;
+    gap:2px;
+    transform:translateX(-50%) skewY(-4deg);
+  }
+  .player-controls button{
+    min-width:44px;
+    min-height:44px;
+    font-size:16px;
+  }
+  .library-button{
+    top:50%;
+    left:38%;
+    width:33%;
+    min-height:44px;
+  }
+  .player-display{
+    left:39.5%;
+    top:36%;
+    width:30%;
+  }
+  .cd-mechanism{
+    left:34%;
+    top:44%;
+    width:40%;
+    height:34%;
+  }
+  .cd-disc{min-width:62px;width:42%}
+}
+
+@container site (max-aspect-ratio:1/1){
+  .home-media{
+    width:min(100%,38rem);
+  }
+  .music-machine{
+    width:min(100%,38rem);
+  }
+}
+
+/* Espaço extremamente baixo/largo: mantém CD e gaveta dentro da própria cena, sem scroll. */
+@container site (min-aspect-ratio:1/1) and (max-height:32rem){
+  .home-layout{padding-block:2px}
+  .home-socials{margin-top:0}
+  .cd-mechanism{
+    top:39%;
+    height:31%;
+  }
+  .cd-disc{
+    width:38%;
+    min-width:58px;
+    transform:translateY(8%) rotateX(58deg) rotateZ(-8deg);
+  }
+  .music-machine[data-cd-state="closing"] .cd-disc{
+    transform:translateY(-31%) scale(.72) rotateX(20deg) rotateZ(4deg);
+  }
+}
+
+/* Estado desligado antes de inserir o disco. */
+.music-machine button:disabled{
+  cursor:not-allowed;
+  filter:saturate(.35) brightness(.72);
+  opacity:.68;
+}
+.music-machine .eject-button:disabled{
+  opacity:0;
+  pointer-events:none;
+}
+.cd-disc:disabled{opacity:.55}
+
+@media (prefers-reduced-motion:reduce){
+  .cd-disc,.cd-tray,.eject-button{transition-duration:.01ms!important}
+}

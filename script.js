@@ -124,7 +124,7 @@ audio.addEventListener('error',()=>showToast('Não foi possível reproduzir esta
 
 function resetScroll(){
   const main=document.querySelector('main');
-  if(main && typeof main.scrollTo==='function') main.scrollTo({top:0,left:0,behavior:'instant'});
+  if(main && main.scrollHeight > main.clientHeight && typeof main.scrollTo==='function') main.scrollTo({top:0,left:0,behavior:'instant'});
   else window.scrollTo({top:0,left:0,behavior:'instant'});
 }
 function focusRouteHeading(route){
@@ -161,3 +161,14 @@ document.addEventListener('click',event=>{
 window.addEventListener('hashchange',()=>setRoute(location.hash.slice(1)||'home',{replace:true,focusHeading:true}));
 setRoute(location.hash.slice(1)||'home',{replace:true});
 loadMusic();
+
+// Camadas finais isoladas: preservam o motor base e permitem QA por seção.
+const homeFinalScript=document.createElement('script');
+homeFinalScript.src='home-final-v1.js?rev=1';
+homeFinalScript.defer=true;
+document.head.appendChild(homeFinalScript);
+
+const contactFinalScript=document.createElement('script');
+contactFinalScript.src='contact-final-v1.js?rev=1';
+contactFinalScript.defer=true;
+document.head.appendChild(contactFinalScript);

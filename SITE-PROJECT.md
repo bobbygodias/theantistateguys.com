@@ -1,43 +1,99 @@
 # Bobby Dias & The Anti-State Guys — SITE
 
-## Checkpoint 2026-09-05 — scenic-v2
+## Checkpoint 2026-09-14 — direção final em implementação
 
-O site oficial está em `https://theantistateguys.com` e a produção pública continua na branch `main` via GitHub Pages.
+Site oficial: `https://theantistateguys.com`
 
-A revisão visual em desenvolvimento está na branch `scenic-v2`. Não promover para `main` antes de concluir QA visual e funcional.
+Produção pública: branch `main`.
 
-### Direção visual ativa
-- Home como beco físico/cinematográfico realista, não interface desenhada em CSS.
-- Ponto de fuga em escuridão completa.
-- Figura inspirada em Santiago, rosto em sombra.
-- Boombox física integrada ao cenário e funcional.
-- Wordmark customizado do Bobby.
-- Navegação como placas/objetos físicos.
-- Nada de símbolo anarquista, slogans inventados ou estética cyberpunk/metal genérica.
-- Responsividade por recomposição de arte, não simples redução.
+Direção final em desenvolvimento e QA: branch `home-final-direction-v1`.
 
-### Funcionalidades a preservar
-- MEGA S4 para áudio.
-- Player: anterior, play/pause, stop, próxima, auto-next e biblioteca.
-- Música continua ao alternar rotas por hash.
-- Área de vídeo de apresentação permanece placeholder até Bobby fornecer o vídeo.
-- YouTube updater existente não deve ser quebrado.
+**Não promover para `main` sem revisão visual do Bobby e QA funcional/responsivo verde.**
 
-### Novas áreas/ajustes já previstos em scenic-v2
-- `FOTOS`, inicialmente com `Bobby Dias & The Anti-State Guys (pose 6 boa).png`.
-- `SHOWS` com arte Studio e texto em português natural.
-- `CONTATO` com Instagram, YouTube, `theantistateguys@gmail.com` e `bobbygodias@gmail.com`.
-- Thomaz deve usar a foto correta `Thomaz - Guitarrista Base e Backvocal.png`.
+## Direção visual aprovada
 
-### Assets de produção preparados para scenic-v2
-- `assets/home-scene.webp`
-- `assets/wordmark-custom.webp`
-- `assets/photos-pose-6.webp`
-- `assets/studio.webp`
-- `assets/members/thomaz.webp`
+- Universo físico/cinematográfico de beco escuro, ferrugem, metal gasto, preto, âmbar e bege sujo.
+- Vermelho usado com moderação para estado ativo/destaque.
+- Navegação e títulos podem assumir a linguagem de placas industriais envelhecidas.
+- A página deve parecer um lugar pertencente à banda, não um tema genérico de site de rock.
+- Nu-metal + grunge + underground brasileiro, sem caricatura de favela/gangue norte-americana.
+- Nada de símbolos anarquistas, slogans políticos, frases aleatórias de parede ou manifestos inventados.
+- Responsividade é recomposição real: vertical não é desktop espremido.
+- Touch é primeira classe; interação importante não pode depender de hover.
 
-### Processo de retomada
-Há um arquivo `LEIA-PRIMEIRO-SITE.md` no projeto e documentação detalhada na pasta `The Anti-State Guys - SITE` no Drive do Andrew. Se houver perda de contexto, ler essa documentação antes de alterar o repositório.
+## Home
 
-### Próximo passo
-Concluir a instalação dos assets na `scenic-v2`, renderizar desktop/tablet/mobile, comparar com a referência visual aprovada, testar player/rotas e só então promover para `main`.
+- Intro/vídeo removido da direção final.
+- Beco como cenário principal.
+- Wordmark oficial da banda.
+- Aviso `SITE PROVISÓRIO · AINDA EM PRODUÇÃO` enquanto o trabalho estiver em andamento.
+- Boombox é um objeto físico funcional, não um player web vestido de rádio.
+- Fluxo do CD: gaveta aberta → toque/clique no disco → gaveta fecha com efeito sonoro real → aparelho fica pronto → Play/Stop/Anterior/Próxima/Biblioteca → Eject para e reabre.
+- Display exibe faixa e tempo.
+- Controles permanecem fisicamente integrados ao aparelho inclusive em telas estreitas.
+- Instagram e YouTube oficiais.
+
+## História
+
+- Origem oficial usada no site: Goiânia, fevereiro de **2024**.
+- Nome inicial: `BreakNews`.
+- Formação inicial: Break, McFly, Young, Thomaz e Santiago.
+- `O Forasteiro` foi a única composição autoral daquele primeiro momento, doada por Bobby Dias.
+- Após o episódio da apresentação/aniversário de Break e o ensaio mediado por Santiago, Bobby foi convidado a liderar o projeto.
+- O nome mudou para `Bobby Dias & The Anti-State Guys` (hífen intencional).
+- Sonoridade: Nu-Metal + Grunge.
+- Não inventar fatos além do arquivo de história fornecido pelo Bobby.
+
+## Integrantes
+
+Usar somente fotos reais fornecidas pelo Bobby.
+
+Formação atual:
+- Bobby Dias — Vocal, compositor e multiinstrumentista.
+- Break — Bateria e percussão.
+- Lukas McFly — Baixo e backing vocal.
+- Marcus Young — Guitarra solo e backing vocal.
+- Thomaz — Guitarra base e backing vocal.
+- Santiago — Vocal, DJ e sonoplastia.
+
+Direção visual: mural de pôsteres/fichas de parede, com pequenas quebras de eixo no desktop e leitura vertical limpa no mobile. Evitar aparência de “equipe corporativa”.
+
+## Fotos
+
+- Somente material fotográfico real da banda.
+- Nunca inserir pessoas geradas por IA.
+- Direção atual: parede/arquivo visual, com a `pose 6` como peça principal e fotos reais de estúdio/banda como peças secundárias.
+- Crédito só quando conhecido/confirmado. Nunca inventar crédito.
+- Não criar categoria `Ao Vivo` sem material real correspondente.
+
+## Shows
+
+- Nunca inventar datas, casas, horários ou ingressos.
+- Estado atual: banda em estúdio; datas futuras só entram quando forem confirmadas.
+- Foto de estúdio real.
+
+## Contato
+
+- Títulos aprovados: `CONTATO`, `FALE COM A BANDA`, `CONTATOS`.
+- E-mail oficial e único da banda: `theantistateguys@gmail.com`.
+- Instagram: `@theantistateguys`.
+- YouTube: `@TheAntiStateGuys`.
+- **Sem WhatsApp.**
+- **Sem e-mail pessoal do Bobby.**
+- Formulário atual monta a mensagem e abre o cliente de e-mail do visitante; não há backend externo inventado.
+
+## QA
+
+A branch final usa GitHub Actions com verificação de:
+- integridade de arquivos/rotas;
+- matriz responsiva em múltiplas geometrias;
+- interação e foco;
+- custo/carregamento;
+- screenshots representativos;
+- regressões críticas de contato e da metáfora física da boombox.
+
+Camadas finais (`*-final-v1.css` / `*-final-v1.js`) também devem disparar o workflow.
+
+## Regra de trabalho
+
+Mudanças importantes de direção visual, conteúdo ou comportamento devem ser alinhadas com Bobby antes de implementação. Não alterar silenciosamente decisões já aprovadas. Em dúvida factual, perguntar em vez de preencher lacunas.

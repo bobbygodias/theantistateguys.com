@@ -4,6 +4,8 @@ import path from 'node:path';
 
 const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
 const cases = [
+  {name:'narrow',width:300,height:960,hasTouch:true},
+  {name:'landscape',width:640,height:360,hasTouch:true},
   {name:'compact',width:390,height:844,hasTouch:true},
   {name:'real-custom-tab',width:1280,height:664,hasTouch:true}
 ];
@@ -16,6 +18,16 @@ const results=[];
 let failures=0;
 
 function assert(condition,message,issues){ if(!condition) issues.push(message); }
+
+async function ensureNavOpen(page){
+  const toggle=page.locator('#site-menu-toggle');
+  if(!(await toggle.count()) || !(await toggle.isVisible())) return;
+  if((await toggle.getAttribute('aria-expanded'))!=='true'){
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(()=>document.getElementById('site-menu-toggle')?.getAttribute('aria-expanded')==='true');
+  }
+}
 
 for(const geometry of cases){
   const context=await browser.newContext({
@@ -33,14 +45,18 @@ for(const geometry of cases){
 
   const issues=[];
 
-  // Estado inicial da rota e player.
-  assert(await page.locator('[data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
+  // Estado inicial: Home ativa, catálogo carregado, mas transporte desligado até inserir o CD.
+  assert(await page.locator('.site-nav [data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
   assert(await page.locator('#play-pause').getAttribute('aria-pressed')==='false','play-sem-aria-pressed-false',issues);
+  assert(await page.locator('#play-pause').isDisabled(),'play-inicial-deveria-estar-desligado',issues);
+  assert(await page.locator('#open-library').isDisabled(),'biblioteca-inicial-deveria-estar-desligada',issues);
   assert((await page.locator('#track-title').textContent()||'').trim().length>0,'titulo-faixa-vazio',issues);
+  assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='open','cd-inicial-nao-aberto',issues);
 
-  // Navegação via teclado: Enter na placa deve trocar rota e focar o título da seção.
+  // Navegação via teclado: no mobile, abre o menu real antes de focar cada placa.
   for(const route of routes.filter(r=>r!=='home')){
-    const link=page.locator(`[data-route-link="${route}"]`);
+    await ensureNavOpen(page);
+    const link=page.locator(`.site-nav [data-route-link="${route}"]`);
     await link.focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(expected=>document.querySelector('[data-route].is-active')?.dataset.route===expected,route);
@@ -54,7 +70,7 @@ for(const geometry of cases){
         hidden:section?.hidden??true,
         current:document.querySelector(`[data-route-link="${expected}"]`)?.getAttribute('aria-current'),
         focused:document.activeElement===heading,
-        scrollTop:document.querySelector('main')?.scrollTop||0
+        scrollTop:Math.max(window.scrollY,document.querySelector('main')?.scrollTop||0)
       };
     },route);
     assert(state.active && !state.hidden,`${route}-nao-ativo`,issues);
@@ -63,13 +79,42 @@ for(const geometry of cases){
     assert(state.scrollTop===0,`${route}-scroll-nao-resetado`,issues);
   }
 
+  // Photos stay inline; only native browser zoom is available.
+  await ensureNavOpen(page);
+  await page.locator('.site-nav [data-route-link="fotos"]').click();
+  const photo=page.locator('.photo-card img').first();
+  await photo.click();
+  assert(await page.locator('dialog[open]').count()===0,'foto-abriu-modal',issues);
+  assert(await page.locator('[data-photo],.expand-icon,#photo-dialog').count()===0,'expansao-residual',issues);
+  const viewport=await page.locator('meta[name="viewport"]').getAttribute('content');
+  assert(!/user-scalable=no|maximum-scale=1/.test(viewport||''),'zoom-nativo-bloqueado',issues);
+  const saveBlocked=await photo.evaluate(el=>!el.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true})));
+  assert(saveBlocked,'menu-salvar-nao-bloqueado',issues);
+
   // Volta à Home pelo mesmo caminho de teclado.
-  await page.locator('[data-route-link="home"]').focus();
+  await ensureNavOpen(page);
+  await page.locator('.site-nav [data-route-link="home"]').focus();
   await page.keyboard.press('Enter');
   await page.waitForFunction(()=>document.querySelector('[data-route].is-active')?.dataset.route==='home');
   await page.waitForTimeout(40);
   const homeFocused=await page.evaluate(()=>document.activeElement===document.getElementById('home-title'));
   assert(homeFocused,'home-titulo-sem-foco-no-retorno',issues);
+
+  // Fluxo físico da boombox: tocar no disco fecha a gaveta e só então acorda os controles.
+  await page.locator('#insert-cd').click();
+  assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='closing','cd-nao-entrou-em-closing',issues);
+  await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='ready',{timeout:3000});
+  assert(!(await page.locator('#play-pause').isDisabled()),'play-nao-ativou-apos-cd',issues);
+  assert(!(await page.locator('#open-library').isDisabled()),'biblioteca-nao-ativou-apos-cd',issues);
+  assert(!(await page.locator('#eject-cd').isDisabled()),'eject-nao-ativou-apos-cd',issues);
+
+  // Controls must be physically reachable, not merely present in the DOM.
+  const overlaps=await page.evaluate(()=>{
+    const ids=['stop-track','prev-track','play-pause','next-track','open-library','eject-cd'];
+    const boxes=ids.map(id=>({id,r:document.getElementById(id).getBoundingClientRect()}));
+    return boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>Math.min(a.r.right,b.r.right)-Math.max(a.r.left,b.r.left)>2 && Math.min(a.r.bottom,b.r.bottom)-Math.max(a.r.top,b.r.top)>2).map(b=>a.id+':'+b.id));
+  });
+  assert(overlaps.length===0,'controles-sobrepostos:'+overlaps.join(','),issues);
 
   // Biblioteca: abrir, conferir conteúdo e fechar por Escape.
   await page.locator('#open-library').click();
@@ -95,6 +140,12 @@ for(const geometry of cases){
   await page.locator('#qa-dialog-close').click();
   await page.waitForTimeout(30);
   assert(!(await page.locator('#music-dialog').evaluate(el=>el.open)),'botao-fechar-nao-fechou-dialog',issues);
+
+  // Eject devolve a boombox ao estado aberto e desliga o transporte novamente.
+  await page.locator('#eject-cd').click();
+  await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='open',{timeout:2000});
+  assert(await page.locator('#play-pause').isDisabled(),'play-nao-desligou-apos-eject',issues);
+  assert(await page.locator('#open-library').isDisabled(),'biblioteca-nao-desligou-apos-eject',issues);
 
   // Nenhum erro JS não tratado no fluxo.
   if(pageErrors.length) issues.push(`pageerror:${pageErrors.join('|')}`);

@@ -8,13 +8,20 @@ await fs.mkdir(out,{recursive:true});
 
 const samples=[
   {name:'narrow-tall-home',width:300,height:960,route:'home',touch:true},
+  {name:'narrow-tall-home-ready',width:300,height:960,route:'home',touch:true,cdReady:true},
+  {name:'narrow-tall-contact',width:300,height:960,route:'contato',touch:true},
   {name:'narrow-tall-members',width:300,height:960,route:'integrantes',touch:true},
   {name:'narrow-tall-photos',width:300,height:960,route:'fotos',touch:true},
   {name:'wide-short-home',width:640,height:360,route:'home',touch:true},
+  {name:'wide-short-contact',width:640,height:360,route:'contato',touch:true},
+  {name:'wide-short-members',width:640,height:360,route:'integrantes',touch:true},
+  {name:'wide-short-photos',width:640,height:360,route:'fotos',touch:true},
   {name:'wide-short-shows',width:640,height:360,route:'shows',touch:true},
   {name:'square-shows',width:800,height:800,route:'shows',touch:true},
   {name:'real-home',width:1280,height:664,route:'home',touch:true},
+  {name:'real-home-ready',width:1280,height:664,route:'home',touch:true,cdReady:true},
   {name:'real-history',width:1280,height:664,route:'historia',touch:true},
+  {name:'real-contact',width:1280,height:664,route:'contato',touch:true},
   {name:'real-members',width:1280,height:664,route:'integrantes',touch:true},
   {name:'real-photos',width:1280,height:664,route:'fotos',touch:true},
   {name:'real-shows',width:1280,height:664,route:'shows',touch:true},
@@ -35,17 +42,24 @@ for(const sample of samples){
   await page.goto(`${baseURL}?visual=1#${sample.route}`,{waitUntil:'networkidle'});
   await page.waitForSelector(`[data-route="${sample.route}"].is-active`);
   await page.evaluate(()=>document.fonts?.ready);
+
+  if(sample.cdReady){
+    await page.locator('#insert-cd').click();
+    await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='ready',{timeout:3000});
+  }
+
   await page.waitForTimeout(180);
   const file=`${sample.name}.png`;
-  await page.screenshot({path:path.join(out,file),fullPage:false});
+  await page.screenshot({path:path.join(out,file),fullPage:true});
   const state=await page.evaluate(()=>({
     meter:document.querySelector('#qa-meter')?.textContent||'',
     scrollTop:document.querySelector('main')?.scrollTop||0,
     scrollHeight:document.querySelector('main')?.scrollHeight||0,
-    clientHeight:document.querySelector('main')?.clientHeight||0
+    clientHeight:document.querySelector('main')?.clientHeight||0,
+    cdState:document.querySelector('.music-machine')?.dataset.cdState||null
   }));
   manifest.push({...sample,file,...state});
-  console.log(`SNAP ${sample.width}x${sample.height} ${sample.route} -> ${file}`);
+  console.log(`SNAP ${sample.width}x${sample.height} ${sample.route}${sample.cdReady?' [CD ready]':''} -> ${file}`);
   await context.close();
 }
 await browser.close();
