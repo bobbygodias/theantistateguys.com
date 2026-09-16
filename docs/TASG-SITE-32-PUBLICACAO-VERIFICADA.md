@@ -17,3 +17,8 @@ Fotos sem ampliação ao toque; zoom nativo preservado. CD/gaveta, biblioteca, s
 
 ## Retomada
 Ler este documento e docs/TASG-SITE-31-ENVIO-RECUPERADO.md. Conferir main e último deploy Pages; não reconstruir o site. Referências em docs/approved-20260915/ e cânone de 14/09; decisões posteriores preservadas nos MDs 28–32.
+
+## Publicação concluída
+Main promovida sem force para 4ffd743077576eff0e7ba655090217e2acb106c5. GitHub Pages execução 35058616231 concluída com sucesso.
+https://github.com/bobbygodias/theantistateguys.com/actions/runs/35058616231
+Acesso direto ao domínio indisponível neste ambiente; não afirmar verificação ao vivo ou reprodução de áudio externo. Registro atualizado também no Drive do Andrew, arquivo 1yAkiScYV0IObL4OGfarsHLrspAjAeKTC.
