@@ -80,7 +80,7 @@ for (const geometry of geometries){
         minTap:Math.round(minTap),
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
-        radioIndependent:radioSrc.includes('boombox-correct-v1.svg') && radio.complete && radio.naturalWidth > 0,
+        radioIndependent:radioSrc.includes('boombox-photo-v2.webp') && radio.complete && radio.naturalWidth > 0,
         showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };

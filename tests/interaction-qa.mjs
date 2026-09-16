@@ -4,6 +4,8 @@ import path from 'node:path';
 
 const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
 const cases = [
+  {name:'narrow',width:300,height:960,hasTouch:true},
+  {name:'landscape',width:640,height:360,hasTouch:true},
   {name:'compact',width:390,height:844,hasTouch:true},
   {name:'real-custom-tab',width:1280,height:664,hasTouch:true}
 ];
@@ -105,6 +107,14 @@ for(const geometry of cases){
   assert(!(await page.locator('#play-pause').isDisabled()),'play-nao-ativou-apos-cd',issues);
   assert(!(await page.locator('#open-library').isDisabled()),'biblioteca-nao-ativou-apos-cd',issues);
   assert(!(await page.locator('#eject-cd').isDisabled()),'eject-nao-ativou-apos-cd',issues);
+
+  // Controls must be physically reachable, not merely present in the DOM.
+  const overlaps=await page.evaluate(()=>{
+    const ids=['stop-track','prev-track','play-pause','next-track','open-library','eject-cd'];
+    const boxes=ids.map(id=>({id,r:document.getElementById(id).getBoundingClientRect()}));
+    return boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>Math.min(a.r.right,b.r.right)-Math.max(a.r.left,b.r.left)>2 && Math.min(a.r.bottom,b.r.bottom)-Math.max(a.r.top,b.r.top)>2).map(b=>a.id+':'+b.id));
+  });
+  assert(overlaps.length===0,'controles-sobrepostos:'+overlaps.join(','),issues);
 
   // Biblioteca: abrir, conferir conteúdo e fechar por Escape.
   await page.locator('#open-library').click();
