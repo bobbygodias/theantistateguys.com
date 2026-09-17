@@ -1,8 +1,9 @@
 /*
- * TASG boombox native interaction layer
+ * TASG boombox internal coordinate and interaction layer
  * The approved 672x464 boombox artwork is never redrawn here.
- * This file maps transparent HTML controls to physical controls already
- * visible in the boombox asset, so artwork and interaction scale as one object.
+ * This file keeps the radio internals in one normalized coordinate system and
+ * maps transparent HTML controls to physical controls already visible in the
+ * boombox asset, so artwork and interaction scale as one object.
  */
 
 .music-machine {
@@ -69,9 +70,19 @@
 }
 
 /*
- * Do not position the display here. Its visual geometry belongs to the Home
- * canon layer; this file owns only native interaction and the CD state layer.
+ * Display geometry is intrinsic to the radio, not to the viewport. Older
+ * responsive layers used to move it at desktop/mobile breakpoints; these
+ * normalized coordinates intentionally win at every size so the display,
+ * tray, CD and physical controls remain one regenerable 672x464 object.
  */
+.player-display {
+  position: absolute !important;
+  left: 40.8% !important;
+  top: 37% !important;
+  width: 30% !important;
+  height: 10% !important;
+  transform: rotate(-3deg) !important;
+}
 
 /*
  * One internal coordinate system: the button layer covers exactly the same
