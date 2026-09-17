@@ -1,5 +1,6 @@
 (() => {
   const machine = document.querySelector(".music-machine");
+  const mechanism = document.getElementById("cd-mechanism");
   const insert = document.getElementById("insert-cd");
   const eject = document.getElementById("eject-cd");
   const library = document.getElementById("open-library");
@@ -24,13 +25,34 @@
     const link = document.createElement("link");
     link.id = cssId;
     link.rel = "stylesheet";
-    link.href = "boombox-native-controls.css?rev=20260917-2";
+    link.href = "boombox-native-controls.css?rev=20260917-3";
     document.head.appendChild(link);
   }
 
   // Prevent one-frame flashes of the old auxiliary UI while the override CSS loads.
   eject.hidden = true;
   if (library) library.hidden = true;
+
+  /*
+   * The black cavity visible in boombox.webp is part of the approved base image,
+   * not a tray-animation artifact. For the READY state, keep a separate visual
+   * layer made only from the real rusted front face of tray.webp. The layer is
+   * a transparent 672x464 image, so it shares the exact coordinate system of
+   * the radio and cannot drift independently on different viewport sizes.
+   */
+  let closedFace = mechanism?.querySelector(".cd-closed-face") || null;
+  if (mechanism && !closedFace) {
+    closedFace = document.createElement("img");
+    closedFace.className = "cd-closed-face";
+    closedFace.src = "assets/canon/tray-closed.webp";
+    closedFace.alt = "";
+    closedFace.width = 672;
+    closedFace.height = 464;
+    closedFace.draggable = false;
+    closedFace.setAttribute("aria-hidden", "true");
+    closedFace.hidden = true;
+    mechanism.appendChild(closedFace);
+  }
 
   controls.forEach((button) => {
     button.classList.add("boombox-hotspot");
@@ -49,6 +71,7 @@
     // Eject remains an internal state hook only; it has no visible UI.
     eject.disabled = next !== "ready";
     insert.setAttribute("aria-hidden", String(next !== "open"));
+    if (closedFace) closedFace.hidden = next !== "ready";
     machine.setAttribute(
       "aria-busy",
       String(next === "closing" || next === "opening"),

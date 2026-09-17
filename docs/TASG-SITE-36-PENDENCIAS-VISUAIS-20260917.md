@@ -1,7 +1,7 @@
 # TASG SITE — Pendências visuais da Home
 
 Data: 17/09/2026
-Status: diagnóstico alinhado com Bobby; correção da boombox implementada e QA verde na branch `boombox-native-controls`; ainda não mesclar/publicar sem inspeção final de Bobby.
+Status: controles nativos da boombox publicados; correção estrutural do estado fechado da gaveta validada em branch isolada e aguardando aprovação de Bobby antes da publicação.
 
 ## Regra principal
 
@@ -35,7 +35,7 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
 2. **Boombox — problema principal**
    - A boombox em si está visualmente muito boa e deve ser preservada.
    - Os botões `CD / FAIXAS` e `EJECT` não são necessários no fluxo atual e não fazem sentido como controles permanentes visíveis.
-   - Depois de inserir o CD, parar a reprodução já pode ser feito com `STOP`; portanto esses dois controles saíram da interface visível na branch de correção.
+   - Depois de inserir o CD, parar a reprodução já pode ser feito com `STOP`; portanto esses dois controles saíram da interface visível na correção publicada.
    - Os botões de transporte artificiais foram substituídos por hotspots sobre a fileira física já existente na boombox.
 
 3. **Faixa inferior / rodapé**
@@ -65,9 +65,9 @@ Decisão conjunta Bobby + Andrew em 17/09/2026:
 
 Aplicação prática: uma camada técnica invisível pode existir para tornar o objeto interativo, mas não deve criar uma segunda aparência de controle por cima dele quando o controle físico já existe no objeto.
 
-## Estado da implementação
+## Estado da implementação dos controles
 
-Branch de trabalho: `boombox-native-controls`.
+A implementação dos controles nativos foi validada na branch `boombox-native-controls` e publicada na `main` no merge `4285f863c6910e211af6cef09889f25e224ee7da`.
 
 Implementado:
 
@@ -81,7 +81,7 @@ Implementado:
 - QA de interação atualizado para validar `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` como controles físicos nativos;
 - contrato canônico atualizado para refletir a remoção da UI auxiliar e manter o acesso oficial ao YouTube pelo cabeçalho.
 
-### QA verde confirmado
+### QA dos controles nativos
 
 Run GitHub Actions: `#81` — ID `35186381639` — head testado `dab24208833be1b7b2b5aeab6811a0f8178075bf`.
 
@@ -95,13 +95,55 @@ Resultado:
 - snapshots representativos: PASS;
 - upload de artefatos: PASS.
 
-A única alteração posterior ao head testado foi a restauração dos gatilhos normais do workflow; não houve mudança em HTML, CSS funcional, JavaScript do player ou testes de comportamento.
+## Correção do estado fechado da gaveta — 17/09/2026
 
-Ainda não publicar/mesclar esta branch até a inspeção visual final de Bobby.
+Após a publicação dos controles nativos, Bobby identificou em aparelho real dois sintomas no estado `ready`: uma faixa preta acima da frente da gaveta e deslocamento visual do display na tentativa de correção inicial.
+
+### Causa real encontrada
+
+- A faixa preta não era criada pela animação: ela já existe no próprio `assets/canon/boombox.webp` como a cavidade atrás da gaveta.
+- Enquanto a gaveta está aberta, `tray.webp` cobre parte dessa cavidade. Quando a gaveta desaparecia no estado `ready`, a cavidade preta voltava a aparecer.
+- A primeira tentativa de correção comprimia o `tray.webp` inteiro em uma faixa rasa; além de não atacar a causa correta, isso podia deformar visualmente a peça.
+- `boombox-native-controls.css` também estava redefinindo a geometria do display sem necessidade. Essa responsabilidade foi removida: o display volta a ser governado somente pela camada visual canônica da Home.
+
+### Solução estrutural validada
+
+Branch: `fix/boombox-ready-state-v2`.
+
+- `boombox.webp` continua absolutamente intacta.
+- O estado fechado usa `assets/canon/tray-closed.webp`, uma camada transparente no palco nativo 672×464.
+- A camada contém somente metal derivado da própria arte aprovada da boombox, alinhado à perspectiva do compartimento, cobrindo a cavidade preta sem esticar uma fotografia inteira e sem criar novo desenho de boombox.
+- A camada aparece apenas em `data-cd-state="ready"`.
+- O display não é reposicionado por `boombox-native-controls.css`.
+- O fluxo `open → closing → ready`, o SFX real e os quatro hotspots permanecem inalterados.
+
+### QA final da correção da gaveta
+
+Run GitHub Actions: `#92` — ID `35276204867` — head testado `779dd9f25516be5c01b97a1657baba3b70b6a474`.
+
+Resultado completo: SUCCESS.
+
+- integridade: PASS;
+- matriz responsiva: PASS — 54 casos;
+- interação/foco: PASS;
+- contrato canônico e reprodução real: PASS;
+- performance: PASS;
+- snapshots representativos: PASS;
+- upload de artefatos: PASS.
+
+Inspeção visual humana dos snapshots após o QA:
+
+- desktop/notebook: sem corrupção visual, sem a faixa preta anterior, display alinhado e boombox preservada;
+- mobile estreito: gaveta fechada, display e corpo da boombox permanecem no mesmo sistema de escala e alinhamento;
+- a versão corrompida intermediária foi descartada e nunca foi publicada na `main`.
+
+Depois do QA, o gatilho temporário da branch foi removido do workflow. Nenhuma mudança funcional foi feita após o head testado; apenas limpeza de configuração/documentação.
+
+**Situação atual: pronta para Bobby aprovar ou rejeitar antes da publicação na `main`.**
 
 ## Prioridade de correção
 
-1. **Boombox e controles — implementação pronta para inspeção final de Bobby.**
+1. **Estado fechado da gaveta — branch corrigida e visualmente validada; aguardando Bobby para publicar.**
 2. Sobreposição de camadas no mobile — revisar com cuidado e sem solução baseada em pixels fixos.
 3. Pequena faixa/“parede” sob a navegação — opcional se simples e segura.
 4. Rodapé/faixa inferior — opcional se simples e segura.

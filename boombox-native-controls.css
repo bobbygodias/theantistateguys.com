@@ -1,7 +1,7 @@
 /*
  * TASG boombox native interaction layer
  * The approved 672x464 boombox artwork is never redrawn here.
- * This file only maps transparent HTML controls to physical controls already
+ * This file maps transparent HTML controls to physical controls already
  * visible in the boombox asset, so artwork and interaction scale as one object.
  */
 
@@ -32,7 +32,7 @@
   display: none !important;
 }
 
-/* Return CD/display layers to the same 672x464 coordinate system as the radio. */
+/* Keep the open tray in the same 672x464 coordinate system as the radio. */
 .cd-tray {
   left: 40.77% !important;
   top: 55.6% !important;
@@ -40,32 +40,25 @@
 }
 
 /*
- * Closed state: reuse only the real rusted front face of tray.webp.
- * The crop is kept very shallow and moved upward so it closes the original
- * black opening without becoming a second panel or redrawing any boombox art.
+ * Closed state is a separate full-stage visual layer made only from the real
+ * rusted front face of tray.webp. It is pre-aligned to the native 672x464
+ * radio coordinates, so there is no viewport-specific positioning or image
+ * stretching. The original boombox.webp remains untouched.
  */
-.music-machine[data-cd-state="ready"] .cd-tray {
-  left: 41.6% !important;
-  top: 53.5% !important;
-  width: 28.4% !important;
-  height: 3.7% !important;
-  overflow: hidden;
-  transform: none !important;
-  opacity: 1 !important;
-  animation: closed-tray-seam-reveal 0.14s ease-out both;
+.cd-closed-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.12s ease-out;
 }
 
-.music-machine[data-cd-state="ready"] .cd-tray img {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center 70% !important;
-}
-
-@keyframes closed-tray-seam-reveal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.music-machine[data-cd-state="ready"] .cd-closed-face {
+  opacity: 1;
 }
 
 .cd-disc {
@@ -75,13 +68,10 @@
   height: 18% !important;
 }
 
-.player-display {
-  left: 40.8% !important;
-  top: 37% !important;
-  width: 30% !important;
-  height: 10% !important;
-  transform: rotate(-3deg) !important;
-}
+/*
+ * Do not position the display here. Its visual geometry belongs to the Home
+ * canon layer; this file owns only native interaction and the CD state layer.
+ */
 
 /*
  * One internal coordinate system: the button layer covers exactly the same
