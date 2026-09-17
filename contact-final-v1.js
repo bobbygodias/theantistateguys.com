@@ -4,7 +4,12 @@
   if (!form) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
+  const note = form.querySelector('.contact-form-note');
   if (!submitBtn) return;
+
+  if (note) {
+    note.textContent = 'A mensagem será enviada diretamente para a banda por este formulário.';
+  }
 
   const WEB3FORMS_ACCESS_KEY = 'b162f3c3-d2f9-41c3-843e-1bd793be5822';
 
