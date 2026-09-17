@@ -53,10 +53,25 @@ for (const geometry of geometries){
         ...document.querySelectorAll('.site-nav a'),
         ...(route ? route.querySelectorAll('a,button') : [])
       ].filter(visible).filter(functional);
-      const minTap = targets.length ? Math.min(...targets.map(el => {
+
+      // Normal UI keeps the 44px rule. The radio's transparent hotspots are
+      // measured separately because they deliberately match physical keys in
+      // the artwork rather than drawing larger fake controls around them.
+      const standardTargets = targets.filter(el=>!el.classList.contains('boombox-hotspot'));
+      const minTap = standardTargets.length ? Math.min(...standardTargets.map(el => {
         const r = el.getBoundingClientRect();
         return Math.min(r.width,r.height);
       })) : 0;
+
+      const radioHotspots = targets.filter(el=>el.classList.contains('boombox-hotspot'));
+      const hotspotBoxes = radioHotspots.map(el=>{
+        const r=el.getBoundingClientRect();
+        return {id:el.id,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height};
+      });
+      const radioBox = document.querySelector('.boombox-art')?.getBoundingClientRect();
+      const hotspotsInside = radioBox ? hotspotBoxes.every(r=>r.left>=radioBox.left-2 && r.right<=radioBox.right+2 && r.top>=radioBox.top-2 && r.bottom<=radioBox.bottom+2) : false;
+      const hotspotOverlap = hotspotBoxes.flatMap((a,i)=>hotspotBoxes.slice(i+1).filter(b=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>1 && Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1).map(b=>`${a.id}:${b.id}`));
+
       const bounds = {left:0,right:document.documentElement.clientWidth};
       const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
       const viewportRect = el => {
@@ -85,6 +100,9 @@ for (const geometry of geometries){
         overflowX:document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
         scrollY:main.scrollHeight > main.clientHeight + 2,
         minTap:Math.round(minTap),
+        radioHotspots:hotspotBoxes.length,
+        hotspotsInside,
+        hotspotOverlap,
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
         radioIndependent:radioSrc.includes('canon/boombox.webp') && radio.complete && radio.naturalWidth > 0,
@@ -99,6 +117,9 @@ for (const geometry of geometries){
     if(measured.minTap > 0 && measured.minTap < 44) issues.push(`tap-${measured.minTap}`);
     if(measured.clipped > 0) issues.push(`clip-x-${measured.clipped}`);
     if(route === 'home' && !measured.radioIndependent) issues.push('radio-scene');
+    if(route === 'home' && measured.radioHotspots !== 4) issues.push(`radio-hotspots-${measured.radioHotspots}`);
+    if(route === 'home' && !measured.hotspotsInside) issues.push('radio-hotspots-outside');
+    if(route === 'home' && measured.hotspotOverlap.length) issues.push(`radio-hotspots-overlap:${measured.hotspotOverlap.join(',')}`);
 
     const pass = issues.length === 0;
     const row = {geometry:geometry.name,width:geometry.width,height:geometry.height,route,pass,issues,...measured};
