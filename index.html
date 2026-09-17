@@ -1,77 +1,779 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="pt-BR">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<meta content="dark" name="color-scheme"/>
-<meta content="#080604" name="theme-color"/>
-<meta content="Site oficial de Bobby Dias &amp; The Anti-State Guys — nu-metal, grunge e underground de Goiânia, Goiás." name="description"/>
-<meta content="website" property="og:type"/>
-<meta content="Bobby Dias &amp; The Anti-State Guys" property="og:title"/>
-<meta content="Site oficial — música, história, integrantes e novidades." property="og:description"/>
-<meta content="https://theantistateguys.com/assets/photos-pose-6.webp" property="og:image"/>
-<meta content="https://theantistateguys.com/" property="og:url"/>
-<meta content="summary_large_image" name="twitter:card"/>
-<link href="https://theantistateguys.com/" rel="canonical"/>
-<link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link as="image" fetchpriority="high" href="assets/alley-underground-v4.webp" rel="preload" type="image/webp"/>
-<link as="image" href="assets/boombox-photo-v2.webp" rel="preload" type="image/webp"/>
-<title>Bobby Dias &amp; The Anti-State Guys</title>
-<link href="qa-site-v3.css?rev=20260915" rel="stylesheet"/><link href="home-final-v1.css?rev=20260915" rel="stylesheet"/><link href="approved-pages.css?rev=20260915" rel="stylesheet"/></head>
-<body>
-<a class="skip-link" href="#main">Ir para o conteúdo</a>
-<header class="site-header">
-<button aria-controls="site-nav" aria-expanded="false" aria-label="Abrir menu" class="site-menu-toggle" id="site-menu-toggle" type="button"><span></span><span></span><span></span></button>
-<nav aria-label="Navegação principal" class="site-nav" id="site-nav">
-<a data-route-link="home" href="#home">HOME</a><a data-route-link="historia" href="#historia">HISTÓRIA</a><a data-route-link="contato" href="#contato">CONTATO</a><a data-route-link="integrantes" href="#integrantes">INTEGRANTES</a><a data-route-link="fotos" href="#fotos">FOTOS</a><a data-route-link="shows" href="#shows">SHOWS</a>
-</nav>
-<div class="header-socials"><a href="https://www.instagram.com/theantistateguys/" rel="noopener noreferrer" target="_blank">INSTAGRAM ↗</a><a href="https://www.youtube.com/@TheAntiStateGuys" rel="noopener noreferrer" target="_blank">YOUTUBE ↗</a></div></header>
-<main id="main">
-<section aria-labelledby="home-title" class="route route-home is-active" data-route="home" id="home">
-<h1 class="visually-hidden" id="home-title">Bobby Dias &amp; The Anti-State Guys</h1>
-<div aria-hidden="true" class="home-world"><img alt="" class="alley-photo" decoding="async" draggable="false" fetchpriority="high" height="941" src="assets/alley-underground-v4.webp" width="1672"/><div class="alley-shade"></div></div>
-<div class="home-layout">
-<header class="home-brand home-brand-status"><img alt="Bobby Dias &amp; The Anti-State Guys" draggable="false" height="439" src="assets/wordmark-bobby-original.webp" width="1600"/><p class="band-slogan">CONEXÃO CLANDESTINA — CONTEÚDO EXPLÍCITO</p><span class="site-production-notice" role="status">SITE PROVISÓRIO · AINDA EM PRODUÇÃO</span></header>
-<div class="home-media"><section aria-label="Player de músicas" class="music-machine" data-cd-state="open">
-<img alt="" aria-hidden="true" class="boombox-art" draggable="false" height="1024" src="assets/boombox-photo-v2.webp" width="1536"/>
-<div class="cd-mechanism" id="cd-mechanism"><div aria-hidden="true" class="cd-tray"></div><button aria-label="Inserir CD na boombox" class="cd-disc" id="insert-cd" type="button"><span class="cd-disc-title">DEMO</span></button><button aria-label="Ejetar CD" class="eject-button" disabled="" id="eject-cd" type="button">EJECT</button></div>
-<span aria-hidden="true" class="speaker-motion speaker-left"></span><span aria-hidden="true" class="speaker-motion speaker-right"></span>
-<div aria-live="polite" class="player-display"><span id="track-title">Carregando faixas...</span><span class="time"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span></div>
-<button aria-controls="music-dialog" aria-haspopup="dialog" aria-label="Abrir CDs e faixas" class="library-button" id="open-library" type="button">CD / FAIXAS</button>
-<div aria-label="Controles do player" class="player-controls"><button aria-label="Parar" disabled="" id="stop-track" type="button">■</button><button aria-label="Faixa anterior" disabled="" id="prev-track" type="button">⏮</button><button aria-label="Reproduzir" disabled="" id="play-pause" type="button">▶</button><button aria-label="Próxima faixa" disabled="" id="next-track" type="button">⏭</button></div>
-</section></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+      name="viewport"
+    />
+    <meta content="dark" name="color-scheme" />
+    <meta content="#080604" name="theme-color" />
+    <meta
+      content="Site oficial de Bobby Dias &amp; The Anti-State Guys — nu-metal, grunge e underground de Goiânia, Goiás."
+      name="description"
+    />
+    <meta content="website" property="og:type" />
+    <meta content="Bobby Dias &amp; The Anti-State Guys" property="og:title" />
+    <meta
+      content="Site oficial — música, história, integrantes e novidades."
+      property="og:description"
+    />
+    <meta
+      content="https://theantistateguys.com/assets/photos-pose-6.webp"
+      property="og:image"
+    />
+    <meta content="https://theantistateguys.com/" property="og:url" />
+    <meta content="summary_large_image" name="twitter:card" />
+    <link href="https://theantistateguys.com/" rel="canonical" />
+    <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
 
-</div>
-</section>
-<section aria-labelledby="historia-title" class="route route-panel" data-route="historia" hidden="" id="historia">
-<div aria-hidden="true" class="route-world history-world"></div><div class="route-shell history-shell"><a class="page-brand" data-route-link="home" href="#home"><span>BOBBY DIAS</span><strong>&amp; THE ANTI-STATE GUYS</strong></a><h2 id="historia-title">HISTÓRIA</h2>
-<div class="history-layout"><article class="history-start metal-panel"><h3 class="plate">O COMEÇO — BREAKNEWS</h3><p>Goiânia, fevereiro de 2024. Break reuniu McFly, Young, Thomaz e Santiago para tocar covers de bandas internacionais. O nome provisório era BreakNews.</p><p>Entre os covers, havia uma única faixa autoral: “O Forasteiro”, composta por Bobby Dias e doada à banda.</p></article><figure class="history-portrait metal-panel"><img alt="Os seis integrantes da banda, com Bobby sentado ao centro" draggable="false" loading="lazy" src="assets/band-seated.webp"/></figure><figure class="history-rehearsal metal-panel"><img alt="Os seis integrantes durante o ensaio" draggable="false" loading="lazy" src="assets/studio.webp"/></figure><article class="history-song metal-panel"><h3 class="plate">O FORASTEIRO</h3><p>Após ouvir a música em uma gravação da festa de aniversário de Break, Bobby discordou da interpretação. Santiago o convidou para um ensaio, onde ele poderia explicar sua visão da obra.</p></article><article class="history-now metal-panel"><h3 class="plate">BOBBY DIAS &amp; THE ANTI-STATE GUYS</h3><p>No ensaio, o grupo convidou Bobby a assumir a liderança. A nova formação ganhou o nome atual em sua homenagem, adotou suas composições e encontrou uma sonoridade que mistura nu-metal e grunge.</p><p class="history-ending">E a história segue sendo escrita.</p></article></div>
-</div>
-</section>
-<section aria-labelledby="integrantes-title" class="route route-panel" data-route="integrantes" hidden="" id="integrantes">
-<div aria-hidden="true" class="route-world members-world"></div><div class="route-shell members-shell"><a class="page-brand" data-route-link="home" href="#home"><span>BOBBY DIAS</span><strong>&amp; THE ANTI-STATE GUYS</strong></a><h2 id="integrantes-title">INTEGRANTES</h2><div class="member-wall">
-<article class="member-card metal-panel"><img alt="Bobby Dias" draggable="false" loading="lazy" src="assets/members/bobby.webp"/><div><h3>Bobby Dias</h3><p class="role">Vocal, compositor e multiinstrumentista</p><details><summary>BIOGRAFIA</summary><p>Já foi "estrelinha" nos palcos em seu passado. Bobby, aprendeu muito cedo a "se virar" devido a uma infância bastante conturbada. É o mais, digamos, "intelectual", trazendo consigo uma bagagem extensa. Sempre teve muita facilidade para aprender e estudar, e isso o levou a tocar desde piano, cordas, até bateria em diversas bandas. Nunca foi fã de covers, apesar de já ter participado de "bandas tributo". Escreve desde a infância, tentando através da arte e da filosofia (ex-palestrante) trazer o "quê" da banda. Foi convidado por Break a integrar o projeto. A amizade entre eles não dá para escrever em poucas linhas. É o único na banda a ainda ter redes sociais, apesar de, nos últimos tempos, resolver deixá-las paradas. Há um certo tempo vem lutando contra uma enfermidade complicada, que chegou a atrapalhar sua mobilidade e "desaparecer" dos círculos sociais e circuitos goianienses. Observação: Break, ao integrá-lo na banda, quis o homenagear, trocando o nome do projeto para o atual.</p></details></div></article>
-<article class="member-card metal-panel"><img alt="Break" draggable="false" loading="lazy" src="assets/members/break.webp"/><div><h3>Break</h3><p class="role">Baterista e percussão</p><details><summary>BIOGRAFIA</summary><p>Luiz foi peão de rodeio quando mais novo mas sempre apaixonado por duas rodas. Sua criação foi complicada, criado apenas com seu pai e a oficina automotiva, então entre o cheiro de graxa, os torneios de boiadeiros e o barulho de ferramentas, ele passou a vida transformando sucatas em máquinas. O apelido "Break" veio dessa época: ele era o cara que não parava até "quebrar" o problema de um motor. Por anos, viveu essa dualidade: de noite trabalhando como zelador e de dia criando. Nos tempos extras, tocava sozinho (autodidata) uma bateria que um tio deu a ele de presente. Então seus dias dividiam-se sempre entre o "customizador" que buscava no ritmo da oficina o alívio na percussão. Foi nesse ambiente de ideias e graxa que ele conheceu Santiago e, mais tarde, Bobby. Hoje, Break não apenas conserta máquinas; ele é o motor rítmico que sustenta a banda, trazendo a disciplina da mecânica para cada batida seca e pesada de suas baquetas. Nota: nunca pergunte sobre suas influências.</p></details></div></article>
-<article class="member-card metal-panel"><img alt="Lukas McFly" draggable="false" loading="lazy" src="assets/members/mcfly.webp"/><div><h3>Lukas McFly</h3><p class="role">Baixista e backvocal</p><details><summary>BIOGRAFIA</summary><p>No passado, sua formação acadêmica (e seguindo o exemplo de seus pais) como bacharel em matemática o levou a ser "o professor rockeiro", mas nos seus tempos livres, a teoria musical com seu baixo e um cubo daqueles pequenos, sonhava com outra "lógica". A influência de John Paul Jones e Steve Harris, o levava a sonhar com um propósito maior. Resumindo, Lukas encontrou no baixo não apenas um instrumento, mas uma ferramenta de expressão política e pessoal, tocando em diversas bandas nas noites goianas. Sua trajetória de matemático a baixista na "Bobby Dias &amp; The Anti-State Guys" tem muita história de problemas, desde as encrencas com seus pais a brigas nos palcos da cena goianiense. Ele chegou a deixar sua paixão de lado por quase uma década antes de se juntar a banda. Hoje ele é quase o pilar de sustentação da banda, ele que resolve as encrencas entre os integrantes e usando suas quatro cordas, cria uma base que casa bem com as batidas de Break, mas continua sendo o mais introspectivo da banda.</p></details></div></article>
-<article class="member-card metal-panel"><img alt="Marcus Young" draggable="false" loading="lazy" src="assets/members/young.webp"/><div><h3>Marcus Young</h3><p class="role">Guitarra solo e backvocal</p><details><summary>BIOGRAFIA</summary><p>Marcus passou grande parte da vida como o típico cabeludo observador e "de boa lábia", nas noites da cena underground goianiense. Desde cedo, nascido em Inhumas, cidade próxima a Goiânia, ele sempre se perdeu nos timbres obscuros do metal extremo e nas "loiras geladas", e quando tocava sua guitarra, passando por diversas bandas, buscava uma sonoridade que ninguém parecia compreender. Ele viveu anos em estúdios caseiros, refinando solos que pareciam entre gritos indecifráveis a harmônicos. Sua influência? Ele sempre responde AC/DC, mais nada. Antes da banda, Marcus era o "mulherengo guitarrista de aluguel", que nunca se sentia em casa em projeto nenhum, sempre buscando algo que chamava de "mais visceral". Break o conhecia por morarem próximos e foi assim que ele foi parar na banda. Atualmente, ele que é o responsável pelos arpejos e solos que dão a "cara" única ao som do grupo.</p></details></div></article>
-<article class="member-card metal-panel"><img alt="Thomaz" draggable="false" loading="lazy" src="assets/members/thomaz.webp"/><div><h3>Thomaz</h3><p class="role">Guitarra base e backvocal</p><details><summary>BIOGRAFIA</summary><p>​O mais jovem do grupo, Thomaz sempre foi o típico "garoto de condomínio" (mas não curte que digam isso a ele), crescendo em uma Goiânia já conectada e acelerada. Enquanto os outros construíam suas bases, ele absorvia a estética urbana das ruas, com seu skate e boa parte da cultura DIY (Do It Yourself). Ele começou tocando em garagens com amigos, sempre com uma postura contestadora e uma energia que sobrava. Charlie Brown Jr é sua principal influência, apesar de ser apaixonado por alguns riffs setentistas. Nunca foi "virtuoso" com suas cordas, sempre preferiu as distorções de seus pedais. Sua trajetória é com passagem por algumas bandas de escola, o típico "cover pra galera". Ao entrar para a banda, ele trouxe o frescor necessário para que o som não ficasse preso ao passado. Atualmente, ele é o integrante que mais tenta trazer um timbre rítmico mais urbano para a banda. Extra de bastidor: Bobby adora tirar sarro dele o chamando de "garotinho leite com pera", e isso as vezes leva a desentendimentos.</p></details></div></article>
-<article class="member-card metal-panel"><img alt="Santiago" draggable="false" loading="lazy" src="assets/members/santiago.webp"/><div><h3>Santiago</h3><p class="role">Vocal, DJ e sonoplasta</p><details><summary>BIOGRAFIA</summary><p>Santiago começou a vida, do outro lado do oceano, a milhares de quilômetros de Goiânia, nas ruas de Kinshasa, no Congo. Chegou ao Brasil ainda criança, trazendo na bagagem uma percepção sonora que misturava ritmos ancestrais com a necessidade de adaptação. Teve uma infância difícil, morando na periferia, o que o fez gostar de rap a gritos do nu-metal. Cresceu mergulhado na sonoplastia, aprendendo a manipular o áudio para dar voz a ideias alheias e como dj de grupos de rap. Foi nos bastidores dos palcos que ele criou um vínculo óbvio com "o zelador" (Break), o que futuramente mudaria tudo. De um imigrante que buscava seu lugar, ajudar sua mãe em casa a DJ, Santiago tornou-se meio que "o alquimista da banda". Hoje, ele funde o digital, com seus scratches na sua gemini cdm-500 (seu orgulho) com influências desde Frank Delgado (Deftones) até o KL Jay (Racionais Mcs) com o vocal, transformando a dor de sua jornada em uma performance que é, ao mesmo tempo, técnica e profundamente espiritual. Nota: pode não parecer, mas é o mais "brigão" da banda.</p></details></div></article></div></div>
-</section>
-<section aria-labelledby="fotos-title" class="route route-panel" data-route="fotos" hidden="" id="fotos">
-<div aria-hidden="true" class="route-world photos-world"></div><div class="route-shell photos-shell photos-final-shell"><a class="page-brand" data-route-link="home" href="#home"><span>BOBBY DIAS</span><strong>&amp; THE ANTI-STATE GUYS</strong></a><h2 id="fotos-title">FOTOS</h2><div class="photo-wall-final photo-wall-v2"><figure class="photo-card metal-panel"><img alt="A banda" draggable="false" loading="lazy" src="assets/band-seated.webp"/><figcaption class="plate">A banda</figcaption></figure><figure class="photo-card metal-panel"><img alt="Ensaio" draggable="false" loading="lazy" src="assets/studio.webp"/><figcaption class="plate">Ensaio</figcaption></figure><figure class="photo-card metal-panel"><img alt="Break" draggable="false" loading="lazy" src="assets/members/break.webp"/><figcaption class="plate">Break</figcaption></figure><figure class="photo-card metal-panel"><img alt="Santiago" draggable="false" loading="lazy" src="assets/members/santiago.webp"/><figcaption class="plate">Santiago</figcaption></figure></div></div>
-</section>
-<section aria-labelledby="shows-title" class="route route-panel" data-route="shows" hidden="" id="shows">
-<div aria-hidden="true" class="route-world shows-world"></div><div class="route-shell shows-shell"><a class="page-brand" data-route-link="home" href="#home"><span>BOBBY DIAS</span><strong>&amp; THE ANTI-STATE GUYS</strong></a><h2 class="red-plate" id="shows-title">SHOWS</h2><div class="shows-notice metal-panel"><h3>DATAS EM ATUALIZAÇÃO</h3><p>Acompanhe as novidades nos canais oficiais.</p><div class="notice-socials"><a href="https://www.instagram.com/theantistateguys/" rel="noopener noreferrer" target="_blank">INSTAGRAM ↗</a><a href="https://www.youtube.com/@TheAntiStateGuys" rel="noopener noreferrer" target="_blank">YOUTUBE ↗</a></div></div></div>
-</section>
-<section aria-labelledby="contato-title" class="route route-panel" data-route="contato" hidden="" id="contato">
-<div aria-hidden="true" class="route-world contact-world"></div><div class="route-shell contact-shell contact-final-shell"><a class="page-brand" data-route-link="home" href="#home"><span>BOBBY DIAS</span><strong>&amp; THE ANTI-STATE GUYS</strong></a><h2 id="contato-title">CONTATO</h2><p class="contact-subtitle red-plate">FALE COM A BANDA</p><div class="contact-final-layout"><aside aria-labelledby="contact-directory-title" class="contact-directory metal-panel"><h3 id="contact-directory-title">CONTATOS</h3><div class="contact-signs"><a href="mailto:theantistateguys@gmail.com">theantistateguys@gmail.com</a><a href="https://www.instagram.com/theantistateguys/" rel="noopener noreferrer" target="_blank">INSTAGRAM ↗</a><a href="https://www.youtube.com/@TheAntiStateGuys" rel="noopener noreferrer" target="_blank">YOUTUBE ↗</a></div></aside>
-<section aria-labelledby="contact-form-title" class="contact-form-panel metal-panel"><h3 id="contact-form-title">ENVIE UMA MENSAGEM</h3><form class="contact-form" id="contact-form"><label class="contact-field"><span>Nome</span><input autocomplete="name" maxlength="120" name="name" placeholder="Seu nome" required="" type="text"/></label><label class="contact-field"><span>E-mail</span><input autocomplete="email" maxlength="180" name="email" placeholder="Seu e-mail" required="" type="email"/></label><label class="contact-field"><span>Assunto</span><input maxlength="180" name="subject" type="text"/></label><label class="contact-field"><span>Mensagem</span><textarea maxlength="4000" name="message" placeholder="Deixe sua mensagem aqui..." required=""></textarea></label><button class="contact-submit" type="submit">ENVIAR</button><p class="contact-form-note">Ao enviar, seu aplicativo de e-mail será aberto com a mensagem pronta para a banda.</p><p aria-live="polite" class="contact-form-status" id="contact-form-status" role="status"></p></form></section>
-</div></div>
-</section>
-</main><footer class="site-footer"><span>BOBBY DIAS &amp; THE ANTI-STATE GUYS©</span><span>B.D MEDIA PRODUCTIONS©</span><span>TODOS OS DIREITOS RESERVADOS.</span></footer>
-<dialog aria-labelledby="music-dialog-title" class="music-dialog" id="music-dialog"><div class="dialog-shell"><header><div><span>BOOMBOX / BIBLIOTECA</span><h2 id="music-dialog-title">FAIXAS</h2></div><button aria-label="Fechar" id="qa-dialog-close" type="button">×</button></header><div class="music-list" id="music-list"></div></div></dialog>
-<div aria-live="polite" class="toast" id="toast" role="status"></div><audio controlslist="nodownload" id="audio" preload="metadata"></audio><audio controlslist="nodownload" id="cd-close-sfx" preload="auto" src="assets/cd-drawer-close.mp3"></audio>
-<script defer="" src="script.js?rev=underground5"></script>
-<script defer="True" src="approved-pages.js?rev=20260915"></script></body>
+    <title>Bobby Dias &amp; The Anti-State Guys</title>
+    <link
+      rel="preload"
+      as="font"
+      href="assets/ui-condensed.woff"
+      type="font/woff"
+      crossorigin
+    />
+    <link rel="stylesheet" href="canon.css?rev=20260916-1" />
+  </head>
+  <body>
+    <div class="site-frame">
+      <a class="skip-link" href="#main">Ir para o conteúdo</a>
+      <header class="site-header">
+        <button
+          aria-controls="site-nav"
+          aria-expanded="false"
+          aria-label="Abrir menu"
+          class="site-menu-toggle"
+          id="site-menu-toggle"
+          type="button"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <nav aria-label="Navegação principal" class="site-nav" id="site-nav">
+          <a data-route-link="home" href="#home">HOME</a
+          ><a data-route-link="historia" href="#historia">HISTÓRIA</a
+          ><a data-route-link="contato" href="#contato">CONTATO</a
+          ><a data-route-link="integrantes" href="#integrantes">INTEGRANTES</a
+          ><a data-route-link="fotos" href="#fotos">FOTOS</a
+          ><a data-route-link="shows" href="#shows">SHOWS</a>
+        </nav>
+        <div class="header-socials">
+          <a
+            href="https://www.instagram.com/theantistateguys/"
+            rel="noopener noreferrer"
+            target="_blank"
+            >INSTAGRAM ↗</a
+          ><a
+            href="https://www.youtube.com/@TheAntiStateGuys"
+            rel="noopener noreferrer"
+            target="_blank"
+            >YOUTUBE ↗</a
+          >
+        </div>
+      </header>
+      <main id="main">
+        <section
+          aria-labelledby="home-title"
+          class="route route-home is-active"
+          data-route="home"
+          id="home"
+        >
+          <h1 class="visually-hidden" id="home-title">
+            Bobby Dias &amp; The Anti-State Guys
+          </h1>
+          <div aria-hidden="true" class="home-world">
+            <img
+              alt=""
+              class="alley-photo"
+              decoding="async"
+              draggable="false"
+              fetchpriority="high"
+              height="941"
+              src="assets/canon/alley.webp"
+              width="1672"
+            />
+            <div class="alley-shade"></div>
+          </div>
+          <div class="home-layout">
+            <header class="home-brand home-brand-status">
+              <img
+                alt="Bobby Dias &amp; The Anti-State Guys"
+                draggable="false"
+                height="166"
+                src="assets/canon/wordmark.webp"
+                width="651"
+              />
+              <p class="band-slogan">
+                CONEXÃO CLANDESTINA — CONTEÚDO EXPLÍCITO
+              </p>
+            </header>
+            <div class="home-media">
+              <section
+                aria-label="Player de músicas"
+                class="music-machine"
+                data-cd-state="open"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  class="boombox-art"
+                  draggable="false"
+                  height="464"
+                  src="assets/canon/boombox.webp"
+                  width="672"
+                />
+                <div class="cd-mechanism" id="cd-mechanism">
+                  <div aria-hidden="true" class="cd-tray">
+                    <img
+                      src="assets/canon/tray.webp"
+                      alt=""
+                      width="271"
+                      height="125"
+                      draggable="false"
+                    />
+                  </div>
+                  <button
+                    title="Inserir CD DEMO"
+                    aria-label="Inserir CD na boombox"
+                    class="cd-disc"
+                    id="insert-cd"
+                    type="button"
+                  >
+                    <span class="visually-hidden"
+                      >DEMO — inserir CD</span
+                    ></button
+                  ><button
+                    aria-label="Ejetar CD"
+                    class="eject-button"
+                    disabled=""
+                    id="eject-cd"
+                    type="button"
+                  >
+                    EJECT
+                  </button>
+                </div>
+                <span
+                  aria-hidden="true"
+                  class="speaker-motion speaker-left"
+                ></span
+                ><span
+                  aria-hidden="true"
+                  class="speaker-motion speaker-right"
+                ></span>
+                <div
+                  class="player-display"
+                  role="status"
+                  aria-label="Faixa e tempo"
+                >
+                  <span id="track-title">Carregando faixas...</span
+                  ><span class="time"
+                    ><span id="time-current">0:00</span> /
+                    <span id="time-total">0:00</span></span
+                  >
+                </div>
+                <button
+                  aria-controls="music-dialog"
+                  aria-haspopup="dialog"
+                  aria-label="Abrir CDs e faixas"
+                  class="library-button"
+                  id="open-library"
+                  type="button"
+                >
+                  CD / FAIXAS
+                </button>
+                <div aria-label="Controles do player" class="player-controls">
+                  <button
+                    aria-label="Parar"
+                    disabled=""
+                    id="stop-track"
+                    type="button"
+                  >
+                    ■</button
+                  ><button
+                    aria-label="Faixa anterior"
+                    disabled=""
+                    id="prev-track"
+                    type="button"
+                  >
+                    ⏮</button
+                  ><button
+                    aria-label="Reproduzir"
+                    disabled=""
+                    id="play-pause"
+                    type="button"
+                  >
+                    ▶</button
+                  ><button
+                    aria-label="Próxima faixa"
+                    disabled=""
+                    id="next-track"
+                    type="button"
+                  >
+                    ⏭
+                  </button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+        <section
+          aria-labelledby="historia-title"
+          class="route route-panel"
+          data-route="historia"
+          hidden=""
+          id="historia"
+        >
+          <div aria-hidden="true" class="route-world history-world"></div>
+          <div class="route-shell history-shell">
+            <a
+              class="page-brand"
+              data-route-link="home"
+              href="#home"
+              aria-label="Bobby Dias &amp; The Anti-State Guys — Home"
+              ><img
+                src="assets/canon/wordmark.webp"
+                width="651"
+                height="166"
+                alt="Bobby Dias &amp; The Anti-State Guys"
+                draggable="false"
+            /></a>
+            <h2 id="historia-title">HISTÓRIA</h2>
+            <div class="history-layout">
+              <article class="history-start metal-panel">
+                <h3 class="plate">O COMEÇO — BREAKNEWS</h3>
+                <p>
+                  Goiânia, fevereiro de 2024. Break reuniu McFly, Young, Thomaz
+                  e Santiago para tocar covers de bandas internacionais. O nome
+                  provisório era BreakNews.
+                </p>
+                <p>
+                  Entre os covers, havia uma única faixa autoral: “O
+                  Forasteiro”, composta por Bobby Dias e doada à banda.
+                </p>
+              </article>
+              <figure class="history-portrait metal-panel">
+                <img
+                  alt="Os seis integrantes da banda, com Bobby sentado ao centro"
+                  draggable="false"
+                  loading="lazy"
+                  src="assets/band-seated.webp"
+                />
+              </figure>
+              <figure class="history-rehearsal metal-panel">
+                <img
+                  alt="Os seis integrantes durante o ensaio"
+                  draggable="false"
+                  loading="lazy"
+                  src="assets/studio.webp"
+                />
+              </figure>
+              <article class="history-song metal-panel">
+                <h3 class="plate">O FORASTEIRO</h3>
+                <p>
+                  Após ouvir a música em uma gravação da festa de aniversário de
+                  Break, Bobby discordou da interpretação. Santiago o convidou
+                  para um ensaio, onde ele poderia explicar sua visão da obra.
+                </p>
+              </article>
+              <article class="history-now metal-panel">
+                <h3 class="plate">BOBBY DIAS &amp; THE ANTI-STATE GUYS</h3>
+                <p>
+                  No ensaio, o grupo convidou Bobby a assumir a liderança. A
+                  nova formação ganhou o nome atual em sua homenagem, adotou
+                  suas composições e encontrou uma sonoridade que mistura
+                  nu-metal e grunge.
+                </p>
+                <p class="history-ending">E a história segue sendo escrita.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section
+          aria-labelledby="integrantes-title"
+          class="route route-panel"
+          data-route="integrantes"
+          hidden=""
+          id="integrantes"
+        >
+          <div aria-hidden="true" class="route-world members-world"></div>
+          <div class="route-shell members-shell">
+            <a
+              class="page-brand"
+              data-route-link="home"
+              href="#home"
+              aria-label="Bobby Dias &amp; The Anti-State Guys — Home"
+              ><img
+                src="assets/canon/wordmark.webp"
+                width="651"
+                height="166"
+                alt="Bobby Dias &amp; The Anti-State Guys"
+                draggable="false"
+            /></a>
+            <h2 id="integrantes-title">INTEGRANTES</h2>
+            <div class="member-wall">
+              <article class="member-card metal-panel">
+                <div class="member-photo">
+                  <img
+                    alt="Bobby Dias"
+                    draggable="false"
+                    loading="lazy"
+                    src="assets/members/bobby.webp"
+                  />
+                </div>
+                <div>
+                  <h3>Bobby Dias</h3>
+                  <p class="role">Vocal, compositor e multiinstrumentista</p>
+                  <details>
+                    <summary>BIOGRAFIA</summary>
+                    <p>
+                      Já foi "estrelinha" nos palcos em seu passado. Bobby,
+                      aprendeu muito cedo a "se virar" devido a uma infância
+                      bastante conturbada. É o mais, digamos, "intelectual",
+                      trazendo consigo uma bagagem extensa. Sempre teve muita
+                      facilidade para aprender e estudar, e isso o levou a tocar
+                      desde piano, cordas, até bateria em diversas bandas. Nunca
+                      foi fã de covers, apesar de já ter participado de "bandas
+                      tributo". Escreve desde a infância, tentando através da
+                      arte e da filosofia (ex-palestrante) trazer o "quê" da
+                      banda. Foi convidado por Break a integrar o projeto. A
+                      amizade entre eles não dá para escrever em poucas linhas.
+                      É o único na banda a ainda ter redes sociais, apesar de,
+                      nos últimos tempos, resolver deixá-las paradas. Há um
+                      certo tempo vem lutando contra uma enfermidade complicada,
+                      que chegou a atrapalhar sua mobilidade e "desaparecer" dos
+                      círculos sociais e circuitos goianienses. Observação:
+                      Break, ao integrá-lo na banda, quis o homenagear, trocando
+                      o nome do projeto para o atual.
+                    </p>
+                  </details>
+                </div>
+              </article>
+              <article class="member-card metal-panel">
+                <div class="member-photo">
+                  <img
+                    alt="Break"
+                    draggable="false"
+                    loading="lazy"
+                    src="assets/members/break.webp"
+                  />
+                </div>
+                <div>
+                  <h3>Break</h3>
+                  <p class="role">Baterista e percussão</p>
+                  <details>
+                    <summary>BIOGRAFIA</summary>
+                    <p>
+                      Luiz foi peão de rodeio quando mais novo mas sempre
+                      apaixonado por duas rodas. Sua criação foi complicada,
+                      criado apenas com seu pai e a oficina automotiva, então
+                      entre o cheiro de graxa, os torneios de boiadeiros e o
+                      barulho de ferramentas, ele passou a vida transformando
+                      sucatas em máquinas. O apelido "Break" veio dessa época:
+                      ele era o cara que não parava até "quebrar" o problema de
+                      um motor. Por anos, viveu essa dualidade: de noite
+                      trabalhando como zelador e de dia criando. Nos tempos
+                      extras, tocava sozinho (autodidata) uma bateria que um tio
+                      deu a ele de presente. Então seus dias dividiam-se sempre
+                      entre o "customizador" que buscava no ritmo da oficina o
+                      alívio na percussão. Foi nesse ambiente de ideias e graxa
+                      que ele conheceu Santiago e, mais tarde, Bobby. Hoje,
+                      Break não apenas conserta máquinas; ele é o motor rítmico
+                      que sustenta a banda, trazendo a disciplina da mecânica
+                      para cada batida seca e pesada de suas baquetas. Nota:
+                      nunca pergunte sobre suas influências.
+                    </p>
+                  </details>
+                </div>
+              </article>
+              <article class="member-card metal-panel">
+                <div class="member-photo">
+                  <img
+                    alt="Lukas McFly"
+                    draggable="false"
+                    loading="lazy"
+                    src="assets/members/mcfly.webp"
+                  />
+                </div>
+                <div>
+                  <h3>Lukas McFly</h3>
+                  <p class="role">Baixista e backvocal</p>
+                  <details>
+                    <summary>BIOGRAFIA</summary>
+                    <p>
+                      No passado, sua formação acadêmica (e seguindo o exemplo
+                      de seus pais) como bacharel em matemática o levou a ser "o
+                      professor rockeiro", mas nos seus tempos livres, a teoria
+                      musical com seu baixo e um cubo daqueles pequenos, sonhava
+                      com outra "lógica". A influência de John Paul Jones e
+                      Steve Harris, o levava a sonhar com um propósito maior.
+                      Resumindo, Lukas encontrou no baixo não apenas um
+                      instrumento, mas uma ferramenta de expressão política e
+                      pessoal, tocando em diversas bandas nas noites goianas.
+                      Sua trajetória de matemático a baixista na "Bobby Dias
+                      &amp; The Anti-State Guys" tem muita história de
+                      problemas, desde as encrencas com seus pais a brigas nos
+                      palcos da cena goianiense. Ele chegou a deixar sua paixão
+                      de lado por quase uma década antes de se juntar a banda.
+                      Hoje ele é quase o pilar de sustentação da banda, ele que
+                      resolve as encrencas entre os integrantes e usando suas
+                      quatro cordas, cria uma base que casa bem com as batidas
+                      de Break, mas continua sendo o mais introspectivo da
+                      banda.
+                    </p>
+                  </details>
+                </div>
+              </article>
+              <article class="member-card metal-panel">
+                <div class="member-photo">
+                  <img
+                    alt="Marcus Young"
+                    draggable="false"
+                    loading="lazy"
+                    src="assets/members/young.webp"
+                  />
+                </div>
+                <div>
+                  <h3>Marcus Young</h3>
+                  <p class="role">Guitarra solo e backvocal</p>
+                  <details>
+                    <summary>BIOGRAFIA</summary>
+                    <p>
+                      Marcus passou grande parte da vida como o típico cabeludo
+                      observador e "de boa lábia", nas noites da cena
+                      underground goianiense. Desde cedo, nascido em Inhumas,
+                      cidade próxima a Goiânia, ele sempre se perdeu nos timbres
+                      obscuros do metal extremo e nas "loiras geladas", e quando
+                      tocava sua guitarra, passando por diversas bandas, buscava
+                      uma sonoridade que ninguém parecia compreender. Ele viveu
+                      anos em estúdios caseiros, refinando solos que pareciam
+                      entre gritos indecifráveis a harmônicos. Sua influência?
+                      Ele sempre responde AC/DC, mais nada. Antes da banda,
+                      Marcus era o "mulherengo guitarrista de aluguel", que
+                      nunca se sentia em casa em projeto nenhum, sempre buscando
+                      algo que chamava de "mais visceral". Break o conhecia por
+                      morarem próximos e foi assim que ele foi parar na banda.
+                      Atualmente, ele que é o responsável pelos arpejos e solos
+                      que dão a "cara" única ao som do grupo.
+                    </p>
+                  </details>
+                </div>
+              </article>
+              <article class="member-card metal-panel">
+                <div class="member-photo">
+                  <img
+                    alt="Thomaz"
+                    draggable="false"
+                    loading="lazy"
+                    src="assets/members/thomaz.webp"
+                  />
+                </div>
+                <div>
+                  <h3>Thomaz</h3>
+                  <p class="role">Guitarra base e backvocal</p>
+                  <details>
+                    <summary>BIOGRAFIA</summary>
+                    <p>
+                      ​O mais jovem do grupo, Thomaz sempre foi o típico "garoto
+                      de condomínio" (mas não curte que digam isso a ele),
+                      crescendo em uma Goiânia já conectada e acelerada.
+                      Enquanto os outros construíam suas bases, ele absorvia a
+                      estética urbana das ruas, com seu skate e boa parte da
+                      cultura DIY (Do It Yourself). Ele começou tocando em
+                      garagens com amigos, sempre com uma postura contestadora e
+                      uma energia que sobrava. Charlie Brown Jr é sua principal
+                      influência, apesar de ser apaixonado por alguns riffs
+                      setentistas. Nunca foi "virtuoso" com suas cordas, sempre
+                      preferiu as distorções de seus pedais. Sua trajetória é
+                      com passagem por algumas bandas de escola, o típico "cover
+                      pra galera". Ao entrar para a banda, ele trouxe o frescor
+                      necessário para que o som não ficasse preso ao passado.
+                      Atualmente, ele é o integrante que mais tenta trazer um
+                      timbre rítmico mais urbano para a banda. Extra de
+                      bastidor: Bobby adora tirar sarro dele o chamando de
+                      "garotinho leite com pera", e isso as vezes leva a
+                      desentendimentos.
+                    </p>
+                  </details>
+                </div>
+              </article>
+              <article class="member-card metal-panel">
+                <div class="member-photo">
+                  <img
+                    alt="Santiago"
+                    draggable="false"
+                    loading="lazy"
+                    src="assets/members/santiago.webp"
+                  />
+                </div>
+                <div>
+                  <h3>Santiago</h3>
+                  <p class="role">Vocal, DJ e sonoplasta</p>
+                  <details>
+                    <summary>BIOGRAFIA</summary>
+                    <p>
+                      Santiago começou a vida, do outro lado do oceano, a
+                      milhares de quilômetros de Goiânia, nas ruas de Kinshasa,
+                      no Congo. Chegou ao Brasil ainda criança, trazendo na
+                      bagagem uma percepção sonora que misturava ritmos
+                      ancestrais com a necessidade de adaptação. Teve uma
+                      infância difícil, morando na periferia, o que o fez gostar
+                      de rap a gritos do nu-metal. Cresceu mergulhado na
+                      sonoplastia, aprendendo a manipular o áudio para dar voz a
+                      ideias alheias e como dj de grupos de rap. Foi nos
+                      bastidores dos palcos que ele criou um vínculo óbvio com
+                      "o zelador" (Break), o que futuramente mudaria tudo. De um
+                      imigrante que buscava seu lugar, ajudar sua mãe em casa a
+                      DJ, Santiago tornou-se meio que "o alquimista da banda".
+                      Hoje, ele funde o digital, com seus scratches na sua
+                      gemini cdm-500 (seu orgulho) com influências desde Frank
+                      Delgado (Deftones) até o KL Jay (Racionais Mcs) com o
+                      vocal, transformando a dor de sua jornada em uma
+                      performance que é, ao mesmo tempo, técnica e profundamente
+                      espiritual. Nota: pode não parecer, mas é o mais "brigão"
+                      da banda.
+                    </p>
+                  </details>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section
+          aria-labelledby="fotos-title"
+          class="route route-panel"
+          data-route="fotos"
+          hidden=""
+          id="fotos"
+        >
+          <div aria-hidden="true" class="route-world photos-world"></div>
+          <div class="route-shell photos-shell photos-final-shell">
+            <a
+              class="page-brand"
+              data-route-link="home"
+              href="#home"
+              aria-label="Bobby Dias &amp; The Anti-State Guys — Home"
+              ><img
+                src="assets/canon/wordmark.webp"
+                width="651"
+                height="166"
+                alt="Bobby Dias &amp; The Anti-State Guys"
+                draggable="false"
+            /></a>
+            <h2 id="fotos-title">FOTOS</h2>
+            <div class="photo-wall-final photo-wall-v2">
+              <figure class="photo-card metal-panel">
+                <img
+                  alt="A banda"
+                  draggable="false"
+                  loading="lazy"
+                  src="assets/band-seated.webp"
+                />
+                <figcaption class="plate">A banda</figcaption>
+              </figure>
+              <figure class="photo-card metal-panel">
+                <img
+                  alt="Ensaio"
+                  draggable="false"
+                  loading="lazy"
+                  src="assets/studio.webp"
+                />
+                <figcaption class="plate">Ensaio</figcaption>
+              </figure>
+              <figure class="photo-card metal-panel">
+                <img
+                  alt="Break"
+                  draggable="false"
+                  loading="lazy"
+                  src="assets/members/break.webp"
+                />
+                <figcaption class="plate">Break</figcaption>
+              </figure>
+              <figure class="photo-card metal-panel">
+                <img
+                  alt="Santiago"
+                  draggable="false"
+                  loading="lazy"
+                  src="assets/members/santiago.webp"
+                />
+                <figcaption class="plate">Santiago</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+        <section
+          aria-labelledby="shows-title"
+          class="route route-panel"
+          data-route="shows"
+          hidden=""
+          id="shows"
+        >
+          <div aria-hidden="true" class="route-world shows-world"></div>
+          <div class="route-shell shows-shell">
+            <a
+              class="page-brand"
+              data-route-link="home"
+              href="#home"
+              aria-label="Bobby Dias &amp; The Anti-State Guys — Home"
+              ><img
+                src="assets/canon/wordmark.webp"
+                width="651"
+                height="166"
+                alt="Bobby Dias &amp; The Anti-State Guys"
+                draggable="false"
+            /></a>
+            <h2 class="red-plate" id="shows-title">SHOWS</h2>
+            <div class="shows-notice metal-panel">
+              <h3>DATAS EM ATUALIZAÇÃO</h3>
+              <p>Acompanhe as novidades nos canais oficiais.</p>
+              <div class="notice-socials">
+                <a
+                  href="https://www.instagram.com/theantistateguys/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  >INSTAGRAM ↗</a
+                ><a
+                  href="https://www.youtube.com/@TheAntiStateGuys"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  >YOUTUBE ↗</a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          aria-labelledby="contato-title"
+          class="route route-panel"
+          data-route="contato"
+          hidden=""
+          id="contato"
+        >
+          <div aria-hidden="true" class="route-world contact-world"></div>
+          <div class="route-shell contact-shell contact-final-shell">
+            <a
+              class="page-brand"
+              data-route-link="home"
+              href="#home"
+              aria-label="Bobby Dias &amp; The Anti-State Guys — Home"
+              ><img
+                src="assets/canon/wordmark.webp"
+                width="651"
+                height="166"
+                alt="Bobby Dias &amp; The Anti-State Guys"
+                draggable="false"
+            /></a>
+            <h2 id="contato-title">CONTATO</h2>
+            <p class="contact-subtitle red-plate">FALE COM A BANDA</p>
+            <div class="contact-final-layout">
+              <aside
+                aria-labelledby="contact-directory-title"
+                class="contact-directory metal-panel"
+              >
+                <h3 id="contact-directory-title">CONTATOS</h3>
+                <div class="contact-signs">
+                  <a href="mailto:theantistateguys@gmail.com"
+                    >theantistateguys@gmail.com</a
+                  ><a
+                    href="https://www.instagram.com/theantistateguys/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    >INSTAGRAM ↗</a
+                  ><a
+                    href="https://www.youtube.com/@TheAntiStateGuys"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    >YOUTUBE ↗</a
+                  >
+                </div>
+              </aside>
+              <section
+                aria-labelledby="contact-form-title"
+                class="contact-form-panel metal-panel"
+              >
+                <h3 id="contact-form-title">ENVIE UMA MENSAGEM</h3>
+                <form class="contact-form" id="contact-form">
+                  <label class="contact-field"
+                    ><span>Nome</span
+                    ><input
+                      autocomplete="name"
+                      maxlength="120"
+                      name="name"
+                      placeholder="Seu nome"
+                      required=""
+                      type="text" /></label
+                  ><label class="contact-field"
+                    ><span>E-mail</span
+                    ><input
+                      autocomplete="email"
+                      maxlength="180"
+                      name="email"
+                      placeholder="Seu e-mail"
+                      required=""
+                      type="email" /></label
+                  ><label class="contact-field"
+                    ><span>Assunto</span
+                    ><input maxlength="180" name="subject" type="text" /></label
+                  ><label class="contact-field"
+                    ><span>Mensagem</span
+                    ><textarea
+                      maxlength="4000"
+                      name="message"
+                      placeholder="Deixe sua mensagem aqui..."
+                      required=""
+                    ></textarea></label
+                  ><button class="contact-submit" type="submit">ENVIAR</button>
+                  <p class="contact-form-note">
+                    Ao enviar, seu aplicativo de e-mail será aberto com a
+                    mensagem pronta para a banda.
+                  </p>
+                  <p
+                    aria-live="polite"
+                    class="contact-form-status"
+                    id="contact-form-status"
+                    role="status"
+                  ></p>
+                </form>
+              </section>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <span>BOBBY DIAS &amp; THE ANTI-STATE GUYS©</span
+        ><span>B.D MEDIA PRODUCTIONS©</span
+        ><span>TODOS OS DIREITOS RESERVADOS.</span>
+      </footer>
+    </div>
+    <dialog
+      aria-labelledby="music-dialog-title"
+      class="music-dialog"
+      id="music-dialog"
+    >
+      <div class="dialog-shell">
+        <header>
+          <div>
+            <span>BOOMBOX / BIBLIOTECA</span>
+            <h2 id="music-dialog-title">FAIXAS</h2>
+          </div>
+          <button aria-label="Fechar" id="qa-dialog-close" type="button">
+            ×
+          </button>
+        </header>
+        <div class="music-list" id="music-list"></div>
+      </div>
+    </dialog>
+    <div aria-live="polite" class="toast" id="toast" role="status"></div>
+    <audio controlslist="nodownload" id="audio" preload="none"></audio
+    ><audio
+      controlslist="nodownload"
+      id="cd-close-sfx"
+      preload="auto"
+      src="assets/cd-drawer-close.mp3"
+    ></audio>
+    <script defer="" src="script.js?rev=20260916-1"></script>
+    <script defer="True" src="approved-pages.js?rev=20260916-1"></script>
+  </body>
 </html>

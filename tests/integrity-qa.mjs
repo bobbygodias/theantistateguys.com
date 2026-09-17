@@ -29,7 +29,7 @@ for(const match of html.matchAll(attrRe)) await assertFile(match[1],htmlPath);
 
 // Core styles + the approved final cascade must be present exactly once.
 const styles=[...html.matchAll(/<link\b[^>]*>/gi)].filter(m=>/rel=["']stylesheet["']/i.test(m[0])).map(m=>m[0].match(/href=["']([^"']+)["']/i)?.[1]).filter(Boolean);
-const expectedStyles=['qa-site-v3.css','home-final-v1.css','approved-pages.css'];
+const expectedStyles=['canon.css'];
 for(const css of expectedStyles){
   const count=styles.filter(x=>cleanRef(x)===css).length;
   if(count!==1) issue(`stylesheet-count:${css}:${count}`);
@@ -43,7 +43,7 @@ for(const js of ['script.js']){
 }
 
 if (html.includes('video-board')) issue('intro-placeholder-returned');
-if (!html.includes('assets/wordmark-bobby-original.webp')) issue('original-wordmark-missing');
+if (!html.includes('assets/canon/wordmark.webp')) issue('original-wordmark-missing');
 
 // Contact contract approved with Bobby: one official email, no WhatsApp/personal email, final form present.
 if(!html.includes('theantistateguys@gmail.com')) issue('contact-official-email-missing');
@@ -127,7 +127,7 @@ if(music){
 // Critical V3 scripts should reference expected local layers and not inject compat CSS dynamically.
 const appJS=await fs.readFile(path.join(root,'script.js'),'utf8');
 const qaJS=await fs.readFile(path.join(root,'qa-site-v3.js'),'utf8');
-if(!appJS.includes("fetch('data/music.json'")) issue('script-music-catalog-ref-missing');
+if(!/fetch\(["']data\/music\.json["']/.test(appJS)) issue('script-music-catalog-ref-missing');
 if(!appJS.includes('home-final-v1.js')) issue('home-final-script-ref-missing');
 if(!appJS.includes('contact-final-v1.js')) issue('contact-final-script-ref-missing');
 await assertFile('home-final-v1.js','script.js');
