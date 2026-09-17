@@ -51,12 +51,25 @@ for(const detail of await page.locator('.member-card summary').all()){
  await detail.click();assert.equal(await detail.evaluate(s=>s.parentElement.open),true);
  await detail.click();
 }
+let contactPosted=false;
+await page.route('https://api.web3forms.com/submit',async route=>{
+ contactPosted=true;
+ await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true,message:'OK'})});
+});
 await page.goto('http://127.0.0.1:4173/#contato');
 assert.equal(await page.locator('#contact-form').evaluate(f=>f.checkValidity()),false);
 assert.ok(await page.locator('a[href="mailto:theantistateguys@gmail.com"]').count());
-assert.match(await page.locator('.contact-form-note').innerText(),/aplicativo de e-mail/);
+assert.match(await page.locator('.contact-form-note').innerText(),/enviada diretamente/);
+await page.locator('#contact-form input[name="name"]').fill('Teste QA');
+await page.locator('#contact-form input[name="email"]').fill('qa@example.com');
+await page.locator('#contact-form input[name="subject"]').fill('Teste de formulário');
+await page.locator('#contact-form textarea[name="message"]').fill('Validação local do envio direto.');
+await page.locator('#contact-form button[type="submit"]').click();
+await page.waitForFunction(()=>document.getElementById('contact-form-status').textContent.includes('Mensagem enviada com sucesso'));
+assert.equal(contactPosted,true);
+assert.match(page.url(),/#contato$/);
 assert.deepEqual(errors,[]);
-const result={passed:true,media,nativeGeometry,checks:['only official slogan','no provisional notice','CD sequence and native transport hotspots','no auxiliary EJECT/library chrome','official YouTube access in header','history 2024','six actual members and biographies','contact validation and official email'],errors};
+const result={passed:true,media,nativeGeometry,checks:['only official slogan','no provisional notice','CD sequence and native transport hotspots','no auxiliary EJECT/library chrome','official YouTube access in header','history 2024','six actual members and biographies','contact direct Web3Forms submission and official email'],errors};
 await fs.writeFile('test-artifacts/canon-contract.json',JSON.stringify(result,null,2));
 console.log(JSON.stringify(result,null,2));
 await browser.close();
