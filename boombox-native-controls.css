@@ -1,0 +1,146 @@
+/*
+ * TASG boombox native interaction layer
+ * The approved 672x464 boombox artwork is never redrawn here.
+ * This file only maps transparent HTML controls to physical controls already
+ * visible in the boombox asset, so artwork and interaction scale as one object.
+ */
+
+.music-machine {
+  aspect-ratio: 672 / 464 !important;
+  height: auto !important;
+  padding-bottom: 0 !important;
+  overflow: visible;
+}
+
+.boombox-art {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin-left: 0 !important;
+  object-fit: contain !important;
+}
+
+/* The old auxiliary UI does not belong to the physical radio. */
+.library-button,
+.eject-button {
+  display: none !important;
+}
+
+/* Remove the mobile-only metal shelf that previously carried fake controls. */
+.music-machine::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Return CD/display layers to the same 672x464 coordinate system as the radio. */
+.cd-tray {
+  left: 40.77% !important;
+  top: 55.6% !important;
+  width: 40.33% !important;
+}
+
+.cd-disc {
+  left: 45% !important;
+  top: 57.3% !important;
+  width: 29% !important;
+  height: 18% !important;
+}
+
+.player-display {
+  left: 40.8% !important;
+  top: 37% !important;
+  width: 30% !important;
+  height: 10% !important;
+  transform: rotate(-3deg) !important;
+}
+
+/*
+ * One internal coordinate system: the button layer covers exactly the same
+ * box as boombox.webp. Individual buttons are transparent hotspots over the
+ * existing physical transport keys in the artwork.
+ */
+.player-controls {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  transform: none !important;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.player-controls .boombox-hotspot {
+  position: absolute;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 2px;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: transparent !important;
+  text-shadow: none !important;
+  font-size: 0 !important;
+  line-height: 0;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(200, 120, 53, 0.22);
+}
+
+/* Physical key row measured directly against the native 672x464 artwork. */
+#stop-track {
+  left: 42.4% !important;
+  top: 81.8% !important;
+  width: 5.5% !important;
+  height: 9.5% !important;
+}
+
+#prev-track {
+  left: 48.2% !important;
+  top: 81.8% !important;
+  width: 5.2% !important;
+  height: 9.5% !important;
+}
+
+#play-pause {
+  left: 53.6% !important;
+  top: 81.8% !important;
+  width: 5.2% !important;
+  height: 9.5% !important;
+}
+
+#next-track {
+  left: 59.0% !important;
+  top: 81.8% !important;
+  width: 5.4% !important;
+  height: 9.5% !important;
+}
+
+/* Keyboard focus remains visible without creating permanent chrome. */
+.player-controls .boombox-hotspot:focus-visible {
+  outline: 2px solid #ffd895 !important;
+  outline-offset: 1px;
+  background: rgba(255, 216, 149, 0.12) !important;
+}
+
+/* Development-only calibration mode. Add debug-hotspots in DevTools. */
+.music-machine.debug-hotspots .boombox-hotspot {
+  background: rgba(0, 255, 0, 0.40) !important;
+  outline: 1px solid lime !important;
+}
+
+.music-machine.debug-hotspots #insert-cd {
+  background: rgba(0, 170, 255, 0.32) !important;
+  outline: 1px solid #00aaff !important;
+}
+
+@media (max-width: 959px) {
+  .home-media {
+    width: min(100%, 672px);
+  }
+}
