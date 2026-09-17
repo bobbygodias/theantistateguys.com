@@ -42,16 +42,18 @@ for(const geometry of cases){
   await page.goto(`${baseURL}?interaction=1#home`,{waitUntil:'networkidle'});
   await page.waitForSelector('[data-route].is-active');
   await page.waitForFunction(()=>document.querySelectorAll('.track-row').length>=2);
+  await page.waitForFunction(()=>document.querySelectorAll('.boombox-hotspot').length===4);
 
   const issues=[];
 
-  // Estado inicial: Home ativa, catálogo carregado, mas transporte desligado até inserir o CD.
+  // Estado inicial: Home ativa, catálogo carregado, transporte desligado até inserir o CD.
   assert(await page.locator('.site-nav [data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
   assert(await page.locator('#play-pause').getAttribute('aria-pressed')==='false','play-sem-aria-pressed-false',issues);
   assert(await page.locator('#play-pause').isDisabled(),'play-inicial-deveria-estar-desligado',issues);
-  assert(await page.locator('#open-library').isDisabled(),'biblioteca-inicial-deveria-estar-desligada',issues);
   assert((await page.locator('#track-title').textContent()||'').trim().length>0,'titulo-faixa-vazio',issues);
   assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='open','cd-inicial-nao-aberto',issues);
+  assert(!(await page.locator('#open-library').isVisible()),'biblioteca-auxiliar-visivel',issues);
+  assert(!(await page.locator('#eject-cd').isVisible()),'eject-auxiliar-visivel',issues);
 
   // Navegação via teclado: no mobile, abre o menu real antes de focar cada placa.
   for(const route of routes.filter(r=>r!=='home')){
@@ -100,54 +102,44 @@ for(const geometry of cases){
   const homeFocused=await page.evaluate(()=>document.activeElement===document.getElementById('home-title'));
   assert(homeFocused,'home-titulo-sem-foco-no-retorno',issues);
 
-  // Fluxo físico da boombox: tocar no disco fecha a gaveta e só então acorda os controles.
+  // Fluxo físico da boombox: tocar no disco fecha a gaveta e acorda apenas os quatro botões nativos.
   await page.locator('#insert-cd').click();
   assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='closing','cd-nao-entrou-em-closing',issues);
   await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='ready',{timeout:3000});
-  assert(!(await page.locator('#play-pause').isDisabled()),'play-nao-ativou-apos-cd',issues);
-  assert(!(await page.locator('#open-library').isDisabled()),'biblioteca-nao-ativou-apos-cd',issues);
-  assert(!(await page.locator('#eject-cd').isDisabled()),'eject-nao-ativou-apos-cd',issues);
+  for(const id of ['stop-track','prev-track','play-pause','next-track']){
+    assert(!(await page.locator(`#${id}`).isDisabled()),`${id}-nao-ativou-apos-cd`,issues);
+  }
 
-  // Controls must be physically reachable, not merely present in the DOM.
-  const overlaps=await page.evaluate(()=>{
-    const ids=['stop-track','prev-track','play-pause','next-track','open-library','eject-cd'];
+  // Native hotspots must stay entirely inside the radio and never overlap each other.
+  const geometryState=await page.evaluate(()=>{
+    const radio=document.querySelector('.boombox-art').getBoundingClientRect();
+    const ids=['stop-track','prev-track','play-pause','next-track'];
     const boxes=ids.map(id=>({id,r:document.getElementById(id).getBoundingClientRect()}));
-    return boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>Math.min(a.r.right,b.r.right)-Math.max(a.r.left,b.r.left)>2 && Math.min(a.r.bottom,b.r.bottom)-Math.max(a.r.top,b.r.top)>2).map(b=>a.id+':'+b.id));
+    const inside=boxes.every(({r})=>r.left>=radio.left-2&&r.right<=radio.right+2&&r.top>=radio.top-2&&r.bottom<=radio.bottom+2);
+    const overlaps=boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>Math.min(a.r.right,b.r.right)-Math.max(a.r.left,b.r.left)>1&&Math.min(a.r.bottom,b.r.bottom)-Math.max(a.r.top,b.r.top)>1).map(b=>a.id+':'+b.id));
+    return {inside,overlaps};
   });
-  assert(overlaps.length===0,'controles-sobrepostos:'+overlaps.join(','),issues);
+  assert(geometryState.inside,'hotspots-fora-da-boombox',issues);
+  assert(geometryState.overlaps.length===0,'hotspots-sobrepostos:'+geometryState.overlaps.join(','),issues);
 
-  // Biblioteca: abrir, conferir conteúdo e fechar por Escape.
-  await page.locator('#open-library').click();
-  assert(await page.locator('#music-dialog').evaluate(el=>el.open),'dialog-nao-abriu',issues);
-  assert(await page.locator('.track-row').count()>=2,'biblioteca-sem-faixas',issues);
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(30);
-  assert(!(await page.locator('#music-dialog').evaluate(el=>el.open)),'escape-nao-fechou-dialog',issues);
-
-  // Abrir novamente e selecionar a segunda faixa: seleção deve fechar dialog e atualizar UI/aria-current.
-  await page.locator('#open-library').click();
-  const rows=page.locator('.track-row');
-  const secondName=(await rows.nth(1).locator('.track-name').textContent()||'').trim();
-  await rows.nth(1).click();
+  // Stop is the user's way out: it stops audio without reopening/redrawing the CD transport.
+  await page.locator('#play-pause').click();
   await page.waitForTimeout(80);
-  assert(!(await page.locator('#music-dialog').evaluate(el=>el.open)),'selecao-nao-fechou-dialog',issues);
-  const selectedTitle=(await page.locator('#track-title').textContent()||'').trim();
-  assert(selectedTitle===secondName,`titulo-selecao-diverge:${selectedTitle}`,issues);
-  assert(await rows.nth(1).getAttribute('aria-current')==='true','faixa-atual-sem-aria-current',issues);
+  await page.locator('#stop-track').click();
+  assert(await page.locator('#audio').evaluate(a=>a.paused),'stop-nao-pausou-audio',issues);
+  assert(await page.locator('#audio').evaluate(a=>a.currentTime)===0,'stop-nao-zerou-audio',issues);
+  assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='ready','stop-alterou-estado-do-cd',issues);
 
-  // Botão fechar explícito também deve funcionar.
-  await page.locator('#open-library').click();
-  await page.locator('#qa-dialog-close').click();
+  // Previous/next remain reachable through the physical key row.
+  const first=(await page.locator('#track-title').textContent()||'').trim();
+  await page.locator('#next-track').click();
   await page.waitForTimeout(30);
-  assert(!(await page.locator('#music-dialog').evaluate(el=>el.open)),'botao-fechar-nao-fechou-dialog',issues);
+  const second=(await page.locator('#track-title').textContent()||'').trim();
+  assert(second!==first,'next-nao-trocou-faixa',issues);
+  await page.locator('#prev-track').click();
+  await page.waitForTimeout(30);
+  assert((await page.locator('#track-title').textContent()||'').trim()===first,'prev-nao-retornou-faixa',issues);
 
-  // Eject devolve a boombox ao estado aberto e desliga o transporte novamente.
-  await page.locator('#eject-cd').click();
-  await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='open',{timeout:2000});
-  assert(await page.locator('#play-pause').isDisabled(),'play-nao-desligou-apos-eject',issues);
-  assert(await page.locator('#open-library').isDisabled(),'biblioteca-nao-desligou-apos-eject',issues);
-
-  // Nenhum erro JS não tratado no fluxo.
   if(pageErrors.length) issues.push(`pageerror:${pageErrors.join('|')}`);
 
   const pass=issues.length===0;
