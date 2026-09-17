@@ -3,9 +3,11 @@ name: responsive-qa-v3
 on:
   workflow_dispatch:
   push:
-    branches: [main, home-final-direction-v1]
+    branches: [main, home-final-direction-v1, canon-20260916]
     paths:
       - 'index.html'
+      - 'canon.css'
+      - 'tests/canon-contract.mjs'
       - 'approved-pages.css'
       - 'approved-pages.js'
       - 'qa-site-v3*.css'
@@ -62,6 +64,9 @@ jobs:
 
       - name: Run interaction and focus QA
         run: node tests/interaction-qa.mjs
+
+      - name: Check canonical content and real playback
+        run: node tests/canon-contract.mjs
 
       - name: Measure loading and route cost
         run: node tests/performance-qa.mjs
