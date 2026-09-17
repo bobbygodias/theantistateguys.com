@@ -3,7 +3,7 @@ name: responsive-qa-v3
 on:
   workflow_dispatch:
   push:
-    branches: [main, home-final-direction-v1, canon-20260916]
+    branches: [main, home-final-direction-v1, canon-20260916, fix/boombox-closed-tray-seam]
     paths:
       - 'index.html'
       - 'canon.css'
