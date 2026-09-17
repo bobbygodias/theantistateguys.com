@@ -1,0 +1,158 @@
+/*
+ * Bobby Dias & The Anti-State Guys — boombox native controls
+ *
+ * Visual rule: NEVER redraw the approved boombox. This file only turns
+ * physical controls already present in the approved 672x464 artwork into
+ * interactive regions that scale with the object itself.
+ */
+
+.music-machine.boombox-native-controls {
+  aspect-ratio: 672 / 464 !important;
+  height: auto !important;
+  padding-bottom: 0 !important;
+}
+
+.music-machine.boombox-native-controls::after {
+  display: none !important;
+  content: none !important;
+}
+
+.music-machine.boombox-native-controls .boombox-art {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  object-fit: contain !important;
+}
+
+/* Every visual state uses the same native 672x464 coordinate space. */
+.music-machine.boombox-native-controls .cd-tray {
+  left: 40.77% !important;
+  top: 55.6% !important;
+  width: 40.33% !important;
+}
+
+.music-machine.boombox-native-controls .cd-disc {
+  left: 45% !important;
+  top: 57.3% !important;
+  width: 29% !important;
+  height: 18% !important;
+}
+
+.music-machine.boombox-native-controls .player-display {
+  left: 40.8% !important;
+  top: 37% !important;
+  width: 30% !important;
+  height: 10% !important;
+}
+
+/* Legacy visual controls remain in the DOM only to avoid risky markup churn. */
+.music-machine.boombox-native-controls .library-button,
+.music-machine.boombox-native-controls .eject-button {
+  display: none !important;
+}
+
+/*
+ * The transport is now the transport panel already photographed on the radio.
+ * The wrapper occupies the boombox itself; each button is an invisible hotspot.
+ */
+.music-machine.boombox-native-controls .player-controls {
+  position: absolute !important;
+  inset: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  transform: none !important;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.music-machine.boombox-native-controls .player-controls button {
+  position: absolute !important;
+  top: 82.2% !important;
+  width: 6% !important;
+  height: 10.4% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: transparent !important;
+  text-shadow: none !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(200, 120, 53, 0.16);
+}
+
+/* Calibrated against the approved 672x464 artwork, not against a viewport. */
+.music-machine.boombox-native-controls #prev-track {
+  left: 41.8% !important;
+}
+
+.music-machine.boombox-native-controls #stop-track {
+  left: 50.6% !important;
+}
+
+.music-machine.boombox-native-controls #play-pause {
+  left: 58.1% !important;
+}
+
+.music-machine.boombox-native-controls #next-track {
+  left: 65.1% !important;
+}
+
+.music-machine.boombox-native-controls .player-controls button:disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.music-machine.boombox-native-controls .player-controls button:focus-visible {
+  outline: 2px solid #ffd895 !important;
+  outline-offset: 1px !important;
+  background: rgba(255, 216, 149, 0.08) !important;
+}
+
+/*
+ * Coarse pointers get a larger invisible target. The four regions remain
+ * non-overlapping and still belong to the same boombox coordinate system.
+ */
+@media (pointer: coarse), (max-width: 959px) {
+  .music-machine.boombox-native-controls .player-controls button {
+    top: 80.5% !important;
+    width: 8.5% !important;
+    height: 14% !important;
+  }
+
+  .music-machine.boombox-native-controls #prev-track {
+    left: 40.5% !important;
+  }
+
+  .music-machine.boombox-native-controls #stop-track {
+    left: 49% !important;
+  }
+
+  .music-machine.boombox-native-controls #play-pause {
+    left: 57.5% !important;
+  }
+
+  .music-machine.boombox-native-controls #next-track {
+    left: 66% !important;
+  }
+}
+
+/* F12 calibration mode requested by Bobby: add .debug-hotspots to the machine. */
+.music-machine.boombox-native-controls.debug-hotspots .player-controls button {
+  background: rgba(0, 255, 0, 0.4) !important;
+  outline: 1px solid #00ff00 !important;
+  outline-offset: 0 !important;
+}
