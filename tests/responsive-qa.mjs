@@ -19,10 +19,12 @@ const geometries = [
 // Intrinsic positions inside the approved 672×464 boombox. These values belong
 // to the object, never to a viewport. The test intentionally fails if a media
 // query or legacy responsive rule moves an internal part independently.
+// The invisible CD hit target may grow vertically to preserve the 44px minimum
+// touch target, so its height is intentionally not treated as visual geometry.
 const radioCoordinates = {
   display:{left:.408,top:.37,width:.30,height:.10},
   tray:{left:.4077,top:.556,width:.4033},
-  disc:{left:.45,top:.573,width:.29,height:.18},
+  disc:{left:.45,top:.573,width:.29},
   stop:{left:.424,top:.818,width:.055,height:.095},
   prev:{left:.482,top:.818,width:.052,height:.095},
   play:{left:.536,top:.818,width:.052,height:.095},
