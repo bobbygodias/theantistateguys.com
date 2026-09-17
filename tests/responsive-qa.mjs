@@ -59,8 +59,15 @@ for (const geometry of geometries){
       })) : 0;
       const bounds = {left:0,right:document.documentElement.clientWidth};
       const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
+      const viewportRect = el => {
+        const clipAncestor = el.closest('.member-photo,.photo-card,.history-rehearsal');
+        if (clipAncestor && clipAncestor !== el && getComputedStyle(clipAncestor).overflow === 'hidden') {
+          return clipAncestor.getBoundingClientRect();
+        }
+        return el.getBoundingClientRect();
+      };
       const clippedElements = candidates.filter(el => {
-        const r = el.getBoundingClientRect();
+        const r = viewportRect(el);
         return r.left < bounds.left - 2 || r.right > bounds.right + 2;
       });
       const radio = document.querySelector('.boombox-art');
