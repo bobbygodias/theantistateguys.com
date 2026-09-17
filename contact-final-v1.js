@@ -3,28 +3,55 @@
   const status = document.getElementById('contact-form-status');
   if (!form) return;
 
-  form.addEventListener('submit', event => {
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (!submitBtn) return;
+
+  const WEB3FORMS_ACCESS_KEY = 'b162f3c3-d2f9-41c3-843e-1bd793be5822';
+
+  form.addEventListener('submit', async event => {
     event.preventDefault();
 
     if (!form.reportValidity()) return;
 
-    const data = new FormData(form);
-    const name = String(data.get('name') || '').trim();
-    const email = String(data.get('email') || '').trim();
-    const message = String(data.get('message') || '').trim();
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'ENVIANDO...';
+    submitBtn.disabled = true;
+    if (status) status.textContent = 'Enviando sua mensagem para a banda…';
 
-    const subject = String(data.get('subject') || '').trim() || `Contato pelo site — ${name || 'Bobby Dias & The Anti-State Guys'}`;
-    const body = [
-      `Nome: ${name}`,
-      `E-mail: ${email}`,
-      '',
-      'Mensagem:',
-      message
-    ].join('\n');
+    try {
+      const formData = new FormData(form);
+      formData.set('access_key', WEB3FORMS_ACCESS_KEY);
 
-    const mailto = `mailto:theantistateguys@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const name = String(formData.get('name') || '').trim();
+      const subject = String(formData.get('subject') || '').trim();
+      if (!subject) {
+        formData.set(
+          'subject',
+          `Contato pelo site — ${name || 'Bobby Dias & The Anti-State Guys'}`
+        );
+      }
 
-    if (status) status.textContent = 'Abrindo seu aplicativo de e-mail…';
-    window.location.href = mailto;
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.success === false) {
+        throw new Error(data.message || 'Falha no envio da mensagem.');
+      }
+
+      if (status) status.textContent = 'Mensagem enviada com sucesso para a banda.';
+      form.reset();
+    } catch (error) {
+      console.error('Falha ao enviar formulário de contato:', error);
+      if (status) {
+        status.textContent = 'Não foi possível enviar agora. Tente novamente em instantes.';
+      }
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
   });
 })();
