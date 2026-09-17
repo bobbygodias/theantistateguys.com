@@ -11,6 +11,7 @@ assert.equal(await page.locator('.site-production-notice').count(),0);
 assert.equal(await page.locator('.band-slogan').innerText(),'CONEXÃO CLANDESTINA — CONTEÚDO EXPLÍCITO');
 assert.equal(await page.locator('#open-library').isVisible(),false);
 assert.equal(await page.locator('#eject-cd').isVisible(),false);
+assert.ok(await page.locator('.header-socials a[href="https://www.youtube.com/@TheAntiStateGuys"]').count()===1);
 await page.locator('#insert-cd').click();
 await page.waitForFunction(()=>document.querySelector('.music-machine').dataset.cdState==='ready',null,{timeout:15000});
 await page.locator('#play-pause').click();
@@ -28,7 +29,6 @@ try{
  await page.locator('#prev-track').click();
  assert.equal(await page.locator('#track-title').innerText(),'Renascer');
 }catch(error){media={verified:false,reason:error.message,state:await page.locator('#audio').evaluate(a=>({src:a.currentSrc,readyState:a.readyState,networkState:a.networkState,error:a.error?.message||null}))};}
-assert.ok(await page.locator('.official-videos a').count()>=3);
 const nativeGeometry=await page.evaluate(()=>{
  const radio=document.querySelector('.boombox-art').getBoundingClientRect();
  const ids=['stop-track','prev-track','play-pause','next-track'];
@@ -56,7 +56,7 @@ assert.equal(await page.locator('#contact-form').evaluate(f=>f.checkValidity()),
 assert.ok(await page.locator('a[href="mailto:theantistateguys@gmail.com"]').count());
 assert.match(await page.locator('.contact-form-note').innerText(),/aplicativo de e-mail/);
 assert.deepEqual(errors,[]);
-const result={passed:true,media,nativeGeometry,checks:['only official slogan','no provisional notice','CD sequence and native transport hotspots','no auxiliary EJECT/library chrome','official video feed present','history 2024','six actual members and biographies','contact validation and official email'],errors};
+const result={passed:true,media,nativeGeometry,checks:['only official slogan','no provisional notice','CD sequence and native transport hotspots','no auxiliary EJECT/library chrome','official YouTube access in header','history 2024','six actual members and biographies','contact validation and official email'],errors};
 await fs.writeFile('test-artifacts/canon-contract.json',JSON.stringify(result,null,2));
 console.log(JSON.stringify(result,null,2));
 await browser.close();
