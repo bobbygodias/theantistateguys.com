@@ -1,7 +1,7 @@
 # TASG SITE — Pendências visuais da Home
 
 Data: 17/09/2026
-Status: diagnóstico alinhado com Bobby; não corrigir por suposição visual ou por pixels fixos de um aparelho.
+Status: diagnóstico alinhado com Bobby; correção da boombox em implementação isolada na branch `boombox-native-controls`.
 
 ## Regra principal
 
@@ -21,7 +21,7 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
 
 3. **Boombox: aparência dos controles**
    - Os botões criados em CSS/UI têm coloração cinza muito diferente da boombox e parecem elementos externos sobrepostos.
-   - O objetivo é que os controles necessários pareçam parte física da própria boombox, não uma interface moderna colocada por cima.
+   - O objetivo é que os controles necessários sejam os próprios botões físicos já desenhados na boombox, não uma interface moderna colocada por cima.
 
 4. **Não concluir por screenshots isolados**
    - Verificar comportamento real, hitboxes e estados do player em diferentes proporções.
@@ -36,15 +36,54 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
 2. **Boombox — problema principal**
    - A boombox em si está visualmente muito boa e deve ser preservada.
    - Os botões `CD / FAIXAS` e `EJECT` não são necessários no fluxo atual e não fazem sentido como controles permanentes visíveis.
-   - Depois de inserir o CD, parar a reprodução já pode ser feito com `STOP`; portanto esses dois controles podem ser removidos da interface visível.
+   - Depois de inserir o CD, parar a reprodução já pode ser feito com `STOP`; portanto esses dois controles devem sair da interface visível.
    - Os botões de transporte atuais não estão implementados como parte visual da boombox; parecem uma camada de UI posicionada sobre ela.
    - A cor dos botões difere demais do rádio: o cinza chama atenção e denuncia a sobreposição.
-   - A solução desejada é integrar os controles necessários visualmente à própria boombox e manter suas áreas clicáveis vinculadas à geometria dela em qualquer dispositivo.
+   - A solução desejada é integrar os controles necessários à própria geometria física da boombox.
 
 3. **Faixa inferior / rodapé**
    - A faixa inferior está destacada demais.
    - A intenção original era uma faixa preta, pequena e discreta, como nota de rodapé do tipo “site construído com...”.
    - Também é um detalhe tolerável se a correção trouxer risco ou complexidade desnecessária.
+
+## Arquitetura alinhada para a boombox
+
+Decisão conjunta Bobby + Andrew em 17/09/2026:
+
+- **ZERO redesenho da boombox aprovada.** O asset visual `assets/canon/boombox.webp` permanece intacto.
+- A boombox é tratada como um componente indivisível com geometria nativa **672 × 464**.
+- Imagem, gaveta/CD, display e zonas de interação pertencem ao mesmo sistema de coordenadas interno.
+- A página decide apenas quanto espaço existe para o componente; a boombox inteira cresce ou encolhe mantendo proporções.
+- `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` tornam-se **hotspots HTML transparentes presos aos botões físicos já existentes na fotografia**.
+- Os hotspots não ganham placa, cor, metal falso ou desenho novo. A pessoa vê somente a boombox original.
+- `CD / FAIXAS` e `EJECT` deixam de aparecer na interface visual.
+- A máquina de estados já existente (`open → closing → ready`) e o efeito real de fechamento da gaveta são preservados.
+- O motor de áudio existente é reutilizado; a mudança é na camada de interação, não no catálogo ou na reprodução.
+- Para calibração durante desenvolvimento, existe modo visual temporário `debug-hotspots`, que colore as zonas transparentes no DevTools. Ele não aparece em produção.
+- Não calibrar por aparelho, viewport ou breakpoint específico; calibrar pela geometria interna da própria boombox.
+
+## Regra de construção descoberta neste ajuste
+
+> Não acrescentar funcionalidade ao redor de um objeto quando a funcionalidade pode ser incorporada ao próprio objeto.
+
+Aplicação prática: uma camada técnica invisível pode existir para tornar o objeto interativo, mas não deve criar uma segunda aparência de controle por cima dele quando o controle físico já existe no objeto.
+
+## Estado da implementação
+
+Branch de trabalho: `boombox-native-controls`.
+
+Implementado até este checkpoint:
+
+- stylesheet isolado `boombox-native-controls.css`;
+- remoção visual da UI auxiliar `CD / FAIXAS` e `EJECT`;
+- remoção da prateleira metálica mobile criada para sustentar os controles artificiais;
+- restauração da boombox para escala integral dentro do seu container;
+- quatro hotspots transparentes amarrados à fileira física de botões do asset 672×464;
+- reaproveitamento da máquina de estados e do efeito de fechamento do CD;
+- QA responsivo atualizado para validar que os hotspots permanecem dentro da boombox e não se sobrepõem;
+- QA de interação atualizado para validar `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` como controles físicos nativos.
+
+Ainda não publicar/mesclar esta branch até o QA e a inspeção visual final serem concluídos.
 
 ## Prioridade de correção
 
@@ -52,6 +91,7 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
 2. Sobreposição de camadas no mobile — revisar com cuidado e sem solução baseada em pixels fixos.
 3. Pequena faixa/“parede” sob a navegação — opcional se simples e segura.
 4. Rodapé/faixa inferior — opcional se simples e segura.
+5. Recortes das outras páginas — Bobby relatou que alguns saíram levemente errados; analisar somente depois de fechar a boombox.
 
 ## Restrições
 
