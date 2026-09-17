@@ -157,3 +157,40 @@ Depois do QA, o gatilho temporário da branch foi removido do workflow. Nenhuma 
 - Não usar breakpoints como substituto de uma estrutura realmente responsiva.
 - Não considerar o site finalizado apenas porque um conjunto de geometrias de teste passa; conferir também a coerência visual e interativa em aparelhos reais.
 - Antes de qualquer alteração importante, alinhar a solução com Bobby.
+
+## Invariância interna da boombox — descoberta e correção em 17/09/2026
+
+Durante a revisão posterior ao merge do estado fechado, Bobby levantou a pergunta estrutural correta: se o HTML reorganiza a página conforme o display, como garantir que a boombox continue sendo o mesmo objeto e que suas partes internas não sejam reposicionadas independentemente?
+
+A inspeção mostrou que a arquitetura principal já usava `.music-machine` como palco 672 × 464, com `boombox.webp`, mecanismo, gaveta fechada e hotspots no mesmo sistema. Porém o display ainda herdava regras responsivas antigas do `canon.css`: no desktop mudava suas porcentagens e, abaixo de 480 px, sua posição/altura ainda usavam cálculos baseados numa antiga prateleira mobile de 50 px que já havia sido removida.
+
+Essa herança explica o deslocamento do display observado em aparelho real e corrige uma conclusão anterior deste documento: deixar o display exclusivamente sob as regras antigas da Home não era suficiente. A solução atual faz `boombox-native-controls.css` atuar como camada tardia de invariância geométrica, fixando a posição normalizada do display dentro do mesmo palco 672 × 464, sem depender de viewport ou breakpoint.
+
+Branch isolada: `fix/boombox-coordinate-invariance`.
+
+Alterações funcionais desta etapa:
+
+- display normalizado em 40,8% / 37% / 30% / 10%, com rotação preservada, sempre relativo à boombox;
+- gaveta, CD, display e hotspots continuam presos ao mesmo objeto 672 × 464;
+- cadeia de cache-bust fechada: `index.html` força `script.js` novo, que força `home-final-v1.js` novo, que força o CSS novo da boombox;
+- nenhum redesenho da `boombox.webp`.
+
+O QA responsivo ganhou um teste novo de invariância: em vez de apenas verificar se a Home cabe em cada viewport, mede as coordenadas normalizadas das peças internas e falha se um breakpoint mover display, gaveta ou botões independentemente da boombox.
+
+A primeira execução desse teste falhou apenas na altura da hitbox invisível do CD em 300×960 e 640×360. A causa era legítima: `min-height: 44px` aumenta a área de toque em telas pequenas por acessibilidade, sem mover a arte do CD. O teste foi corrigido para permitir esse crescimento da hitbox e continuar exigindo invariância da posição/largura visual.
+
+QA final desta etapa: GitHub Actions run #96, ID `35286566381`, head funcional testado `16596617d65146c44e6dee92e381b52f2caf5e55` — SUCCESS completo.
+
+Resultado:
+
+- integridade: PASS;
+- matriz responsiva: PASS — 54 casos, agora incluindo invariância interna da boombox;
+- interação/foco: PASS;
+- contrato canônico e reprodução real: PASS;
+- performance: PASS;
+- snapshots representativos: PASS;
+- artefatos: PASS.
+
+Inspeção visual humana dos snapshots: desktop em estado `ready`, mobile estreito em estado `ready` e layout wide-short mantiveram display, gaveta e corpo da boombox alinhados. Após o QA, o gatilho temporário da branch foi removido; essa limpeza não altera código funcional.
+
+Estado: branch tecnicamente pronta para revisão/aprovação de Bobby. Não publicar na `main` sem alinhamento explícito.

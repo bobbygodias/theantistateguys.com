@@ -17,15 +17,15 @@
 
   /*
    * The approved radio artwork is the UI. Do not draw replacement buttons.
-   * Load an interaction-only stylesheet that maps transparent HTML buttons to
-   * the physical keys already present in the 672x464 boombox image.
+   * Load the late coordinate/interaction stylesheet that keeps every internal
+   * layer attached to the same native 672x464 radio geometry.
    */
   const cssId = "boombox-native-controls-css";
   if (!document.getElementById(cssId)) {
     const link = document.createElement("link");
     link.id = cssId;
     link.rel = "stylesheet";
-    link.href = "boombox-native-controls.css?rev=20260917-3";
+    link.href = "boombox-native-controls.css?rev=20260917-4";
     document.head.appendChild(link);
   }
 
