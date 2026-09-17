@@ -3,7 +3,7 @@ name: responsive-qa-v3
 on:
   workflow_dispatch:
   push:
-    branches: [main, home-final-direction-v1, canon-20260916]
+    branches: [main, home-final-direction-v1, canon-20260916, boombox-native-controls]
     paths:
       - 'index.html'
       - 'canon.css'
@@ -14,6 +14,7 @@ on:
       - 'qa-site-v3*.js'
       - '*-final-v1.css'
       - '*-final-v1.js'
+      - 'boombox-native-controls.css'
       - 'approved-direction-v2.css'
       - 'approved-direction-v2-hotfix.css'
       - 'approved-direction-v2.js'
