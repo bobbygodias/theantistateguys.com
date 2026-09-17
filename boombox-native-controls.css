@@ -60,7 +60,7 @@
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: center bottom !important;
+  object-position: center 70% !important;
 }
 
 @keyframes closed-tray-seam-reveal {
