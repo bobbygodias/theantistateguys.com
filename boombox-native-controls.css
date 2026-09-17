@@ -39,6 +39,35 @@
   width: 40.33% !important;
 }
 
+/*
+ * Closed state: reuse the real tray artwork itself as the closed front lip.
+ * No new paint/chrome is drawn. The small crop simply covers the black seam
+ * that remains visible in the base boombox artwork after the drawer closes.
+ */
+.music-machine[data-cd-state="ready"] .cd-tray {
+  left: 41.6% !important;
+  top: 57.1% !important;
+  width: 28.4% !important;
+  height: 5.7% !important;
+  overflow: hidden;
+  transform: none !important;
+  opacity: 1 !important;
+  animation: closed-tray-seam-reveal 0.14s ease-out both;
+}
+
+.music-machine[data-cd-state="ready"] .cd-tray img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center bottom !important;
+}
+
+@keyframes closed-tray-seam-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .cd-disc {
   left: 45% !important;
   top: 57.3% !important;
