@@ -38,12 +38,12 @@ try{
  assert.equal(await page.locator('#track-title').innerText(),'Renascer');
 }catch(error){media={verified:false,reason:error.message,state:await page.locator('#audio').evaluate(a=>({src:a.currentSrc,readyState:a.readyState,networkState:a.networkState,error:a.error?.message||null}))};}
 
-// The official media catalog remains present in the document even though the
-// old visible library button was retired from the physical-radio experience.
-assert.ok(await page.locator('.official-videos a').count()>=3);
+// After insertion the CD remains closed. STOP is the intentional way to end
+// playback; the old EJECT/library flow is no longer part of the visible canon.
 assert.equal(await page.locator('.music-machine').getAttribute('data-cd-state'),'ready');
 assert.equal(await page.locator('#audio').evaluate(a=>a.paused),true);
 assert.equal(await page.locator('#audio').evaluate(a=>a.currentTime),0);
+assert.ok(await page.locator('a[href="https://www.youtube.com/@TheAntiStateGuys"]').count());
 
 await page.goto('http://127.0.0.1:4173/#historia');
 assert.match(await page.locator('.history-start').innerText(),/fevereiro de 2024/);
@@ -59,7 +59,7 @@ assert.equal(await page.locator('#contact-form').evaluate(f=>f.checkValidity()),
 assert.ok(await page.locator('a[href="mailto:theantistateguys@gmail.com"]').count());
 assert.match(await page.locator('.contact-form-note').innerText(),/aplicativo de e-mail/);
 assert.deepEqual(errors,[]);
-const result={passed:true,media,checks:['only official slogan','no provisional notice','native boombox CD sequence and physical transport hotspots','no artificial EJECT or CD/FAIXAS controls','official video feed remains available in document','history 2024','six actual members and biographies','contact validation and official email'],errors};
+const result={passed:true,media,checks:['only official slogan','no provisional notice','native boombox CD sequence and physical transport hotspots','no artificial EJECT or CD/FAIXAS controls','official YouTube channel remains reachable from the site header','history 2024','six actual members and biographies','contact validation and official email'],errors};
 await fs.writeFile('test-artifacts/canon-contract.json',JSON.stringify(result,null,2));
 console.log(JSON.stringify(result,null,2));
 await browser.close();
