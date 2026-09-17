@@ -53,6 +53,29 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
 3. Pequena faixa/“parede” sob a navegação — opcional se simples e segura.
 4. Rodapé/faixa inferior — opcional se simples e segura.
 
+## Decisão de arquitetura da boombox — alinhada com Bobby
+
+Princípio aprendido e aprovado: **não acrescentar funcionalidade visual ao redor de um objeto quando a própria aparência do objeto já contém os controles que devem funcionar.**
+
+Para esta boombox:
+
+- A imagem canônica `assets/canon/boombox.webp` permanece **intocada**. Não redesenhar, não pintar controles por cima e não criar substitutos visuais.
+- O componente usa a geometria nativa da própria arte, **672 × 464**, como sistema interno único.
+- A página decide apenas o tamanho final do componente; imagem, gaveta, CD, display e áreas interativas escalam juntos.
+- Os quatro transportes necessários são hotspots HTML transparentes presos à geometria da boombox: faixa anterior, stop, play/pause e próxima faixa.
+- `CD / FAIXAS` e `EJECT` deixam de fazer parte da interface visual. Depois que o CD entra, `STOP` resolve a interrupção; não há necessidade de um controle artificial de ejeção.
+- A área de toque pode ser maior que o desenho físico do botão, mas deve permanecer invisível e vinculada ao mesmo objeto.
+- Para calibração via DevTools/F12 existe modo de debug planejado/implementado com hotspots verdes sem afetar produção.
+- Não calibrar os controles por modelo de celular, viewport específico ou breakpoint. As coordenadas pertencem à boombox, não ao aparelho.
+
+Implementação em teste na branch `fix/boombox-native-controls`:
+
+- novo `boombox-native-controls.css`;
+- `home-final-v1.js` ajustado para fluxo `open → closing → ready`, sem depender de EJECT;
+- controles artificiais antigos permanecem apenas no DOM temporariamente para evitar churn de markup, mas ficam ocultos, desabilitados e fora da navegação;
+- QA responsivo e de interação atualizado para validar hotspots físicos, ausência de UI cinza artificial, não sobreposição e comportamento do áudio;
+- `tests/canon-contract.mjs` atualizado para o novo contrato da boombox.
+
 ## Restrições
 
 - Não redesenhar a Home.
