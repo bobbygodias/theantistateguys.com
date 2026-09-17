@@ -16,6 +16,20 @@ const geometries = [
   {name:'ultrawide', width:2560, height:1080, homeMustFit:true, hasTouch:false}
 ];
 
+// Intrinsic positions inside the approved 672×464 boombox. These values belong
+// to the object, never to a viewport. The test intentionally fails if a media
+// query or legacy responsive rule moves an internal part independently.
+const radioCoordinates = {
+  display:{left:.408,top:.37,width:.30,height:.10},
+  tray:{left:.4077,top:.556,width:.4033},
+  disc:{left:.45,top:.573,width:.29,height:.18},
+  stop:{left:.424,top:.818,width:.055,height:.095},
+  prev:{left:.482,top:.818,width:.052,height:.095},
+  play:{left:.536,top:.818,width:.052,height:.095},
+  next:{left:.590,top:.818,width:.054,height:.095}
+};
+const coordinateTolerance = .008;
+
 const artifactDir = path.resolve('test-artifacts');
 await fs.mkdir(artifactDir,{recursive:true});
 
@@ -24,6 +38,19 @@ const results = [];
 let failures = 0;
 
 function safeName(value){ return value.replace(/[^a-z0-9_-]+/gi,'-'); }
+function coordinateIssues(actual){
+  const issues=[];
+  for(const [part,expected] of Object.entries(radioCoordinates)){
+    const got=actual?.[part];
+    if(!got){ issues.push(`radio-coordinate-missing:${part}`); continue; }
+    for(const [axis,value] of Object.entries(expected)){
+      if(!Number.isFinite(got[axis]) || Math.abs(got[axis]-value)>coordinateTolerance){
+        issues.push(`radio-coordinate-${part}-${axis}:${got[axis] ?? 'nan'}`);
+      }
+    }
+  }
+  return issues;
+}
 
 for (const geometry of geometries){
   const context = await browser.newContext({
@@ -72,6 +99,30 @@ for (const geometry of geometries){
       const hotspotsInside = radioBox ? hotspotBoxes.every(r=>r.left>=radioBox.left-2 && r.right<=radioBox.right+2 && r.top>=radioBox.top-2 && r.bottom<=radioBox.bottom+2) : false;
       const hotspotOverlap = hotspotBoxes.flatMap((a,i)=>hotspotBoxes.slice(i+1).filter(b=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>1 && Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1).map(b=>`${a.id}:${b.id}`));
 
+      const machine = document.querySelector('.music-machine');
+      const machineRect = machine?.getBoundingClientRect();
+      const normalizedStyle = (selector, relativeTo = machineRect) => {
+        const el=document.querySelector(selector);
+        if(!el || !relativeTo?.width || !relativeTo?.height) return null;
+        const s=getComputedStyle(el);
+        const value=(name,base)=>parseFloat(s[name])/base;
+        return {
+          left:value('left',relativeTo.width),
+          top:value('top',relativeTo.height),
+          width:value('width',relativeTo.width),
+          height:value('height',relativeTo.height)
+        };
+      };
+      const radioCoordinates = machineRect ? {
+        display:normalizedStyle('.player-display'),
+        tray:normalizedStyle('.cd-tray'),
+        disc:normalizedStyle('.cd-disc'),
+        stop:normalizedStyle('#stop-track'),
+        prev:normalizedStyle('#prev-track'),
+        play:normalizedStyle('#play-pause'),
+        next:normalizedStyle('#next-track')
+      } : null;
+
       const bounds = {left:0,right:document.documentElement.clientWidth};
       const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
       const viewportRect = el => {
@@ -103,6 +154,7 @@ for (const geometry of geometries){
         radioHotspots:hotspotBoxes.length,
         hotspotsInside,
         hotspotOverlap,
+        radioCoordinates,
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
         radioIndependent:radioSrc.includes('canon/boombox.webp') && radio.complete && radio.naturalWidth > 0,
@@ -120,6 +172,7 @@ for (const geometry of geometries){
     if(route === 'home' && measured.radioHotspots !== 4) issues.push(`radio-hotspots-${measured.radioHotspots}`);
     if(route === 'home' && !measured.hotspotsInside) issues.push('radio-hotspots-outside');
     if(route === 'home' && measured.hotspotOverlap.length) issues.push(`radio-hotspots-overlap:${measured.hotspotOverlap.join(',')}`);
+    if(route === 'home') issues.push(...coordinateIssues(measured.radioCoordinates));
 
     const pass = issues.length === 0;
     const row = {geometry:geometry.name,width:geometry.width,height:geometry.height,route,pass,issues,...measured};
