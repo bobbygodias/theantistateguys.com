@@ -125,20 +125,22 @@
 /*
  * Coarse pointers get a larger invisible target. The four regions remain
  * non-overlapping and still belong to the same boombox coordinate system.
+ * 8.75% keeps the narrowest supported geometry at roughly the WCAG 2.2
+ * minimum target size without drawing any new control over the photograph.
  */
 @media (pointer: coarse), (max-width: 959px) {
   .music-machine.boombox-native-controls .player-controls button {
     top: 80.5% !important;
-    width: 8.5% !important;
+    width: 8.75% !important;
     height: 14% !important;
   }
 
   .music-machine.boombox-native-controls #prev-track {
-    left: 40.5% !important;
+    left: 40% !important;
   }
 
   .music-machine.boombox-native-controls #stop-track {
-    left: 49% !important;
+    left: 48.75% !important;
   }
 
   .music-machine.boombox-native-controls #play-pause {
@@ -146,7 +148,7 @@
   }
 
   .music-machine.boombox-native-controls #next-track {
-    left: 66% !important;
+    left: 66.25% !important;
   }
 }
 
