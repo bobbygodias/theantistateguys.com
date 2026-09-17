@@ -1,7 +1,7 @@
 # TASG SITE — Pendências visuais da Home
 
 Data: 17/09/2026
-Status: diagnóstico alinhado com Bobby; correção da boombox em implementação isolada na branch `boombox-native-controls`.
+Status: diagnóstico alinhado com Bobby; correção da boombox implementada e QA verde na branch `boombox-native-controls`; ainda não mesclar/publicar sem inspeção final de Bobby.
 
 ## Regra principal
 
@@ -15,17 +15,16 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
    - Não assumir que o problema seja apenas escala ou largura; revisar a relação entre camadas, containers e posicionamento responsivo.
 
 2. **Boombox: controles fora da integração visual do objeto**
-   - Os controles funcionam mesmo quando aparecem fora do corpo visual da boombox.
-   - Isso indica que a área interativa/posicionamento dos controles não está suficientemente amarrada à geometria visual da própria boombox.
-   - A correção não deve ser feita para uma resolução específica; os controles precisam acompanhar a boombox de forma consistente em geometrias mobile diferentes.
+   - Os controles funcionavam mesmo quando apareciam fora do corpo visual da boombox.
+   - A correção implementada prende a interação à geometria interna da boombox e elimina os controles artificiais visíveis.
 
 3. **Boombox: aparência dos controles**
-   - Os botões criados em CSS/UI têm coloração cinza muito diferente da boombox e parecem elementos externos sobrepostos.
-   - O objetivo é que os controles necessários sejam os próprios botões físicos já desenhados na boombox, não uma interface moderna colocada por cima.
+   - Os botões criados em CSS/UI tinham coloração cinza muito diferente da boombox e pareciam elementos externos sobrepostos.
+   - A implementação nova usa hotspots transparentes sobre os próprios botões físicos do asset.
 
 4. **Não concluir por screenshots isolados**
    - Verificar comportamento real, hitboxes e estados do player em diferentes proporções.
-   - Tablet ainda precisa ser verificado; não presumir que tablet = desktop reduzido ou mobile ampliado.
+   - Tablet ainda precisa de conferência visual humana; não presumir que tablet = desktop reduzido ou mobile ampliado.
 
 ## Problemas observados — NOTEBOOK / DESKTOP
 
@@ -36,10 +35,8 @@ A Home precisa se reorganizar conforme o espaço realmente disponível. Não tra
 2. **Boombox — problema principal**
    - A boombox em si está visualmente muito boa e deve ser preservada.
    - Os botões `CD / FAIXAS` e `EJECT` não são necessários no fluxo atual e não fazem sentido como controles permanentes visíveis.
-   - Depois de inserir o CD, parar a reprodução já pode ser feito com `STOP`; portanto esses dois controles devem sair da interface visível.
-   - Os botões de transporte atuais não estão implementados como parte visual da boombox; parecem uma camada de UI posicionada sobre ela.
-   - A cor dos botões difere demais do rádio: o cinza chama atenção e denuncia a sobreposição.
-   - A solução desejada é integrar os controles necessários à própria geometria física da boombox.
+   - Depois de inserir o CD, parar a reprodução já pode ser feito com `STOP`; portanto esses dois controles saíram da interface visível na branch de correção.
+   - Os botões de transporte artificiais foram substituídos por hotspots sobre a fileira física já existente na boombox.
 
 3. **Faixa inferior / rodapé**
    - A faixa inferior está destacada demais.
@@ -54,7 +51,7 @@ Decisão conjunta Bobby + Andrew em 17/09/2026:
 - A boombox é tratada como um componente indivisível com geometria nativa **672 × 464**.
 - Imagem, gaveta/CD, display e zonas de interação pertencem ao mesmo sistema de coordenadas interno.
 - A página decide apenas quanto espaço existe para o componente; a boombox inteira cresce ou encolhe mantendo proporções.
-- `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` tornam-se **hotspots HTML transparentes presos aos botões físicos já existentes na fotografia**.
+- `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` são **hotspots HTML transparentes presos aos botões físicos já existentes na fotografia**.
 - Os hotspots não ganham placa, cor, metal falso ou desenho novo. A pessoa vê somente a boombox original.
 - `CD / FAIXAS` e `EJECT` deixam de aparecer na interface visual.
 - A máquina de estados já existente (`open → closing → ready`) e o efeito real de fechamento da gaveta são preservados.
@@ -72,7 +69,7 @@ Aplicação prática: uma camada técnica invisível pode existir para tornar o 
 
 Branch de trabalho: `boombox-native-controls`.
 
-Implementado até este checkpoint:
+Implementado:
 
 - stylesheet isolado `boombox-native-controls.css`;
 - remoção visual da UI auxiliar `CD / FAIXAS` e `EJECT`;
@@ -81,13 +78,30 @@ Implementado até este checkpoint:
 - quatro hotspots transparentes amarrados à fileira física de botões do asset 672×464;
 - reaproveitamento da máquina de estados e do efeito de fechamento do CD;
 - QA responsivo atualizado para validar que os hotspots permanecem dentro da boombox e não se sobrepõem;
-- QA de interação atualizado para validar `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` como controles físicos nativos.
+- QA de interação atualizado para validar `STOP`, `PREV`, `PLAY/PAUSE` e `NEXT` como controles físicos nativos;
+- contrato canônico atualizado para refletir a remoção da UI auxiliar e manter o acesso oficial ao YouTube pelo cabeçalho.
 
-Ainda não publicar/mesclar esta branch até o QA e a inspeção visual final serem concluídos.
+### QA verde confirmado
+
+Run GitHub Actions: `#81` — ID `35186381639` — head testado `dab24208833be1b7b2b5aeab6811a0f8178075bf`.
+
+Resultado:
+
+- integridade: PASS;
+- matriz responsiva: PASS — 54 casos, 9 geometrias × 6 páginas;
+- interação/foco: PASS — 4 geometrias;
+- contrato canônico e reprodução real: PASS;
+- performance: PASS;
+- snapshots representativos: PASS;
+- upload de artefatos: PASS.
+
+A única alteração posterior ao head testado foi a restauração dos gatilhos normais do workflow; não houve mudança em HTML, CSS funcional, JavaScript do player ou testes de comportamento.
+
+Ainda não publicar/mesclar esta branch até a inspeção visual final de Bobby.
 
 ## Prioridade de correção
 
-1. **Boombox e controles — obrigatório corrigir.**
+1. **Boombox e controles — implementação pronta para inspeção final de Bobby.**
 2. Sobreposição de camadas no mobile — revisar com cuidado e sem solução baseada em pixels fixos.
 3. Pequena faixa/“parede” sob a navegação — opcional se simples e segura.
 4. Rodapé/faixa inferior — opcional se simples e segura.
