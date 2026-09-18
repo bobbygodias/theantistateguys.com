@@ -84,6 +84,28 @@
 }
 
 /*
+ * READY: the display becomes part of the upper flap above the CD drawer.
+ * The trapezoid follows the flap's perspective in the native 672x464 stage.
+ */
+.music-machine[data-cd-state="ready"] .player-display {
+  left: 43.3% !important;
+  top: 55.8% !important;
+  width: 26.8% !important;
+  height: 14.2% !important;
+  padding: 5px 9px !important;
+  z-index: 8 !important;
+  transform: rotate(-2.7deg) skewX(-1.1deg) !important;
+  clip-path: polygon(2% 10%, 98% 0, 100% 88%, 0 100%);
+  border-color: #6e5a35 !important;
+  background: linear-gradient(180deg, #11170ef2, #080b08f5) !important;
+  box-shadow:
+    inset 0 0 7px #000,
+    inset 0 0 0 1px #8a663844 !important;
+  font-size: clamp(8px, 1.55cqw, 11px) !important;
+  line-height: 1.08 !important;
+}
+
+/*
  * One internal coordinate system: the button layer covers exactly the same
  * box as boombox.webp. Individual buttons are transparent hotspots over the
  * existing physical transport keys in the artwork.
