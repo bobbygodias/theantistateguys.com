@@ -41,12 +41,11 @@
 }
 
 /*
- * Closed state is a separate full-stage visual layer made only from the real
- * rusted front face of tray.webp. It is pre-aligned to the native 672x464
- * radio coordinates, so there is no viewport-specific positioning or image
- * stretching. The original boombox.webp remains untouched.
+ * READY state uses pixels taken from Bobby's approved closed-boombox reference.
+ * Only the physical center column is overlaid; perspective is baked into the
+ * source pixels and the layer shares the same native 672x464 coordinate space.
  */
-.cd-closed-face {
+.cd-closed-panel {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -58,7 +57,7 @@
   transition: opacity 0.12s ease-out;
 }
 
-.music-machine[data-cd-state="ready"] .cd-closed-face {
+.music-machine[data-cd-state="ready"] .cd-closed-panel {
   opacity: 1;
 }
 
