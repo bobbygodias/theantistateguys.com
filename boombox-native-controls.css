@@ -58,6 +58,12 @@
   transition: opacity 0.12s ease-out;
 }
 
+/* In READY, the legacy animated tray must not remain visible behind the real closed mechanism. */
+.music-machine[data-cd-state="ready"] .cd-tray {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 .music-machine[data-cd-state="ready"] .cd-closed-panel {
   opacity: 1;
 }
