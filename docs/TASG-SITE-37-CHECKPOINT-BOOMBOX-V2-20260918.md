@@ -136,3 +136,38 @@ Existe um blob intermediário/orfão criado durante uma tentativa de transporte 
 `f0039f0e17f44cbf67104f761659601f6e6671bb`
 
 Estado seguro para retomada: branch em `744245ea...`, QA #115 verde, aguardando somente inspeção visual e decisão Bobby + Andrew.
+
+
+## Inspeção visual concluída após retomada
+
+Snapshot real do QA #115 revisado em conjunto:
+
+- `visual/real-home-ready.png`
+- `visual/narrow-tall-home-ready.png`
+
+Comparação com o QA #114 confirmou:
+- o V2 elimina a sobra/cunha visual problemática do mecanismo anterior;
+- a peça lê como parte física da boombox, sem aparência de elemento flutuante;
+- a coloração está coerente o suficiente com o aparelho no render real;
+- o layout estreito mantém o mecanismo preso à boombox;
+- não surgiu regressão responsiva ou de interação.
+
+Decisão final desta etapa:
+**manter o V2 sem ajuste adicional de cor neste momento.**
+
+Motivo: o encaixe geométrico melhorou de forma clara e a coloração já integra bem no contexto real. Ajustar cor preventivamente adicionaria risco sem evidência de problema perceptível.
+
+## Limpeza pós-QA
+
+O gatilho temporário da branch `fix/boombox-perspective-tray` foi removido novamente de `.github/workflows/responsive-qa-v3.yml`.
+
+Commit de limpeza:
+`869724f414138992a45a151dd0344173882ae7d2`
+
+A `main` continua intocada.
+
+## Estado de continuidade atualizado
+
+Boombox fechada V2: **APROVADA na branch de trabalho**.
+
+Ainda não houve merge para `main`. Qualquer merge continua dependendo de alinhamento explícito com Bobby.
