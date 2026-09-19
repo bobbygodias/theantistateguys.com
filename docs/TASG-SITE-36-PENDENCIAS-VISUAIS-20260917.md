@@ -194,3 +194,92 @@ Resultado:
 Inspeção visual humana dos snapshots: desktop em estado `ready`, mobile estreito em estado `ready` e layout wide-short mantiveram display, gaveta e corpo da boombox alinhados. Após o QA, o gatilho temporário da branch foi removido; essa limpeza não altera código funcional.
 
 Estado: branch tecnicamente pronta para revisão/aprovação de Bobby. Não publicar na `main` sem alinhamento explícito.
+
+
+## Estado fechado canônico — recorte do Bobby — checkpoint 18/09/2026
+
+Este bloco supersede as tentativas visuais anteriores como **estado operacional atual**, sem apagar o histórico acima.
+
+Branch isolada: `fix/boombox-perspective-tray`.
+
+### Decisão conjunta
+
+Depois de testar soluções geométricas e overlays derivados da gaveta aberta, Bobby identificou a simplificação correta: o clique/toque na gaveta deve apenas disparar o SFX e levar a boombox para um **estado visual fechado real**, sem tentar simular em CSS a perspectiva física da gaveta.
+
+Bobby reconstruiu a referência fechada e depois forneceu manualmente o recorte canônico da região central contendo:
+
+- a **tampinha superior**, onde a tela do player deve ficar embutida;
+- a **gaveta de CD fechada**, imediatamente abaixo;
+- perspectiva, ferrugem e geometria vindas da própria referência aprovada, não reconstruídas por CSS.
+
+A imagem anotada usada para explicar “tampinha” e “gaveta” era somente demonstrativa e **não deve ser usada como asset**.
+
+### Implementação atual
+
+- `assets/canon/boombox.webp` permanece intacto como corpo/base da boombox.
+- O recorte fechado aprovado foi convertido para `assets/canon/boombox-mechanism-closed.webp`.
+- O alpha remove apenas o fundo escuro conectado às bordas, preservando pretos internos da própria peça.
+- A peça fechada permanece no mesmo palco nativo 672×464:
+  - left: 40,03%;
+  - top: 53,45%;
+  - width: 30,51%.
+- `home-final-v1.js` carrega o asset real; não usa mais data URI/base64.
+- A peça aparece somente em `data-cd-state="ready"`.
+- A tela do estado `ready` foi reduzida e embutida na tampinha, seguindo a perspectiva:
+  - left: 43,1%;
+  - top: 59,2%;
+  - width: 24,8%;
+  - height: 10,8%;
+  - rotate(-3,6deg) + skewX(-0,5deg);
+  - clip-path trapezoidal discreto acompanhando a peça.
+- O fluxo `open → closing → ready`, o SFX real, o motor de áudio e os hotspots físicos permanecem preservados.
+
+### Verificação do binário
+
+O asset final foi aceito no GitHub com SHA de blob **idêntico** ao arquivo local:
+
+`2b911cadf5a629cf86c3d01d6c134afa92c3a5d0`
+
+Isso eliminou uma execução intermediária em que o WebP havia sido corrompido durante transporte e aparecia com cores lavadas/pastel nos snapshots.
+
+### QA funcional final desta sessão
+
+GitHub Actions run **#114**, ID `35300506944`.
+
+Head funcional testado:
+
+`52a05c22dd206f537ae8ee49d5fec20aa5b0aff6`
+
+Resultado: **SUCCESS completo**.
+
+- integridade: PASS;
+- matriz responsiva: PASS;
+- interação/foco: PASS;
+- contrato canônico e reprodução real: PASS;
+- performance: PASS;
+- snapshots representativos: PASS;
+- artefatos: PASS.
+
+Artefato: ID `10530011008`.
+
+Digest:
+
+`sha256:aa474bf9f3308a85988ae11d63923368ce84cb6ce20f031267d0fbc7cc9710fb`
+
+### Inspeção visual humana após QA #114
+
+- desktop: mecanismo fechado aparece na região correta, com cores/transparência normais;
+- mobile estreito: estado fechado é convincente e permanece integrado ao mesmo objeto 672×464;
+- tela: menor e mais integrada à tampinha do que na tentativa anterior;
+- **pendência única ainda visível**: pequena cunha metálica/prateada à direita do conjunto central, proveniente da arte-base aberta que o recorte 205×139 do Bobby não cobre totalmente. Em desktop é perceptível; em mobile praticamente desaparece.
+
+Essa cunha deve ser tratada na próxima sessão **sem alterar o recorte aprovado** e sem reabrir a arquitetura já resolvida. Prioridade: corrigir somente a pequena área residual da base aberta ou decidir com Bobby se é aceitável.
+
+### Estado para retomada
+
+- **NÃO mesclado na `main`**.
+- A `main` continua segura no estado publicado anterior.
+- Último head funcional validado: `52a05c22dd206f537ae8ee49d5fec20aa5b0aff6`.
+- O gatilho temporário da branch foi removido do workflow após o QA.
+- A limpeza de workflow/documentação posterior não altera código funcional e não exige reabrir o QA #114.
+- Próximo passo ao retomar: olhar a pequena cunha direita no desktop, corrigir/aceitar com Bobby e somente então discutir merge.
