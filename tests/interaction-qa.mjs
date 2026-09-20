@@ -110,6 +110,25 @@ for(const geometry of cases){
     assert(!(await page.locator(`#${id}`).isDisabled()),`${id}-nao-ativou-apos-cd`,issues);
   }
 
+  // Closed state must be physically coherent: CD + old tray disappear and the
+  // single 672×464 perspective-baked closed overlay becomes visible.
+  const closedState=await page.evaluate(()=>{
+    const style=(sel)=>getComputedStyle(document.querySelector(sel));
+    const panel=document.querySelector('.cd-closed-panel');
+    const machine=document.querySelector('.music-machine').getBoundingClientRect();
+    const rect=panel?.getBoundingClientRect();
+    return {
+      trayHidden:style('.cd-tray').visibility==='hidden' || Number(style('.cd-tray').opacity)===0,
+      discHidden:style('.cd-disc').visibility==='hidden' || Number(style('.cd-disc').opacity)===0,
+      panelVisible:panel && !panel.hidden && Number(style('.cd-closed-panel').opacity)>0.9,
+      panelStageAligned:!!rect && Math.abs(rect.width-machine.width)<2 && Math.abs(rect.height-machine.height)<2
+    };
+  });
+  assert(closedState.trayHidden,'gaveta-antiga-visivel-em-ready',issues);
+  assert(closedState.discHidden,'cd-visivel-em-ready',issues);
+  assert(closedState.panelVisible,'painel-fechado-v3-nao-visivel',issues);
+  assert(closedState.panelStageAligned,'painel-fechado-v3-fora-do-palco-672x464',issues);
+
   // Native hotspots must stay entirely inside the radio and never overlap each other.
   const geometryState=await page.evaluate(()=>{
     const radio=document.querySelector('.boombox-art').getBoundingClientRect();
