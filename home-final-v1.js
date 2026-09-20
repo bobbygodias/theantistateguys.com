@@ -25,7 +25,7 @@
     const link = document.createElement("link");
     link.id = cssId;
     link.rel = "stylesheet";
-    link.href = "boombox-native-controls.css?rev=20260919-7";
+    link.href = "boombox-native-controls.css?rev=20260919-8";
     document.head.appendChild(link);
   }
 
@@ -34,19 +34,19 @@
   if (library) library.hidden = true;
 
   /*
-   * Closed-state pixels use Bobby's perspective-approved closed reference.
-   * The V3 asset is a tight transparent crop whose pixels are already warped to the radio's
-   * vanishing point. CSS only positions that crop in the native 672x464 stage.
+   * Closed-state pixels use the canonical closed-boombox perspective.
+   * The V4 asset is a transparent crop from the actual closed radio, with the CD Player
+   * plaque composited into that same perspective. CSS only anchors it in the 672x464 stage.
    */
-  const closedPanelSrc = "assets/canon/boombox-mechanism-closed-v3-tight.webp?rev=20260919-2";
+  const closedPanelSrc = "assets/canon/boombox-mechanism-closed-v4-tight.webp?rev=20260919-1";
   let closedPanel = mechanism?.querySelector(".cd-closed-panel") || null;
   if (mechanism && !closedPanel) {
     closedPanel = document.createElement("img");
     closedPanel.className = "cd-closed-panel";
     closedPanel.src = closedPanelSrc;
     closedPanel.alt = "";
-    closedPanel.width = 224;
-    closedPanel.height = 161;
+    closedPanel.width = 254;
+    closedPanel.height = 177;
     closedPanel.draggable = false;
     closedPanel.setAttribute("aria-hidden", "true");
     closedPanel.hidden = true;

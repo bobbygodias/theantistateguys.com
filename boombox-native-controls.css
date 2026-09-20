@@ -41,17 +41,16 @@
 }
 
 /*
- * READY uses one transparent 672×464 overlay whose mechanism pixels are
- * already baked into the same perspective as the radio.  Do not place the
- * closed mechanism in a smaller frontal rectangle and do not fake its
- * perspective with CSS.
+ * READY V4 is a crop taken from the canonical closed boombox itself.
+ * Its perspective is already physical; CSS only anchors that crop back into
+ * the normalized 672×464 radio stage. No viewport-specific geometry.
  */
 .cd-closed-panel {
   position: absolute;
-  left: 38.39%;
-  top: 50%;
-  width: 33.33%;
-  height: 34.70%;
+  left: 39.5833%;
+  top: 48.7069%;
+  width: 37.7976%;
+  height: 38.1466%;
   object-fit: contain;
   opacity: 0;
   pointer-events: none;
@@ -94,24 +93,41 @@
 }
 
 /*
- * READY: the black screen itself is part of the perspective-baked V3 asset.
- * This layer carries only live text and follows the same vanishing line.
+ * READY: the LCD opening is already baked into the closed lid.  This element
+ * carries only the live lettering, in the same intrinsic radio coordinates.
+ * It never gets separate desktop/mobile positions.
  */
 .music-machine[data-cd-state="ready"] .player-display {
-  left: 42.35% !important;
-  top: 54.45% !important;
-  width: 25.45% !important;
-  height: 13.55% !important;
-  padding: 4px 8px !important;
+  left: 44.94% !important;
+  top: 60.34% !important;
+  width: 21.28% !important;
+  height: 4.75% !important;
+  padding: 1px 3px !important;
   z-index: 8 !important;
-  transform: rotate(-2.3deg) !important;
+  transform: rotate(-3.6deg) !important;
   transform-origin: 50% 50% !important;
-  clip-path: none !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  font-size: clamp(8px, 1.45cqw, 10px) !important;
-  line-height: 1.05 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  column-gap: 2px !important;
+  font-size: 1.05cqw !important;
+  line-height: 1 !important;
+  overflow: hidden !important;
+}
+
+.music-machine[data-cd-state="ready"] .player-display #track-title {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-machine[data-cd-state="ready"] .player-display .time {
+  white-space: nowrap;
+  font-size: 0.72em !important;
 }
 
 /*
