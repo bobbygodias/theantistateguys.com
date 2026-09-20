@@ -53,6 +53,26 @@
     mechanism.appendChild(closedPanel);
   }
 
+  /*
+   * The open-base artwork contains a small metallic tray spur to the right of
+   * the center column. In READY, cover only that residual shape with pixels
+   * from Bobby's closed reference. This patch is transparent everywhere else.
+   */
+  const wedgePatchSrc = "assets/canon/boombox-ready-wedge-fix.webp?rev=20260919-2";
+  let wedgePatch = mechanism?.querySelector(".cd-closed-wedge-patch") || null;
+  if (mechanism && !wedgePatch) {
+    wedgePatch = document.createElement("img");
+    wedgePatch.className = "cd-closed-wedge-patch";
+    wedgePatch.src = wedgePatchSrc;
+    wedgePatch.alt = "";
+    wedgePatch.width = 72;
+    wedgePatch.height = 72;
+    wedgePatch.draggable = false;
+    wedgePatch.setAttribute("aria-hidden", "true");
+    wedgePatch.hidden = true;
+    mechanism.appendChild(wedgePatch);
+  }
+
   controls.forEach((button) => {
     button.classList.add("boombox-hotspot");
     button.title = button.getAttribute("aria-label") || "Controle da boombox";
@@ -71,6 +91,7 @@
     eject.disabled = next !== "ready";
     insert.setAttribute("aria-hidden", String(next !== "open"));
     if (closedPanel) closedPanel.hidden = next !== "ready";
+    if (wedgePatch) wedgePatch.hidden = next !== "ready";
     machine.setAttribute(
       "aria-busy",
       String(next === "closing" || next === "opening"),
