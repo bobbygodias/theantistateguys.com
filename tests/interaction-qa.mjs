@@ -123,14 +123,18 @@ for(const geometry of cases){
       trayVisible:visible('.cd-tray'),
       discVisible:visible('.cd-disc'),
       closedVisible:visible('.cd-closed-panel'),
+      wedgePatchVisible:visible('.cd-closed-wedge-patch'),
       displayInside:!!(machine&&display&&display.left>=machine.left&&display.right<=machine.right&&display.top>=machine.top&&display.bottom<=machine.bottom),
-      closedSrc:document.querySelector('.cd-closed-panel')?.getAttribute('src')||''
+      closedSrc:document.querySelector('.cd-closed-panel')?.getAttribute('src')||'',
+      wedgePatchSrc:document.querySelector('.cd-closed-wedge-patch')?.getAttribute('src')||''
     };
   });
   assert(!closedState.trayVisible,'ready-gaveta-ainda-visivel',issues);
   assert(!closedState.discVisible,'ready-cd-ainda-visivel',issues);
   assert(closedState.closedVisible,'ready-mecanismo-fechado-invisivel',issues);
   assert(closedState.closedSrc.includes('boombox-mechanism-closed-v3.webp'),'ready-nao-usa-v3',issues);
+  assert(closedState.wedgePatchVisible,'ready-correcao-cunha-invisivel',issues);
+  assert(closedState.wedgePatchSrc.includes('boombox-ready-wedge-fix.webp'),'ready-correcao-cunha-ausente',issues);
   assert(closedState.displayInside,'ready-display-fora-da-boombox',issues);
 
   for(const id of ['stop-track','prev-track','play-pause','next-track']){
