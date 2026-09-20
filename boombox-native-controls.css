@@ -70,6 +70,27 @@
   opacity: 1;
 }
 
+/*
+ * Tiny closed-reference patch that removes the metallic spur belonging to the
+ * open tray. Coordinates are native 672×464 object coordinates, not viewport
+ * breakpoints, so it scales with the boombox as a physical part of the object.
+ */
+.cd-closed-wedge-patch {
+  position: absolute;
+  left: 68.45%;
+  top: 58.19%;
+  width: 10.72%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.music-machine[data-cd-state="ready"] .cd-closed-wedge-patch {
+  opacity: 1;
+}
+
 .cd-disc {
   left: 45% !important;
   top: 57.3% !important;
