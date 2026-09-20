@@ -35,18 +35,18 @@
 
   /*
    * Closed-state pixels use Bobby's perspective-approved closed reference.
-   * The V3 asset itself is a transparent 672x464 stage: only the closed mechanism
-   * has pixels, already warped to the radio's vanishing point. CSS must not straighten it.
+   * The V3 asset is a tight transparent crop whose pixels are already warped to the radio's
+   * vanishing point. CSS only positions that crop in the native 672x464 stage.
    */
-  const closedPanelSrc = "assets/canon/boombox-mechanism-closed-v3.webp?rev=20260919-1";
+  const closedPanelSrc = "assets/canon/boombox-mechanism-closed-v3-tight.webp?rev=20260919-2";
   let closedPanel = mechanism?.querySelector(".cd-closed-panel") || null;
   if (mechanism && !closedPanel) {
     closedPanel = document.createElement("img");
     closedPanel.className = "cd-closed-panel";
     closedPanel.src = closedPanelSrc;
     closedPanel.alt = "";
-    closedPanel.width = 672;
-    closedPanel.height = 464;
+    closedPanel.width = 224;
+    closedPanel.height = 161;
     closedPanel.draggable = false;
     closedPanel.setAttribute("aria-hidden", "true");
     closedPanel.hidden = true;

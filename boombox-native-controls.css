@@ -48,9 +48,10 @@
  */
 .cd-closed-panel {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  left: 38.39%;
+  top: 50%;
+  width: 33.33%;
+  height: 34.70%;
   object-fit: contain;
   opacity: 0;
   pointer-events: none;

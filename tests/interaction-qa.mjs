@@ -121,13 +121,13 @@ for(const geometry of cases){
       trayHidden:style('.cd-tray').visibility==='hidden' || Number(style('.cd-tray').opacity)===0,
       discHidden:style('.cd-disc').visibility==='hidden' || Number(style('.cd-disc').opacity)===0,
       panelVisible:panel && !panel.hidden && Number(style('.cd-closed-panel').opacity)>0.9,
-      panelStageAligned:!!rect && Math.abs(rect.width-machine.width)<2 && Math.abs(rect.height-machine.height)<2
+      panelInsideRadio:!!rect && rect.left>=machine.left-2 && rect.right<=machine.right+2 && rect.top>=machine.top-2 && rect.bottom<=machine.bottom+2
     };
   });
   assert(closedState.trayHidden,'gaveta-antiga-visivel-em-ready',issues);
   assert(closedState.discHidden,'cd-visivel-em-ready',issues);
   assert(closedState.panelVisible,'painel-fechado-v3-nao-visivel',issues);
-  assert(closedState.panelStageAligned,'painel-fechado-v3-fora-do-palco-672x464',issues);
+  assert(closedState.panelInsideRadio,'painel-fechado-v3-fora-da-boombox',issues);
 
   // Native hotspots must stay entirely inside the radio and never overlap each other.
   const geometryState=await page.evaluate(()=>{
