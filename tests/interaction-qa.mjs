@@ -106,6 +106,33 @@ for(const geometry of cases){
   await page.locator('#insert-cd').click();
   assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='closing','cd-nao-entrou-em-closing',issues);
   await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='ready',{timeout:3000});
+
+  // READY must be physically closed: the old tray and the CD itself disappear,
+  // while the perspective-correct closed mechanism becomes visible.
+  const closedState=await page.evaluate(()=>{
+    const visible=selector=>{
+      const el=document.querySelector(selector);
+      if(!el) return false;
+      const s=getComputedStyle(el);
+      const r=el.getBoundingClientRect();
+      return s.display!=='none' && s.visibility!=='hidden' && Number(s.opacity)>0.01 && r.width>1 && r.height>1;
+    };
+    const machine=document.querySelector('.music-machine')?.getBoundingClientRect();
+    const display=document.querySelector('.player-display')?.getBoundingClientRect();
+    return {
+      trayVisible:visible('.cd-tray'),
+      discVisible:visible('.cd-disc'),
+      closedVisible:visible('.cd-closed-panel'),
+      displayInside:!!(machine&&display&&display.left>=machine.left&&display.right<=machine.right&&display.top>=machine.top&&display.bottom<=machine.bottom),
+      closedSrc:document.querySelector('.cd-closed-panel')?.getAttribute('src')||''
+    };
+  });
+  assert(!closedState.trayVisible,'ready-gaveta-ainda-visivel',issues);
+  assert(!closedState.discVisible,'ready-cd-ainda-visivel',issues);
+  assert(closedState.closedVisible,'ready-mecanismo-fechado-invisivel',issues);
+  assert(closedState.closedSrc.includes('boombox-mechanism-closed-v3.webp'),'ready-nao-usa-v3',issues);
+  assert(closedState.displayInside,'ready-display-fora-da-boombox',issues);
+
   for(const id of ['stop-track','prev-track','play-pause','next-track']){
     assert(!(await page.locator(`#${id}`).isDisabled()),`${id}-nao-ativou-apos-cd`,issues);
   }
