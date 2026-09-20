@@ -13,6 +13,7 @@ const samples=[
   {name:'narrow-tall-members',width:300,height:960,route:'integrantes',touch:true},
   {name:'narrow-tall-photos',width:300,height:960,route:'fotos',touch:true},
   {name:'wide-short-home',width:640,height:360,route:'home',touch:true},
+  {name:'wide-short-home-ready',width:640,height:360,route:'home',touch:true,cdReady:true},
   {name:'wide-short-contact',width:640,height:360,route:'contato',touch:true},
   {name:'wide-short-members',width:640,height:360,route:'integrantes',touch:true},
   {name:'wide-short-photos',width:640,height:360,route:'fotos',touch:true},
