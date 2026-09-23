@@ -19,16 +19,15 @@ const geometries = [
 // Intrinsic positions inside the approved 672×464 boombox. These values belong
 // to the object, never to a viewport. The test intentionally fails if a media
 // query or legacy responsive rule moves an internal part independently.
-// The invisible CD hit target may grow vertically to preserve the 44px minimum
-// touch target, so its height is intentionally not treated as visual geometry.
+// Final static player: display + five physical keys are intrinsic to the
+// radio and must stay at these normalized positions at every viewport size.
 const radioCoordinates = {
-  display:{left:.408,top:.37,width:.30,height:.10},
-  tray:{left:.4077,top:.556,width:.4033},
-  disc:{left:.45,top:.573,width:.29},
-  stop:{left:.424,top:.818,width:.055,height:.095},
-  prev:{left:.482,top:.818,width:.052,height:.095},
-  play:{left:.536,top:.818,width:.052,height:.095},
-  next:{left:.590,top:.818,width:.054,height:.095}
+  display:{left:.2645,top:.240,width:.5645,height:.137},
+  stop:{left:.4235,top:.8215,width:.0565,height:.094},
+  prev:{left:.4845,top:.8215,width:.0565,height:.094},
+  play:{left:.5445,top:.8215,width:.0565,height:.094},
+  next:{left:.6055,top:.8215,width:.0565,height:.094},
+  pause:{left:.6665,top:.8215,width:.0565,height:.094}
 };
 const coordinateTolerance = .008;
 
@@ -117,12 +116,11 @@ for (const geometry of geometries){
       };
       const radioCoordinates = machineRect ? {
         display:normalizedStyle('.player-display'),
-        tray:normalizedStyle('.cd-tray'),
-        disc:normalizedStyle('.cd-disc'),
         stop:normalizedStyle('#stop-track'),
         prev:normalizedStyle('#prev-track'),
-        play:normalizedStyle('#play-pause'),
-        next:normalizedStyle('#next-track')
+        play:normalizedStyle('#play-track'),
+        next:normalizedStyle('#next-track'),
+        pause:normalizedStyle('#pause-track')
       } : null;
 
       const bounds = {left:0,right:document.documentElement.clientWidth};
@@ -159,7 +157,7 @@ for (const geometry of geometries){
         radioCoordinates,
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
-        radioIndependent:radioSrc.includes('canon/boombox.webp') && radio.complete && radio.naturalWidth > 0,
+        radioIndependent:radioSrc.includes('canon/boombox-final-static.webp') && radio.complete && radio.naturalWidth === 672 && radio.naturalHeight === 464,
         showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
@@ -171,7 +169,7 @@ for (const geometry of geometries){
     if(measured.minTap > 0 && measured.minTap < 44) issues.push(`tap-${measured.minTap}`);
     if(measured.clipped > 0) issues.push(`clip-x-${measured.clipped}`);
     if(route === 'home' && !measured.radioIndependent) issues.push('radio-scene');
-    if(route === 'home' && measured.radioHotspots !== 4) issues.push(`radio-hotspots-${measured.radioHotspots}`);
+    if(route === 'home' && measured.radioHotspots !== 5) issues.push(`radio-hotspots-${measured.radioHotspots}`);
     if(route === 'home' && !measured.hotspotsInside) issues.push('radio-hotspots-outside');
     if(route === 'home' && measured.hotspotOverlap.length) issues.push(`radio-hotspots-overlap:${measured.hotspotOverlap.join(',')}`);
     if(route === 'home') issues.push(...coordinateIssues(measured.radioCoordinates));

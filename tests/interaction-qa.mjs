@@ -42,18 +42,17 @@ for(const geometry of cases){
   await page.goto(`${baseURL}?interaction=1#home`,{waitUntil:'networkidle'});
   await page.waitForSelector('[data-route].is-active');
   await page.waitForFunction(()=>document.querySelectorAll('.track-row').length>=2);
-  await page.waitForFunction(()=>document.querySelectorAll('.boombox-hotspot').length===4);
+  await page.waitForFunction(()=>document.querySelectorAll('.boombox-hotspot').length===5);
 
   const issues=[];
 
-  // Estado inicial: Home ativa, catálogo carregado, transporte desligado até inserir o CD.
+  // Estado inicial: Home ativa, catálogo carregado e cinco controles prontos imediatamente.
   assert(await page.locator('.site-nav [data-route-link="home"]').getAttribute('aria-current')==='page','home-sem-aria-current',issues);
-  assert(await page.locator('#play-pause').getAttribute('aria-pressed')==='false','play-sem-aria-pressed-false',issues);
-  assert(await page.locator('#play-pause').isDisabled(),'play-inicial-deveria-estar-desligado',issues);
+  assert(await page.locator('#play-track').getAttribute('aria-pressed')==='false','play-sem-aria-pressed-false',issues);
+  assert(!(await page.locator('#play-track').isDisabled()),'play-inicial-desligado',issues);
   assert((await page.locator('#track-title').textContent()||'').trim().length>0,'titulo-faixa-vazio',issues);
-  assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='open','cd-inicial-nao-aberto',issues);
   assert(!(await page.locator('#open-library').isVisible()),'biblioteca-auxiliar-visivel',issues);
-  assert(!(await page.locator('#eject-cd').isVisible()),'eject-auxiliar-visivel',issues);
+  assert(await page.locator('#insert-cd,#eject-cd,.cd-tray,.cd-disc,.cd-closed-panel,#cd-close-sfx').count()===0,'mecanica-cd-residual',issues);
 
   // Navegação via teclado: no mobile, abre o menu real antes de focar cada placa.
   for(const route of routes.filter(r=>r!=='home')){
@@ -102,18 +101,15 @@ for(const geometry of cases){
   const homeFocused=await page.evaluate(()=>document.activeElement===document.getElementById('home-title'));
   assert(homeFocused,'home-titulo-sem-foco-no-retorno',issues);
 
-  // Fluxo físico da boombox: tocar no disco fecha a gaveta e acorda apenas os quatro botões nativos.
-  await page.locator('#insert-cd').click();
-  assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='closing','cd-nao-entrou-em-closing',issues);
-  await page.waitForFunction(()=>document.querySelector('.music-machine')?.dataset.cdState==='ready',{timeout:3000});
-  for(const id of ['stop-track','prev-track','play-pause','next-track']){
-    assert(!(await page.locator(`#${id}`).isDisabled()),`${id}-nao-ativou-apos-cd`,issues);
+  // Boombox final: os cinco botões físicos já nascem ativos; não há CD, gaveta ou transição.
+  for(const id of ['stop-track','prev-track','play-track','next-track','pause-track']){
+    assert(!(await page.locator(`#${id}`).isDisabled()),`${id}-deveria-estar-ativo`,issues);
   }
 
   // Native hotspots must stay entirely inside the radio and never overlap each other.
   const geometryState=await page.evaluate(()=>{
     const radio=document.querySelector('.boombox-art').getBoundingClientRect();
-    const ids=['stop-track','prev-track','play-pause','next-track'];
+    const ids=['stop-track','prev-track','play-track','next-track','pause-track'];
     const boxes=ids.map(id=>({id,r:document.getElementById(id).getBoundingClientRect()}));
     const inside=boxes.every(({r})=>r.left>=radio.left-2&&r.right<=radio.right+2&&r.top>=radio.top-2&&r.bottom<=radio.bottom+2);
     const overlaps=boxes.flatMap((a,i)=>boxes.slice(i+1).filter(b=>Math.min(a.r.right,b.r.right)-Math.max(a.r.left,b.r.left)>1&&Math.min(a.r.bottom,b.r.bottom)-Math.max(a.r.top,b.r.top)>1).map(b=>a.id+':'+b.id));
@@ -122,13 +118,16 @@ for(const geometry of cases){
   assert(geometryState.inside,'hotspots-fora-da-boombox',issues);
   assert(geometryState.overlaps.length===0,'hotspots-sobrepostos:'+geometryState.overlaps.join(','),issues);
 
-  // Stop is the user's way out: it stops audio without reopening/redrawing the CD transport.
-  await page.locator('#play-pause').click();
+  // Play, pause and stop operate directly; there is no mechanical state to alter.
+  await page.locator('#play-track').click();
+  await page.waitForTimeout(80);
+  await page.locator('#pause-track').click();
+  assert(await page.locator('#audio').evaluate(a=>a.paused),'pause-nao-pausou-audio',issues);
+  await page.locator('#play-track').click();
   await page.waitForTimeout(80);
   await page.locator('#stop-track').click();
   assert(await page.locator('#audio').evaluate(a=>a.paused),'stop-nao-pausou-audio',issues);
   assert(await page.locator('#audio').evaluate(a=>a.currentTime)===0,'stop-nao-zerou-audio',issues);
-  assert(await page.locator('.music-machine').getAttribute('data-cd-state')==='ready','stop-alterou-estado-do-cd',issues);
 
   // Previous/next remain reachable through the physical key row.
   const first=(await page.locator('#track-title').textContent()||'').trim();

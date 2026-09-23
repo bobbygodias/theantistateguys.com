@@ -1,12 +1,12 @@
 /*
- * TASG boombox internal coordinate and interaction layer
- * The approved 672x464 boombox artwork is never redrawn here.
- * This file keeps the radio internals in one normalized coordinate system and
- * maps transparent HTML controls to physical controls already visible in the
- * boombox asset, so artwork and interaction scale as one object.
+ * TASG final boombox interaction layer.
+ * One intrinsic coordinate system only: 672x464.
+ * The viewport may resize/reposition the whole radio, but never rearranges
+ * its display or transport controls independently.
  */
 
 .music-machine {
+  position: relative;
   aspect-ratio: 672 / 464 !important;
   height: auto !important;
   padding-bottom: 0 !important;
@@ -14,108 +14,95 @@
 }
 
 .boombox-art {
+  display: block;
   width: 100% !important;
   max-width: 100% !important;
   height: auto !important;
   margin-left: 0 !important;
   object-fit: contain !important;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* The old auxiliary UI does not belong to the physical radio. */
-.library-button,
-.eject-button {
+.library-button {
   display: none !important;
 }
 
-/* Remove the mobile-only metal shelf that previously carried fake controls. */
 .music-machine::after {
   content: none !important;
   display: none !important;
 }
 
-/* Keep the open tray in the same 672x464 coordinate system as the radio. */
-.cd-tray {
-  left: 40.77% !important;
-  top: 55.6% !important;
-  width: 40.33% !important;
-}
-
 /*
- * READY state uses pixels taken from Bobby's approved closed-boombox reference.
- * Only the physical center column is overlaid; perspective is baked into the
- * source pixels and the layer shares the same native 672x464 coordinate space.
- */
-.cd-closed-panel {
-  position: absolute;
-  left: 40.03%;
-  top: 53.45%;
-  width: 30.51%;
-  height: auto;
-  object-fit: contain;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-  transition: opacity 0.12s ease-out;
-}
-
-/* In READY, the legacy animated tray must not remain visible behind the real closed mechanism. */
-.music-machine[data-cd-state="ready"] .cd-tray {
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-
-.music-machine[data-cd-state="ready"] .cd-closed-panel {
-  opacity: 1;
-}
-
-.cd-disc {
-  left: 45% !important;
-  top: 57.3% !important;
-  width: 29% !important;
-  height: 18% !important;
-}
-
-/*
- * Display geometry is intrinsic to the radio, not to the viewport. Older
- * responsive layers used to move it at desktop/mobile breakpoints; these
- * normalized coordinates intentionally win at every size so the display,
- * tray, CD and physical controls remain one regenerable 672x464 object.
+ * Black display opening is already part of the final artwork.
+ * Only the live title is rendered here, in normalized radio coordinates.
  */
 .player-display {
   position: absolute !important;
-  left: 40.8% !important;
-  top: 37% !important;
-  width: 30% !important;
-  height: 10% !important;
-  transform: rotate(-3deg) !important;
-}
-
-/*
- * READY: the display becomes part of the upper flap above the CD drawer.
- * The trapezoid follows the flap's perspective in the native 672x464 stage.
- */
-.music-machine[data-cd-state="ready"] .player-display {
-  left: 43.1% !important;
-  top: 59.2% !important;
-  width: 24.8% !important;
-  height: 10.8% !important;
-  padding: 3px 7px !important;
+  left: 26.45% !important;
+  top: 24.0% !important;
+  width: 56.45% !important;
+  height: 13.7% !important;
+  margin: 0 !important;
+  padding: 0 1.15% !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  overflow: hidden !important;
   z-index: 8 !important;
-  transform: rotate(-3.6deg) skewX(-0.5deg) !important;
-  clip-path: polygon(2% 8%, 98% 0, 100% 92%, 0 100%);
-  border-color: #6e5a35 !important;
-  background: linear-gradient(180deg, #11170ef2, #080b08f5) !important;
-  box-shadow:
-    inset 0 0 6px #000,
-    inset 0 0 0 1px #8a663844 !important;
-  font-size: clamp(8px, 1.45cqw, 10px) !important;
-  line-height: 1.05 !important;
+  pointer-events: none;
+  color: #eee9dc !important;
+  font-family: "Courier New", Courier, monospace !important;
+  font-size: clamp(10px, 2.75cqw, 18px) !important;
+  line-height: 1 !important;
+  text-shadow:
+    0 0 2px rgba(255,255,255,.72),
+    0 0 6px rgba(220,214,195,.22) !important;
+}
+
+.player-display #track-title {
+  display: inline-block;
+  width: max-content;
+  min-width: max-content;
+  white-space: nowrap;
+  padding-left: 100%;
+  animation: tasg-track-scroll 9s linear infinite;
+  will-change: transform;
+}
+
+.player-display .time {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@keyframes tasg-track-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player-display #track-title {
+    width: 100%;
+    min-width: 100%;
+    padding-left: 0;
+    text-align: center;
+    animation: none;
+  }
 }
 
 /*
- * One internal coordinate system: the button layer covers exactly the same
- * box as boombox.webp. Individual buttons are transparent hotspots over the
- * existing physical transport keys in the artwork.
+ * The control layer covers exactly the same box as the 672x464 artwork.
+ * Buttons are transparent hotspots over the five physical transport keys.
  */
 .player-controls {
   position: absolute !important;
@@ -132,7 +119,7 @@
   position: absolute;
   min-width: 0 !important;
   min-height: 0 !important;
-  margin: 0;
+  margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
   border-radius: 2px;
@@ -141,64 +128,60 @@
   color: transparent !important;
   text-shadow: none !important;
   font-size: 0 !important;
-  line-height: 0;
+  line-height: 0 !important;
   opacity: 1 !important;
   filter: none !important;
   transform: none !important;
   pointer-events: auto;
   touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(200, 120, 53, 0.22);
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(200, 120, 53, 0.24);
 }
 
-/* Physical key row measured directly against the native 672x464 artwork. */
+/* Five keys measured against the final 672x464 artwork. */
 #stop-track {
-  left: 42.4% !important;
-  top: 81.8% !important;
-  width: 5.5% !important;
-  height: 9.5% !important;
+  left: 42.35% !important;
+  top: 82.15% !important;
+  width: 5.65% !important;
+  height: 9.4% !important;
 }
 
 #prev-track {
-  left: 48.2% !important;
-  top: 81.8% !important;
-  width: 5.2% !important;
-  height: 9.5% !important;
+  left: 48.45% !important;
+  top: 82.15% !important;
+  width: 5.65% !important;
+  height: 9.4% !important;
 }
 
-#play-pause {
-  left: 53.6% !important;
-  top: 81.8% !important;
-  width: 5.2% !important;
-  height: 9.5% !important;
+#play-track {
+  left: 54.45% !important;
+  top: 82.15% !important;
+  width: 5.65% !important;
+  height: 9.4% !important;
 }
 
 #next-track {
-  left: 59.0% !important;
-  top: 81.8% !important;
-  width: 5.4% !important;
-  height: 9.5% !important;
+  left: 60.55% !important;
+  top: 82.15% !important;
+  width: 5.65% !important;
+  height: 9.4% !important;
 }
 
-/* Keyboard focus remains visible without creating permanent chrome. */
+#pause-track {
+  left: 66.65% !important;
+  top: 82.15% !important;
+  width: 5.65% !important;
+  height: 9.4% !important;
+}
+
 .player-controls .boombox-hotspot:focus-visible {
   outline: 2px solid #ffd895 !important;
   outline-offset: 1px;
   background: rgba(255, 216, 149, 0.12) !important;
 }
 
-/* Development-only calibration mode. Add debug-hotspots in DevTools. */
+/* Optional calibration mode for development only. */
 .music-machine.debug-hotspots .boombox-hotspot {
   background: rgba(0, 255, 0, 0.40) !important;
   outline: 1px solid lime !important;
-}
-
-.music-machine.debug-hotspots #insert-cd {
-  background: rgba(0, 170, 255, 0.32) !important;
-  outline: 1px solid #00aaff !important;
-}
-
-@media (max-width: 959px) {
-  .home-media {
-    width: min(100%, 672px);
-  }
 }
