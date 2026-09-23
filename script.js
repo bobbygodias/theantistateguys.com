@@ -41,11 +41,10 @@ function syncDisplay() {
   if (mobileTotal) mobileTotal.textContent = formatTime(audio.duration);
   const playing = !audio.paused && !audio.ended;
   document.body.classList.toggle("is-playing", playing);
-  document.querySelectorAll("#play-pause,#mobile-play").forEach((btn) => {
-    btn.textContent = playing ? "Ⅱ" : "▶";
-    btn.setAttribute("aria-label", playing ? "Pausar" : "Reproduzir");
-    btn.setAttribute("aria-pressed", playing ? "true" : "false");
-  });
+  const playButton = document.getElementById("play-track");
+  const pauseButton = document.getElementById("pause-track");
+  playButton?.setAttribute("aria-pressed", playing ? "true" : "false");
+  pauseButton?.setAttribute("aria-pressed", playing ? "false" : "true");
   document.querySelectorAll(".track-row").forEach((row, i) => {
     const current = i === currentIndex;
     row.classList.toggle("is-current", current);
@@ -62,16 +61,18 @@ function loadTrack(index, { autoplay = false } = {}) {
   if (autoplay)
     audio.play().catch(() => showToast("Toque em play para iniciar o áudio."));
 }
-function togglePlay() {
+function playTrack() {
   if (!tracks.length) return;
   if (!audio.src) loadTrack(currentIndex);
-  if (audio.paused)
-    audio
-      .play()
-      .catch(() =>
-        showToast("O navegador bloqueou o início automático. Toque novamente."),
-      );
-  else audio.pause();
+  audio
+    .play()
+    .catch(() =>
+      showToast("O navegador bloqueou o início automático. Toque novamente."),
+    );
+}
+function pauseTrack() {
+  audio.pause();
+  syncDisplay();
 }
 function stopTrack() {
   audio.pause();
@@ -133,10 +134,11 @@ async function loadMusic() {
 function bind(id, fn) {
   document.getElementById(id)?.addEventListener("click", fn);
 }
-["play-pause", "mobile-play"].forEach((id) => bind(id, togglePlay));
-["stop-track", "mobile-stop"].forEach((id) => bind(id, stopTrack));
-["prev-track", "mobile-prev"].forEach((id) => bind(id, previousTrack));
-["next-track", "mobile-next"].forEach((id) => bind(id, nextTrack));
+bind("play-track", playTrack);
+bind("pause-track", pauseTrack);
+bind("stop-track", stopTrack);
+bind("prev-track", previousTrack);
+bind("next-track", nextTrack);
 ["open-library", "mobile-library"].forEach((id) =>
   bind(id, () => dialog?.showModal()),
 );
@@ -212,7 +214,7 @@ loadMusic();
 
 // Camadas finais isoladas: preservam o motor base e permitem QA por seção.
 const homeFinalScript = document.createElement("script");
-homeFinalScript.src = "home-final-v1.js?rev=20260917-6";
+homeFinalScript.src = "home-final-v1.js?rev=20260923-1";
 homeFinalScript.defer = true;
 document.head.appendChild(homeFinalScript);
 
