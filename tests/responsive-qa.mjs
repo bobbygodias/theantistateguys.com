@@ -157,7 +157,7 @@ for (const geometry of geometries){
         radioCoordinates,
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
-        radioIndependent:radioSrc.includes('canon/boombox.webp') && radio.complete && radio.naturalWidth > 0,
+        radioIndependent:radioSrc.includes('canon/boombox-final-static.webp') && radio.complete && radio.naturalWidth === 672 && radio.naturalHeight === 464,
         showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
@@ -169,7 +169,7 @@ for (const geometry of geometries){
     if(measured.minTap > 0 && measured.minTap < 44) issues.push(`tap-${measured.minTap}`);
     if(measured.clipped > 0) issues.push(`clip-x-${measured.clipped}`);
     if(route === 'home' && !measured.radioIndependent) issues.push('radio-scene');
-    if(route === 'home' && measured.radioHotspots !== 4) issues.push(`radio-hotspots-${measured.radioHotspots}`);
+    if(route === 'home' && measured.radioHotspots !== 5) issues.push(`radio-hotspots-${measured.radioHotspots}`);
     if(route === 'home' && !measured.hotspotsInside) issues.push('radio-hotspots-outside');
     if(route === 'home' && measured.hotspotOverlap.length) issues.push(`radio-hotspots-overlap:${measured.hotspotOverlap.join(',')}`);
     if(route === 'home') issues.push(...coordinateIssues(measured.radioCoordinates));
