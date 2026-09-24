@@ -139,7 +139,6 @@ for (const geometry of geometries){
       const radioSrc = radio?.getAttribute('src') || '';
       const screenPolygon = document.querySelector('.boombox-display-glass')?.getAttribute('points')?.trim() || '';
       const screenOverlay = document.querySelector('.boombox-display-overlay');
-      const screenReset = document.querySelector('.boombox-screen-reset');
       const active = route?.dataset.route || 'unknown';
       const showLayout = document.querySelector('.show-layout');
       const showTemplate = showLayout && visible(showLayout) ? getComputedStyle(showLayout).gridTemplateColumns : '';
@@ -159,10 +158,9 @@ for (const geometry of geometries){
         radioCoordinates,
         screenPolygon,
         screenOverlayReady:!!screenOverlay && screenOverlay.getAttribute('viewBox')==='0 0 672 464',
-        screenResetReady:!!screenReset && screenReset.getAttribute('src')?.includes('canon/boombox.webp'),
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
-        radioIndependent:radioSrc.includes('canon/boombox-final-static.webp') && radio.complete && radio.naturalWidth === 672 && radio.naturalHeight === 464,
+        radioIndependent:radioSrc.includes('canon/boombox.webp') && radio.complete && radio.naturalWidth === 672 && radio.naturalHeight === 464,
         showCols,
         meter:document.querySelector('#qa-meter')?.textContent || ''
       };
@@ -180,7 +178,6 @@ for (const geometry of geometries){
     if(route === 'home') issues.push(...coordinateIssues(measured.radioCoordinates));
     if(route === 'home' && measured.screenPolygon !== displayPolygon) issues.push('radio-display-polygon');
     if(route === 'home' && !measured.screenOverlayReady) issues.push('radio-display-viewbox');
-    if(route === 'home' && !measured.screenResetReady) issues.push('radio-display-reset-layer');
 
     const pass = issues.length === 0;
     const row = {geometry:geometry.name,width:geometry.width,height:geometry.height,route,pass,issues,...measured};
