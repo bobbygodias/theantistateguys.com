@@ -22,13 +22,13 @@ const geometries = [
 // Final static player: display + five physical keys are intrinsic to the
 // radio and must stay at these normalized positions at every viewport size.
 const radioCoordinates = {
-  display:{left:.2645,top:.240,width:.5645,height:.137},
   stop:{left:.4235,top:.8215,width:.0565,height:.094},
   prev:{left:.4845,top:.8215,width:.0565,height:.094},
   play:{left:.5445,top:.8215,width:.0565,height:.094},
   next:{left:.6055,top:.8215,width:.0565,height:.094},
   pause:{left:.6665,top:.8215,width:.0565,height:.094}
 };
+const displayPolygon = '183,136 548,120 548,159 183,178';
 const coordinateTolerance = .008;
 
 const artifactDir = path.resolve('test-artifacts');
@@ -115,7 +115,6 @@ for (const geometry of geometries){
         };
       };
       const radioCoordinates = machineRect ? {
-        display:normalizedStyle('.player-display'),
         stop:normalizedStyle('#stop-track'),
         prev:normalizedStyle('#prev-track'),
         play:normalizedStyle('#play-track'),
@@ -124,7 +123,7 @@ for (const geometry of geometries){
       } : null;
 
       const bounds = {left:0,right:document.documentElement.clientWidth};
-      const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.player-display,.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
+      const candidates = route ? [...route.querySelectorAll('a,button,img:not([alt=""]),.sheet-label,.show-stamp,h2,h3,article,figure')].filter(visible).filter(functional) : [];
       const viewportRect = el => {
         const clipAncestor = el.closest('.member-photo,.photo-card,.history-rehearsal');
         if (clipAncestor && clipAncestor !== el && getComputedStyle(clipAncestor).overflow === 'hidden') {
@@ -138,6 +137,9 @@ for (const geometry of geometries){
       });
       const radio = document.querySelector('.boombox-art');
       const radioSrc = radio?.getAttribute('src') || '';
+      const screenPolygon = document.querySelector('.boombox-display-glass')?.getAttribute('points')?.trim() || '';
+      const screenOverlay = document.querySelector('.boombox-display-overlay');
+      const screenReset = document.querySelector('.boombox-screen-reset');
       const active = route?.dataset.route || 'unknown';
       const showLayout = document.querySelector('.show-layout');
       const showTemplate = showLayout && visible(showLayout) ? getComputedStyle(showLayout).gridTemplateColumns : '';
@@ -155,6 +157,9 @@ for (const geometry of geometries){
         hotspotsInside,
         hotspotOverlap,
         radioCoordinates,
+        screenPolygon,
+        screenOverlayReady:!!screenOverlay && screenOverlay.getAttribute('viewBox')==='0 0 672 464',
+        screenResetReady:!!screenReset && screenReset.getAttribute('src')?.includes('canon/boombox.webp'),
         clipped:clippedElements.length,
         clippedTags:clippedElements.map(el=>`${el.tagName.toLowerCase()}${el.id?'#'+el.id:''}${el.className && typeof el.className==='string'?'.'+el.className.trim().replace(/\s+/g,'.'):''}`),
         radioIndependent:radioSrc.includes('canon/boombox-final-static.webp') && radio.complete && radio.naturalWidth === 672 && radio.naturalHeight === 464,
@@ -173,6 +178,9 @@ for (const geometry of geometries){
     if(route === 'home' && !measured.hotspotsInside) issues.push('radio-hotspots-outside');
     if(route === 'home' && measured.hotspotOverlap.length) issues.push(`radio-hotspots-overlap:${measured.hotspotOverlap.join(',')}`);
     if(route === 'home') issues.push(...coordinateIssues(measured.radioCoordinates));
+    if(route === 'home' && measured.screenPolygon !== displayPolygon) issues.push('radio-display-polygon');
+    if(route === 'home' && !measured.screenOverlayReady) issues.push('radio-display-viewbox');
+    if(route === 'home' && !measured.screenResetReady) issues.push('radio-display-reset-layer');
 
     const pass = issues.length === 0;
     const row = {geometry:geometry.name,width:geometry.width,height:geometry.height,route,pass,issues,...measured};
