@@ -34,70 +34,61 @@
 }
 
 /*
- * Black display opening is already part of the final artwork.
- * Only the live title is rendered here, in normalized radio coordinates.
+ * Repair only the old oversized display area with the untouched canonical
+ * radio pixels. This second 672×464 image is clipped, not independently laid
+ * out, so it can never drift away from the boombox.
  */
-.player-display {
-  position: absolute !important;
-  left: 26.45% !important;
-  top: 24.0% !important;
-  width: 56.45% !important;
-  height: 13.7% !important;
-  margin: 0 !important;
-  padding: 0 1.15% !important;
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  transform: none !important;
-  display: flex !important;
-  align-items: center !important;
-  overflow: hidden !important;
-  z-index: 8 !important;
+.boombox-screen-reset {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
   pointer-events: none;
-  color: #eee9dc !important;
-  font-family: "Courier New", Courier, monospace !important;
-  font-size: clamp(10px, 2.75cqw, 18px) !important;
-  line-height: 1 !important;
-  text-shadow:
-    0 0 2px rgba(255,255,255,.72),
-    0 0 6px rgba(220,214,195,.22) !important;
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 6;
+  clip-path: polygon(
+    26.5% 20.5%,
+    85% 18.5%,
+    85% 41%,
+    26.5% 42%
+  );
 }
 
-.player-display #track-title {
-  display: inline-block;
-  width: max-content;
-  min-width: max-content;
-  white-space: nowrap;
-  padding-left: 100%;
-  animation: tasg-track-scroll 9s linear infinite;
-  will-change: transform;
+/*
+ * Display geometry measured from Bobby's final Home reference and mapped
+ * back into the same intrinsic 672×464 coordinate space as the radio.
+ * Polygon: TL 183,136 · TR 548,120 · BR 548,159 · BL 183,178.
+ */
+.boombox-display-overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 8;
 }
 
-.player-display .time {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+.boombox-display-glass {
+  fill: #050606;
+  stroke: rgba(95, 94, 87, 0.7);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
 }
 
-@keyframes tasg-track-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .player-display #track-title {
-    width: 100%;
-    min-width: 100%;
-    padding-left: 0;
-    text-align: center;
-    animation: none;
-  }
+.boombox-display-overlay #track-title {
+  fill: #eee9dc;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.6px;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: rgba(255,255,255,0.08);
+  stroke-width: 0.35px;
 }
 
 /*

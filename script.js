@@ -214,7 +214,7 @@ loadMusic();
 
 // Camadas finais isoladas: preservam o motor base e permitem QA por seção.
 const homeFinalScript = document.createElement("script");
-homeFinalScript.src = "home-final-v1.js?rev=20260923-1";
+homeFinalScript.src = "home-final-v1.js?rev=20260923-2";
 homeFinalScript.defer = true;
 document.head.appendChild(homeFinalScript);
 

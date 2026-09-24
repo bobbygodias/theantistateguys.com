@@ -124,6 +124,53 @@
                   src="assets/canon/boombox-final-static.webp"
                   width="672"
                 />
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  class="boombox-screen-reset"
+                  draggable="false"
+                  height="464"
+                  src="assets/canon/boombox.webp"
+                  width="672"
+                />
+                <svg
+                  aria-label="Faixa atual"
+                  class="boombox-display-overlay"
+                  preserveAspectRatio="none"
+                  role="status"
+                  viewBox="0 0 672 464"
+                >
+                  <defs>
+                    <clipPath id="boombox-display-clip">
+                      <polygon points="183,136 548,120 548,159 183,178"></polygon>
+                    </clipPath>
+                  </defs>
+                  <polygon
+                    class="boombox-display-glass"
+                    points="183,136 548,120 548,159 183,178"
+                  ></polygon>
+                  <g clip-path="url(#boombox-display-clip)">
+                    <g transform="rotate(-2.45 336 149)">
+                      <g class="boombox-track-scroll">
+                        <animateTransform
+                          attributeName="transform"
+                          dur="10s"
+                          from="560 0"
+                          repeatCount="indefinite"
+                          to="-320 0"
+                          type="translate"
+                        ></animateTransform>
+                        <text id="track-title" x="0" y="156">
+                          Carregando faixas...
+                        </text>
+                      </g>
+                    </g>
+                  </g>
+                </svg>
+                <span class="time visually-hidden">
+                  <span id="time-current">0:00</span> /
+                  <span id="time-total">0:00</span>
+                </span>
                 <span
                   aria-hidden="true"
                   class="speaker-motion speaker-left"
@@ -132,17 +179,6 @@
                   aria-hidden="true"
                   class="speaker-motion speaker-right"
                 ></span>
-                <div
-                  class="player-display"
-                  role="status"
-                  aria-label="Faixa atual"
-                >
-                  <span id="track-title">Carregando faixas...</span>
-                  <span class="time visually-hidden">
-                    <span id="time-current">0:00</span> /
-                    <span id="time-total">0:00</span>
-                  </span>
-                </div>
                 <button
                   aria-controls="music-dialog"
                   aria-haspopup="dialog"
@@ -714,7 +750,7 @@
     <div aria-live="polite" class="toast" id="toast" role="status"></div>
     <audio controlslist="nodownload" id="audio" preload="none"></audio
     >
-    <script defer="" src="script.js?rev=20260917-4"></script>
+    <script defer="" src="script.js?rev=20260923-2"></script>
     <script defer="True" src="approved-pages.js?rev=20260916-1"></script>
   </body>
 </html>
