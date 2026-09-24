@@ -34,31 +34,8 @@
 }
 
 /*
- * Repair only the old oversized display area with the untouched canonical
- * radio pixels. This second 672×464 image is clipped, not independently laid
- * out, so it can never drift away from the boombox.
- */
-.boombox-screen-reset {
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  z-index: 6;
-  clip-path: polygon(
-    27.1% 24.9%,
-    82.0% 23.2%,
-    81.9% 39.0%,
-    27.0% 40.2%
-  );
-}
-
-/*
- * Display geometry measured from Bobby's final Home reference and mapped
- * back into the same intrinsic 672×464 coordinate space as the radio.
+ * The canonical 672×464 boombox stays untouched. The only black display is
+ * this vector layer, attached to the radio's own intrinsic coordinates.
  * Polygon: TL 183,136 · TR 548,120 · BR 548,159 · BL 183,178.
  */
 .boombox-display-overlay {
