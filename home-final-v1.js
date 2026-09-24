@@ -23,7 +23,7 @@
     const link = document.createElement("link");
     link.id = cssId;
     link.rel = "stylesheet";
-    link.href = "boombox-native-controls.css?rev=20260924-3";
+    link.href = "boombox-native-controls.css?rev=20260924-4";
     document.head.appendChild(link);
   }
 
