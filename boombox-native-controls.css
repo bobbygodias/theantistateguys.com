@@ -50,7 +50,7 @@
 }
 
 .boombox-display-glass {
-  fill: transparent;
+  fill: #060808;
   stroke: none;
 }
 
@@ -151,3 +151,22 @@
   background: rgba(0, 255, 0, 0.40) !important;
   outline: 1px solid lime !important;
 }
+
+/* SOM: restore the entire damaged bezel, including the logo, in the SAME
+   intrinsic coordinate system. The final radio and its controls stay intact. */
+.boombox-bezel-restore {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  object-fit: contain;
+  clip-path: polygon(26% 22%, 84% 22%, 84% 35%, 26% 39.5%);
+  pointer-events: none;
+  user-select: none;
+  z-index: 7;
+}
+.player-controls .boombox-hotspot::before,
+.player-controls .boombox-hotspot::after { content: none !important; }

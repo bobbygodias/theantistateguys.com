@@ -37,6 +37,7 @@
       crossorigin
     />
     <link rel="stylesheet" href="canon.css?rev=20260916-1" />
+    <link id="boombox-native-controls-css" rel="stylesheet" href="boombox-native-controls.css?rev=20260925-som2" />
   </head>
   <body>
     <div class="site-frame">
@@ -124,6 +125,7 @@
                   src="assets/canon/boombox-final-static.webp"
                   width="672"
                 />
+                <img class="boombox-bezel-restore" src="assets/canon/boombox.webp" width="672" height="464" alt="" aria-hidden="true" draggable="false" />
                 <svg
                   aria-label="Faixa atual"
                   class="boombox-display-overlay"
@@ -151,7 +153,7 @@
                           to="-320 0"
                           type="translate"
                         ></animateTransform>
-                        <text id="track-title" x="0" y="156">
+                        <text id="track-title" x="0" y="149">
                           Carregando faixas...
                         </text>
                       </g>
@@ -182,11 +184,11 @@
                   FAIXAS
                 </button>
                 <div aria-label="Controles do player" class="player-controls">
-                  <button aria-label="Parar" id="stop-track" type="button">■</button>
-                  <button aria-label="Faixa anterior" id="prev-track" type="button">⏮</button>
-                  <button aria-label="Reproduzir" id="play-track" type="button">▶</button>
-                  <button aria-label="Próxima faixa" id="next-track" type="button">⏭</button>
-                  <button aria-label="Pausar" id="pause-track" type="button">Ⅱ</button>
+                  <button aria-label="Parar" id="stop-track" class="boombox-hotspot" type="button">■</button>
+                  <button aria-label="Faixa anterior" id="prev-track" class="boombox-hotspot" type="button">⏮</button>
+                  <button aria-label="Reproduzir" id="play-track" class="boombox-hotspot" type="button">▶</button>
+                  <button aria-label="Próxima faixa" id="next-track" class="boombox-hotspot" type="button">⏭</button>
+                  <button aria-label="Pausar" id="pause-track" class="boombox-hotspot" type="button">Ⅱ</button>
                 </div>
               </section>
             </div>
