@@ -76,6 +76,12 @@ jobs:
         if: always()
         run: node tests/visual-snapshots.mjs
 
+      - name: Include boombox source assets for visual inspection
+        if: always()
+        run: |
+          cp assets/canon/boombox-final-static.webp test-artifacts/boombox-final-static.webp
+          cp assets/canon/boombox.webp test-artifacts/boombox-canonical.webp
+
       - name: Upload QA artifacts
         if: always()
         uses: actions/upload-artifact@v4
