@@ -20,6 +20,9 @@
   height: auto !important;
   margin-left: 0 !important;
   object-fit: contain !important;
+  /* SONOPLASTA: the source asset contains a 2px bright seam near x=4..5.
+     Clip only that baked artifact; keep the radio's layout box unchanged. */
+  clip-path: inset(0 0 0 0.9%);
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -152,20 +155,30 @@
   outline: 1px solid lime !important;
 }
 
-/* SOM: restore the entire damaged bezel, including the logo, in the SAME
-   intrinsic coordinate system. The final radio and its controls stay intact. */
+/* SONOPLASTA: boombox.webp and boombox-final-static.webp are both
+   672x464, but the physical radio is not registered pixel-for-pixel between
+   the two files. Pixel matching measured the restore source at ~98.86% width,
+   ~97.74% height, offset ~0.91% right and ~1.30% down. Register the source
+   first, then expose only the tight bezel around the physical display. */
 .boombox-bezel-restore {
   position: absolute;
-  inset: 0;
+  left: 0.91%;
+  top: 1.30%;
   display: block;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
+  width: 98.86% !important;
+  height: 97.74% !important;
+  max-width: none !important;
   margin: 0 !important;
-  object-fit: contain;
-  clip-path: polygon(26% 22%, 84% 22%, 84% 35%, 26% 39.5%);
+  object-fit: fill;
+  clip-path: polygon(
+    25.59% 25.09%,
+    82.64% 21.48%,
+    82.65% 35.59%,
+    25.60% 39.86%
+  );
   pointer-events: none;
   user-select: none;
+  -webkit-user-drag: none;
   z-index: 7;
 }
 .player-controls .boombox-hotspot::before,
