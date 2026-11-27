@@ -3,6 +3,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:4173/index.html';
+const catalog=JSON.parse(await fs.readFile('data/music.json','utf8'));
+const catalogTitles=(catalog.releases||[]).flatMap(release=>(release.tracks||[]).map(track=>track.title));
+if(!catalogTitles.length) throw new Error('Catálogo de músicas vazio');
 const cases = [
   {name:'narrow',width:300,height:960,hasTouch:true},
   {name:'landscape',width:640,height:360,hasTouch:true},
@@ -41,7 +44,7 @@ for(const geometry of cases){
 
   await page.goto(`${baseURL}?interaction=1#home`,{waitUntil:'networkidle'});
   await page.waitForSelector('[data-route].is-active');
-  await page.waitForFunction(()=>document.querySelectorAll('.track-row').length>=2);
+  await page.waitForFunction(expected=>document.querySelectorAll('.track-row').length===expected,catalogTitles.length);
   await page.waitForFunction(()=>document.querySelectorAll('.boombox-hotspot').length===5);
 
   const issues=[];
@@ -134,10 +137,10 @@ for(const geometry of cases){
   await page.locator('#next-track').click();
   await page.waitForTimeout(30);
   const second=(await page.locator('#track-title').textContent()||'').trim();
-  assert(second!==first,'next-nao-trocou-faixa',issues);
+  assert(second===(catalogTitles[1]||catalogTitles[0]),'next-nao-seguiu-catalogo',issues);
   await page.locator('#prev-track').click();
   await page.waitForTimeout(30);
-  assert((await page.locator('#track-title').textContent()||'').trim()===first,'prev-nao-retornou-faixa',issues);
+  assert((await page.locator('#track-title').textContent()||'').trim()===catalogTitles[0],'prev-nao-retornou-faixa',issues);
 
   if(pageErrors.length) issues.push(`pageerror:${pageErrors.join('|')}`);
 

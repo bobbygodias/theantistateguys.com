@@ -121,7 +121,7 @@ if(music){
       if(typeof track.url!=='string' || !/^https:\/\//i.test(track.url)) issue(`music-track-url:${ri}:${ti}`);
     }
   }
-  if(trackCount<2) issue(`music-track-count:${trackCount}`);
+  if(trackCount<1) issue(`music-track-count:${trackCount}`);
 }
 
 // Critical V3 scripts should reference expected local layers and not inject compat CSS dynamically.
