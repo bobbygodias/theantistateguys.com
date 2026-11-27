@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import {chromium} from 'playwright';
 import fs from 'node:fs/promises';
+const catalog=JSON.parse(await fs.readFile('data/music.json','utf8'));
+const catalogTitles=(catalog.releases||[]).flatMap(release=>(release.tracks||[]).map(track=>track.title));
+assert.ok(catalogTitles.length>0,'Catalog must include at least one authorized track');
 const browser=await chromium.launch();
 const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -29,9 +32,9 @@ try{
  assert.equal(await page.locator('#audio').evaluate(a=>a.currentTime),0);
  assert.equal(await page.locator('#audio').evaluate(a=>a.paused),true);
  await page.locator('#next-track').click();
- assert.match(await page.locator('#track-title').innerText(),/Não Há Cor/);
+ assert.equal(await page.locator('#track-title').innerText(),catalogTitles[1]||catalogTitles[0]);
  await page.locator('#prev-track').click();
- assert.equal(await page.locator('#track-title').innerText(),'Renascer');
+ assert.equal(await page.locator('#track-title').innerText(),catalogTitles[0]);
 }catch(error){media={verified:false,reason:error.message,state:await page.locator('#audio').evaluate(a=>({src:a.currentSrc,readyState:a.readyState,networkState:a.networkState,error:a.error?.message||null}))};}
 const nativeGeometry=await page.evaluate(()=>{
  const radio=document.querySelector('.boombox-art').getBoundingClientRect();
